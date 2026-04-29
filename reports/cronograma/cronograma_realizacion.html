@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cronograma de Realizacion - Sistema FLY</title>
+  <style>
+    :root {
+      --bg: #eef2eb;
+      --ink: #1c2a24;
+      --muted: #5d6b64;
+      --card: rgba(255, 255, 255, 0.9);
+      --line: rgba(28, 42, 36, 0.12);
+      --done: #2f7a59;
+      --run: #c17622;
+      --plan: #8f9a93;
+      --accent: #214d3b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, rgba(33, 77, 59, 0.08), transparent 30%),
+        linear-gradient(135deg, #f9fbf7 0%, var(--bg) 100%);
+    }
+
+    .wrap {
+      width: min(1200px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 36px 0 56px;
+    }
+
+    .hero,
+    .board {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: 0 22px 60px rgba(28, 42, 36, 0.1);
+    }
+
+    .hero {
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(33, 77, 59, 0.1);
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    h1, h2 { margin: 0 0 12px; }
+
+    p {
+      margin: 0 0 12px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .links a {
+      text-decoration: none;
+      color: var(--ink);
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 12px 16px;
+      font-weight: 600;
+    }
+
+    .legend {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+
+    .board {
+      padding: 24px;
+      overflow-x: auto;
+    }
+
+    .timeline {
+      min-width: 980px;
+      display: grid;
+      grid-template-columns: 260px repeat(6, 1fr);
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .cell {
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .head {
+      font-weight: 700;
+      text-align: center;
+      background: rgba(33, 77, 59, 0.08);
+    }
+
+    .phase {
+      font-weight: 700;
+    }
+
+    .meta {
+      font-size: 0.92rem;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .bar {
+      min-height: 100%;
+      border-radius: 16px;
+      color: white;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 12px;
+    }
+
+    .done { background: linear-gradient(135deg, #2f7a59, #4e9b78); }
+    .run { background: linear-gradient(135deg, #c17622, #e39a43); }
+    .plan { background: linear-gradient(135deg, #8f9a93, #aeb7b1); }
+
+    .notes {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .note {
+      padding: 22px;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.84);
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .docnav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 10px 24px;
+      background: rgba(28, 42, 36, 0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(28, 42, 36, 0.14);
+    }
+
+    .docnav-home {
+      font-weight: 800;
+      font-size: 1rem;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+    }
+
+    .docnav-links {
+      display: flex;
+      gap: 4px;
+      flex: 1;
+    }
+
+    .docnav-links a {
+      text-decoration: none;
+      color: rgba(255,255,255,0.6);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .docnav-links a:hover,
+    .docnav-links a.active {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+    }
+
+    .docnav-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(33, 77, 59, 0.35);
+      color: #7ecba5;
+      border: 1px solid rgba(33, 77, 59, 0.5);
+      white-space: nowrap;
+    }
+
+    @media (max-width: 900px) {
+      .notes {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="docnav">
+    <a href="../../app/landing/index.html" class="docnav-home">&#9992; FLY</a>
+    <div class="docnav-links">
+      <a href="../../architecture/canvas/canvas_arquitectura.html">Canvas</a>
+      <a href="../html/funcionalidades_sistema.html">Funcionalidades</a>
+      <a href="cronograma_realizacion.html" class="active">Cronograma</a>
+    </div>
+    <span class="docnav-badge">Corte tecnico 19-Mar-2026</span>
+  </nav>
+
+  <main class="wrap">
+    <section class="hero">
+      <span class="eyebrow">Cronograma de Realizacion</span>
+      <h1>Estado de ejecucion al 19 de marzo de 2026</h1>
+      <p>El seed canonico y el seed volumetrico quedaron cerrados con validaciones bloqueantes en verde. El cronograma refleja los hitos ejecutados y la fase actual de QA cruzado documental previa al release.</p>
+      <div class="links">
+        <a href="../../docs/planes/PLAN_FASE_DATOS_MASIVOS_Y_REPORTES.md">Plan maestro de fase</a>
+        <a href="../../reports/html/funcionalidades_sistema.html">Informe funcional</a>
+        <a href="../../docs/validacion/SEGUIMIENTO_INCONSISTENCIAS_ESTRUCTURALES.md">Seguimiento estructural</a>
+      </div>
+      <div class="legend">
+        <span><i class="dot" style="background: var(--done);"></i>Completado</span>
+        <span><i class="dot" style="background: var(--run);"></i>En curso</span>
+        <span><i class="dot" style="background: var(--plan);"></i>Planificado</span>
+      </div>
+    </section>
+
+    <section class="board">
+      <div class="timeline">
+        <div class="cell head">Fase</div>
+        <div class="cell head">19-21 Mar</div>
+        <div class="cell head">22-26 Mar</div>
+        <div class="cell head">27-31 Mar</div>
+        <div class="cell head">1-5 Abr</div>
+        <div class="cell head">6-10 Abr</div>
+        <div class="cell head">11-14 Abr</div>
+
+        <div class="cell phase">1. Reorganizacion y contenedor<div class="meta">Estructura de carpetas, Docker 5435, referencias locales</div></div>
+        <div class="cell"><div class="bar done">Completado</div></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+
+        <div class="cell phase">2. Arquitectura de seeds<div class="meta">Reglas, orden de carga, politica cronologica y validaciones post-seed</div></div>
+        <div class="cell"><div class="bar done">Completado</div></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+
+        <div class="cell phase">3. Seed canonico<div class="meta">3 flujos E2E completos: BOG-MIA-MAD, BOG-MDE, BOG-MIA</div></div>
+        <div class="cell"><div class="bar done">Completado</div></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+
+        <div class="cell phase">4. Seed volumetrico<div class="meta">Vuelos futuros, reservas adicionales, escala de volumetria</div></div>
+        <div class="cell"><div class="bar done">Completado</div></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+
+        <div class="cell phase">5. Auditoria estructural<div class="meta">Hallazgos, inconsistencias y base de refactor</div></div>
+        <div class="cell"><div class="bar run">En curso</div></div>
+        <div class="cell"><div class="bar plan">Hallazgos</div></div>
+        <div class="cell"><div class="bar plan">Priorizacion</div></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+
+        <div class="cell phase">6. Reportes y narrativa<div class="meta">HTML de funcionalidades, cronograma y soporte ejecutivo</div></div>
+        <div class="cell"><div class="bar run">Ajuste QA cruzado</div></div>
+        <div class="cell"><div class="bar plan">Cierre narrativo</div></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+
+        <div class="cell phase">7. Validacion integral<div class="meta">Conteos, flujo punta a punta y coherencia documental</div></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"><div class="bar plan">QA tecnico</div></div>
+        <div class="cell"></div>
+
+        <div class="cell phase">8. Base documental para refactor<div class="meta">Cierre de evidencia, decisiones y backlog de refactor</div></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"><div class="bar plan">Consolidacion</div></div>
+        <div class="cell"><div class="bar plan">Entrega</div></div>
+      </div>
+    </section>
+
+    <section class="notes">
+      <article class="note">
+        <h2>Hitos completados al 19-Mar</h2>
+        <ul>
+          <li>Seed canonico cerrado con 3 flujos E2E completos (IE-007 resuelto).</li>
+          <li>Politica cronologica documentada y aplicada en todos los timestamps (IE-005 resuelto).</li>
+          <li>Validaciones post-seed extendidas con gate canónico + volumétrico bloqueantes (7 fases).</li>
+          <li>Seed volumetrico cerrado con cobertura comercial + viaje y umbral operativo cumplido (IE-003 resuelto).</li>
+          <li>Orden de carga topologico documentado como contrato operativo (IE-004 resuelto).</li>
+        </ul>
+      </article>
+      <article class="note">
+        <h2>Riesgos activos de cierre</h2>
+        <ul>
+          <li>IE-001 activo: catalogos cerrados del dominio deben tratarse como excepcion, no inflarse para llegar a volumetria arbitraria.</li>
+          <li>IE-002 activo: documentos heredados con rutas previas a la reorganizacion deben marcarse o alinearse.</li>
+          <li>IE-008 activo: asegurar que canvas, landing y reportes reflejen el mismo estado tecnico.</li>
+          <li>Mantener ejecucion de `99_validaciones_post_seed.sql` despues de cambios para evitar regresiones.</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas de Arquitectura - Sistema FLY 3FN</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #edf2f7;
+      --panel: #ffffff;
+      --primary: #16324f;
+      --accent: #1f6feb;
+      --muted: #64748b;
+      --border: #d8e1ea;
+      --ok: #1f8f5f;
+      --warn: #b87400;
+      --risk: #c2410c;
+      --future: #7c3aed;
+      --font: "Segoe UI", system-ui, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: #17212b;
+      font-family: var(--font);
+      padding: 20px;
+      line-height: 1.45;
+    }
+
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 22px 24px;
+      border-radius: 10px 10px 0 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    header h1 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+    }
+
+    header p {
+      font-size: 13px;
+      opacity: 0.9;
+      margin-top: 6px;
+    }
+
+    .meta {
+      text-align: right;
+      font-size: 11px;
+      opacity: 0.9;
+      min-width: 220px;
+    }
+
+    .meta strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2px;
+      background: var(--border);
+    }
+
+    section {
+      background: var(--panel);
+      padding: 16px 18px;
+    }
+
+    .span-2 { grid-column: span 2; }
+    .span-3 { grid-column: span 3; }
+
+    h2 {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--accent);
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+    }
+
+    p, li, td, th {
+      font-size: 12px;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    ul li {
+      margin-bottom: 6px;
+    }
+
+    ul li::before {
+      content: ">";
+      color: var(--accent);
+      font-weight: 700;
+      margin-right: 6px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      margin: 2px 4px 2px 0;
+    }
+
+    .tag-ok { background: #d9f4e8; color: var(--ok); }
+    .tag-warn { background: #fdf0cf; color: var(--warn); }
+    .tag-risk { background: #fde2d7; color: var(--risk); }
+    .tag-future { background: #efe5ff; color: var(--future); }
+    .tag-tech { background: #dbeafe; color: #1d4ed8; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .stat {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 8px;
+      text-align: center;
+      background: #fbfdff;
+    }
+
+    .stat .num {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .stat .lbl {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .module-box {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px;
+      text-align: center;
+      background: #fbfdff;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .module-box .count {
+      display: block;
+      font-size: 18px;
+      color: var(--accent);
+      margin-bottom: 2px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      background: #f6f9fc;
+      color: var(--primary);
+      text-align: left;
+      padding: 6px 8px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    td {
+      padding: 6px 8px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .flow {
+      font-family: "Courier New", monospace;
+      font-size: 11px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px;
+      white-space: pre-wrap;
+      line-height: 1.7;
+    }
+
+    .note {
+      margin-top: 8px;
+      padding-top: 6px;
+      border-top: 1px dashed var(--border);
+      color: var(--muted);
+      font-size: 10px;
+      font-style: italic;
+    }
+
+    footer {
+      background: var(--primary);
+      color: rgba(255,255,255,0.86);
+      border-radius: 0 0 10px 10px;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      font-size: 11px;
+    }
+
+    footer strong {
+      color: white;
+    }
+
+    @media print {
+      body { background: white; padding: 0; }
+      header, footer { border-radius: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav style="
+    display:flex; align-items:center; gap:16px; padding:10px 24px;
+    background:rgba(22,50,79,0.97); backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    font-family:'Segoe UI',sans-serif; position:sticky; top:0; z-index:100;
+  ">
+    <a href="../../app/landing/index.html" style="font-weight:800;font-size:1rem;color:#fff;text-decoration:none;letter-spacing:.06em;">&#9992; FLY</a>
+    <div style="display:flex;gap:4px;flex:1;">
+      <a href="canvas_arquitectura.html" style="color:#fff;background:rgba(255,255,255,0.12);padding:6px 14px;border-radius:999px;font-size:.85rem;font-weight:600;text-decoration:none;">Canvas</a>
+      <a href="../../reports/html/funcionalidades_sistema.html" style="color:rgba(255,255,255,.6);padding:6px 14px;border-radius:999px;font-size:.85rem;font-weight:600;text-decoration:none;">Funcionalidades</a>
+      <a href="../../reports/cronograma/cronograma_realizacion.html" style="color:rgba(255,255,255,.6);padding:6px 14px;border-radius:999px;font-size:.85rem;font-weight:600;text-decoration:none;">Cronograma</a>
+    </div>
+    <span style="font-size:.75rem;font-weight:700;padding:4px 12px;border-radius:999px;background:rgba(31,111,235,.18);color:#60a5fa;border:1px solid rgba(31,111,235,.35);white-space:nowrap;">v2-estable-3fn</span>
+  </nav>
+
+  <header>
+    <div>
+      <h1>&#9992; Sistema FLY - Canvas de Arquitectura</h1>
+      <p>Paquete arquitectonico de datos alineado a 3FN y validado sobre PostgreSQL 16</p>
+    </div>
+    <div class="meta">
+      <strong>2026-03-19</strong>
+      Version: v2-estable-3fn<br>
+      Alcance: arquitectura de datos y entrega documental<br>
+      Fuente local: <code>C:/www/code-dev-projects/fly-manager/</code>
+    </div>
+  </header>
+
+  <main>
+
+    <section>
+      <h2>Proposito</h2>
+      <p><strong>Objetivo:</strong> entregar una base arquitectonica coherente entre landing, documentacion y DDL ejecutable.</p>
+      <ul>
+        <li>El foco de este canvas es la arquitectura de datos, no el stack aplicativo final.</li>
+        <li>El modelo actual se estructuro explicitamente para cumplir 3FN.</li>
+        <li>La version base prioriza consistencia conceptual sobre optimizacion prematura.</li>
+        <li>El release actual separa claramente estado implementado vs roadmap futuro.</li>
+      </ul>
+      <p class="note">Base de evidencia local: <code>db/ddl/modelo_postgresql.sql</code>, <code>docs/datos/modelo_documentado.md</code>, <code>docs/datos/NORMALIZACION_3FN.md</code> y <code>docs/validacion/VALIDACION_DDL_3FN.md</code>.</p>
+    </section>
+
+    <section>
+      <h2>Estado</h2>
+      <p><span class="tag tag-ok">VALIDADO</span> El DDL fue ejecutado completo en PostgreSQL real sin errores.</p>
+      <p><span class="tag tag-ok">3FN</span> La estructura fue construida con reglas formales de normalizacion.</p>
+      <p><span class="tag tag-ok">SEED CANONICO</span> 3 flujos E2E completos implementados y politica cronologica cerrada.</p>
+      <p><span class="tag tag-ok">SEED VOLUMETRICO</span> Seed volumetrico (01_seed_volumetrico.sql) ejecuta completo con cobertura comercial + viaje en umbral operativo.</p>
+      <p><span class="tag tag-future">ROADMAP</span> Soft delete, auditoria transversal y particionamiento quedan fuera del release base.</p>
+      <p class="note">Seed canonico y volumetrico cierran IE-003, IE-005, IE-007 e IE-009 en el frente tecnico. Pendientes activos: IE-001 (excepcion controlada), IE-002 e IE-008.</p>
+    </section>
+
+    <section>
+      <h2>Metricas Validadas</h2>
+      <div class="stats">
+        <div class="stat"><div class="num">12</div><div class="lbl">Modulos</div></div>
+        <div class="stat"><div class="num">76</div><div class="lbl">Tablas</div></div>
+        <div class="stat"><div class="num">100</div><div class="lbl">FKs</div></div>
+        <div class="stat"><div class="num">112</div><div class="lbl">UNIQUE</div></div>
+        <div class="stat"><div class="num">3FN</div><div class="lbl">Modelo</div></div>
+      </div>
+      <p class="note">Conteos derivados del esquema realmente ejecutado, no de estimaciones visuales.</p>
+    </section>
+
+    <section class="span-2">
+      <h2>Flujo Canonico</h2>
+      <div class="flow">person
+  -> customer
+  -> reservation
+     -> reservation_passenger
+     -> sale
+        -> ticket
+           -> ticket_segment
+              -> seat_assignment
+              -> check_in
+                 -> boarding_pass
+                 -> boarding_validation
+        -> payment
+           -> payment_transaction
+           -> refund
+        -> invoice
+           -> invoice_line</div>
+      <p class="note">Decisiones clave: <code>reservation</code> es la raiz comercial y <code>ticket_segment</code> resuelve la relacion N:M con <code>flight_segment</code>.</p>
+    </section>
+
+    <section>
+      <h2>Principios 3FN</h2>
+      <ul>
+        <li>No existen listas embebidas ni grupos repetitivos.</li>
+        <li>Las relaciones N:M se resuelven con tablas puente explicitas.</li>
+        <li>Estados, tipos y categorias viven en catalogos separados.</li>
+        <li>No se persisten totales derivados en el detalle de factura.</li>
+        <li>La geografia se normaliza por jerarquia y no por tabla generica redundante.</li>
+      </ul>
+      <p class="note">Referencia detallada: <code>docs/datos/NORMALIZACION_3FN.md</code>.</p>
+    </section>
+
+    <section class="span-2">
+      <h2>Dominio Modular</h2>
+      <div class="module-grid">
+        <div class="module-box"><span class="count">1</span>Airline</div>
+        <div class="module-box"><span class="count">6</span>Identity</div>
+        <div class="module-box"><span class="count">6</span>Security</div>
+        <div class="module-box"><span class="count">9</span>Customer</div>
+        <div class="module-box"><span class="count">7</span>Geolocation</div>
+        <div class="module-box"><span class="count">5</span>Airport</div>
+        <div class="module-box"><span class="count">9</span>Aircraft</div>
+        <div class="module-box"><span class="count">5</span>Flight</div>
+        <div class="module-box"><span class="count">12</span>Sales</div>
+        <div class="module-box"><span class="count">5</span>Boarding</div>
+        <div class="module-box"><span class="count">5</span>Payment</div>
+        <div class="module-box"><span class="count">6</span>Billing</div>
+      </div>
+      <p class="note">La suma de los modulos coincide con las 76 tablas del esquema validado.</p>
+    </section>
+
+    <section>
+      <h2>Alcance Tecnico</h2>
+      <ul>
+        <li><span class="tag tag-tech">Motor</span> PostgreSQL 16</li>
+        <li><span class="tag tag-tech">PK</span> UUID con <code>gen_random_uuid()</code></li>
+        <li><span class="tag tag-tech">Integridad</span> PK, FK, UNIQUE y CHECK</li>
+        <li><span class="tag tag-tech">Entrega</span> Landing + DDL + documento + validacion</li>
+      </ul>
+      <p class="note">El stack de microservicios, gateway e infraestructura queda fuera de este paquete y debe documentarse aparte si se decide formalmente.</p>
+    </section>
+
+    <section class="span-3">
+      <h2>Decisiones Arquitectonicas de Datos</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Decision</th>
+            <th>Estado</th>
+            <th>Impacto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>reservation</code> como raiz del flujo comercial</td>
+            <td><span class="tag tag-ok">Aplicada</span></td>
+            <td>Evita mezclar reserva y venta como un mismo hecho del negocio.</td>
+          </tr>
+          <tr>
+            <td><code>ticket_segment</code> como junction entre ticket y segmento</td>
+            <td><span class="tag tag-ok">Aplicada</span></td>
+            <td>Soporta multi-escala y elimina la falsa relacion 1:1.</td>
+          </tr>
+          <tr>
+            <td><code>loyalty_account_tier</code> como historial de nivel</td>
+            <td><span class="tag tag-ok">Aplicada</span></td>
+            <td>Elimina dependencia transitiva entre cuenta, programa y nivel.</td>
+          </tr>
+          <tr>
+            <td>Jerarquia geografica normalizada sin tabla generica redundante</td>
+            <td><span class="tag tag-ok">Aplicada</span></td>
+            <td>Reduce duplicacion de pais, estado, ciudad y zona horaria.</td>
+          </tr>
+          <tr>
+            <td>No persistir totales derivados en <code>invoice_line</code></td>
+            <td><span class="tag tag-ok">Aplicada</span></td>
+            <td>Preserva 3FN y evita inconsistencias contables por recalculo parcial.</td>
+          </tr>
+          <tr>
+            <td>Soft delete y auditoria total</td>
+            <td><span class="tag tag-future">Fuera de alcance base</span></td>
+            <td>Se recomienda como siguiente iteracion, no como parte del release validado.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="span-2">
+      <h2>Riesgos Vigentes</h2>
+      <ul>
+        <li><span class="tag tag-ok">Cerrado</span> Seed canonico implementado con 3 flujos E2E completos y validaciones post-seed de 7 fases (canónico + volumétrico).</li>
+        <li><span class="tag tag-risk">Alto</span> IE-001: catalogos cerrados del dominio no pueden inflarse arbitrariamente para volumetria — excepcion controlada activa.</li>
+        <li><span class="tag tag-risk">Medio</span> IE-002: documentos heredados con rutas y referencias anteriores a la reorganizacion aun sin alinear completamente.</li>
+        <li><span class="tag tag-ok">Cerrado</span> Seed volumetrico validado con gate bloqueante y controles de cronologia/orfandad en verde.</li>
+        <li><span class="tag tag-risk">Medio</span> Soft delete y auditoria transversal todavia no forman parte del esquema base.</li>
+        <li><span class="tag tag-warn">Bajo</span> No se han ejecutado pruebas de rendimiento bajo carga concurrente.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Artefactos</h2>
+      <ul>
+        <li><code>index.html</code>: landing principal sincronizada con la version 3FN.</li>
+        <li><code>db/ddl/modelo_postgresql.sql</code>: DDL maestro validado.</li>
+        <li><code>docs/datos/modelo_documentado.md</code>: documento funcional del modelo.</li>
+        <li><code>docs/datos/NORMALIZACION_3FN.md</code>: criterio formal de normalizacion.</li>
+        <li><code>docs/validacion/VALIDACION_DDL_3FN.md</code>: evidencia de ejecucion real.</li>
+      </ul>
+    </section>
+
+    <section class="span-3">
+      <h2>Siguiente Fase Recomendada</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Paso</th>
+            <th>Objetivo</th>
+            <th>Salida esperada</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1. Catalogos base y seed canonico</td>
+            <td>Cargar estados, tipos, clases, monedas, actores y flujo E2E completo</td>
+            <td><span class="tag tag-ok">Completado</span> 00_seed_canonico.sql</td>
+          </tr>
+          <tr>
+            <td>2. Escenario funcional E2E</td>
+            <td>3 flujos completos: reservation → sale → ticket → payment → invoice → boarding</td>
+            <td><span class="tag tag-ok">Completado</span> Validado por IE-007</td>
+          </tr>
+          <tr>
+            <td>3. Seed volumetrico</td>
+            <td>Escalar con vuelos futuros (2026-04-01 a 2026-06-30) y reservas adicionales</td>
+            <td><span class="tag tag-ok">Completado</span> 01_seed_volumetrico.sql (umbral operativo cerrado)</td>
+          </tr>
+          <tr>
+            <td>4. QA documental y auditoria</td>
+            <td>Alinear cronograma/canvas/reportes al estado tecnico y cerrar IE-002 / IE-008</td>
+            <td><span class="tag tag-warn">En curso</span> QA cruzado narrativo y consistencia documental</td>
+          </tr>
+          <tr>
+            <td>5. Release tecnico</td>
+            <td>Congelar version y preparar entrega con evidencia completa</td>
+            <td><span class="tag tag-future">Planificado</span> Paquete final</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="note">Estado actual: DDL validado ✓ → seed canonico ✓ → seed volumetrico ✓ → QA cruzado documental (en curso) → release.</p>
+    </section>
+
+  </main>
+
+  <footer>
+    <div>
+      <strong>Sistema FLY - Canvas Arquitectonico 3FN</strong><br>
+      Documento alineado al DDL local validado y a la documentacion actual del repositorio
+    </div>
+    <div style="text-align:right">
+      Fuente primaria: <code>db/ddl/modelo_postgresql.sql</code><br>
+      Soporte: <code>docs/datos/modelo_documentado.md</code> y carpeta <code>docs/</code>
+    </div>
+  </footer>
+
+</body>
+</html>

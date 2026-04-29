@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Informe de Funcionalidades - Sistema FLY</title>
+  <style>
+    :root {
+      --bg: #f5f1e8;
+      --ink: #15212b;
+      --muted: #556370;
+      --panel: rgba(255, 252, 246, 0.88);
+      --line: rgba(21, 33, 43, 0.12);
+      --accent: #c3562c;
+      --forest: #255946;
+      --gold: #c28b2c;
+      --shadow: 0 20px 60px rgba(21, 33, 43, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(195, 86, 44, 0.16), transparent 30%),
+        radial-gradient(circle at top right, rgba(37, 89, 70, 0.12), transparent 28%),
+        linear-gradient(180deg, #fbf8f2 0%, var(--bg) 100%);
+    }
+
+    .wrap {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 40px 0 56px;
+    }
+
+    .hero,
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    .hero {
+      padding: 36px;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(195, 86, 44, 0.12);
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    h1, h2, h3 { margin: 0 0 12px; }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      line-height: 1.02;
+      max-width: 10ch;
+      margin-top: 16px;
+    }
+
+    p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      align-self: start;
+    }
+
+    .stat {
+      padding: 18px;
+      border-radius: 20px;
+      background: white;
+      border: 1px solid var(--line);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.7rem;
+      margin-bottom: 6px;
+      color: var(--forest);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .panel {
+      padding: 28px;
+    }
+
+    .modules {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .module {
+      padding: 18px;
+      border-radius: 20px;
+      background: white;
+      border: 1px solid var(--line);
+    }
+
+    .module h3 {
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+
+    .module ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .node {
+      position: relative;
+      padding: 16px;
+      border-radius: 20px;
+      background: linear-gradient(180deg, white 0%, rgba(194, 139, 44, 0.12) 100%);
+      border: 1px solid var(--line);
+      min-height: 112px;
+    }
+
+    .node:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -10px;
+      width: 20px;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .links a {
+      text-decoration: none;
+      color: var(--ink);
+      padding: 12px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: white;
+      font-weight: 600;
+    }
+
+    .highlight {
+      padding: 18px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(37, 89, 70, 0.1), rgba(194, 139, 44, 0.12));
+      border: 1px solid rgba(37, 89, 70, 0.16);
+    }
+
+    .mini-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      background: white;
+      border-radius: 18px;
+      overflow: hidden;
+    }
+
+    .mini-table th,
+    .mini-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+    }
+
+    .mini-table th {
+      background: rgba(21, 33, 43, 0.04);
+      font-size: 0.9rem;
+    }
+
+    .footnote {
+      margin-top: 10px;
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    .docnav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 10px 24px;
+      background: rgba(21, 33, 43, 0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(21, 33, 43, 0.14);
+    }
+
+    .docnav-home {
+      font-weight: 800;
+      font-size: 1rem;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+    }
+
+    .docnav-links {
+      display: flex;
+      gap: 4px;
+      flex: 1;
+    }
+
+    .docnav-links a {
+      text-decoration: none;
+      color: rgba(255,255,255,0.6);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .docnav-links a:hover,
+    .docnav-links a.active {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+    }
+
+    .docnav-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(37, 89, 70, 0.3);
+      color: #7ecba5;
+      border: 1px solid rgba(37, 89, 70, 0.4);
+      white-space: nowrap;
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .grid,
+      .modules,
+      .flow {
+        grid-template-columns: 1fr;
+      }
+
+      .node:not(:last-child)::after {
+        top: auto;
+        bottom: -8px;
+        left: 50%;
+        right: auto;
+        width: 2px;
+        height: 16px;
+        transform: translateX(-50%);
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="docnav">
+    <a href="../../app/landing/index.html" class="docnav-home">&#9992; FLY</a>
+    <div class="docnav-links">
+      <a href="../../architecture/canvas/canvas_arquitectura.html">Canvas</a>
+      <a href="funcionalidades_sistema.html" class="active">Funcionalidades</a>
+      <a href="../cronograma/cronograma_realizacion.html">Cronograma</a>
+    </div>
+    <span class="docnav-badge">Canónico ✓ · Volumétrico ✓</span>
+  </nav>
+
+  <main class="wrap">
+    <section class="hero">
+      <div>
+        <span class="eyebrow">Informe Arquitectonico Funcional</span>
+        <h1>Seeds canonico y volumetrico validados.</h1>
+        <p>El seed canonico esta implementado con 3 flujos comerciales E2E completos sobre el modelo 3FN validado en PostgreSQL 16. El seed volumetrico ya quedo cerrado con cobertura comercial + viaje y validacion bloqueante en verde. La politica cronologica y las validaciones post-seed estan operativas como contrato tecnico.</p>
+        <div class="links">
+          <a href="../../app/landing/index.html">Abrir landing</a>
+          <a href="../../architecture/canvas/canvas_arquitectura.html">Abrir canvas</a>
+          <a href="../../db/ddl/modelo_postgresql.sql">Ver DDL maestro</a>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <strong>76</strong>
+          tablas implementadas
+        </div>
+        <div class="stat">
+          <strong>100</strong>
+          llaves foraneas validadas
+        </div>
+        <div class="stat">
+          <strong>112</strong>
+          restricciones UNIQUE
+        </div>
+        <div class="stat">
+          <strong>3</strong>
+          flujos E2E validados
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="panel">
+        <h2>Capacidades nucleares</h2>
+        <p>El sistema no es solo una base transaccional; es una columna vertebral para aerolinea comercial con trazabilidad desde identidad hasta facturacion.</p>
+        <div class="modules">
+          <div class="module">
+            <h3>Identidad y seguridad</h3>
+            <ul>
+              <li>Personas, documentos y contactos</li>
+              <li>Cuentas, roles y permisos</li>
+              <li>Estados de acceso y asignacion de roles</li>
+            </ul>
+          </div>
+          <div class="module">
+            <h3>Cliente y lealtad</h3>
+            <ul>
+              <li>Cliente comercial desacoplado de persona</li>
+              <li>Programa, cuenta, nivel y movimientos de millas</li>
+              <li>Beneficios asociados a categoria</li>
+            </ul>
+          </div>
+          <div class="module">
+            <h3>Geografia y aeropuerto</h3>
+            <ul>
+              <li>Jerarquia normalizada de ubicacion</li>
+              <li>Aeropuertos, terminales, puertas y pistas</li>
+              <li>Regulaciones aeroportuarias trazables</li>
+            </ul>
+          </div>
+          <div class="module">
+            <h3>Flota y mantenimiento</h3>
+            <ul>
+              <li>Fabricante, modelo, aeronave y cabinas</li>
+              <li>Asientos por configuracion</li>
+              <li>Eventos, tipos y proveedores de mantenimiento</li>
+            </ul>
+          </div>
+          <div class="module">
+            <h3>Operacion de vuelo</h3>
+            <ul>
+              <li>Vuelos, segmentos y estado operativo</li>
+              <li>Motivos y registro de retrasos</li>
+              <li>Base para programacion y control operacional</li>
+            </ul>
+          </div>
+          <div class="module">
+            <h3>Venta y viaje</h3>
+            <ul>
+              <li>Reserva como raiz comercial</li>
+              <li>Venta, ticket, segmento y asignacion de asiento</li>
+              <li>Equipaje, check-in y pase de abordar</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <h2>Flujo operativo visible</h2>
+        <p>El flujo critico queda alineado con la arquitectura 3FN y puede ser explicado sin ambiguedad funcional.</p>
+        <div class="flow">
+          <div class="node">
+            <h3>1. Cliente</h3>
+            <p>Persona, documentos, contactos y cuenta comercial.</p>
+          </div>
+          <div class="node">
+            <h3>2. Reserva</h3>
+            <p>PNR, pasajeros, canal y estado de reservacion.</p>
+          </div>
+          <div class="node">
+            <h3>3. Ticket</h3>
+            <p>Emision separada de la reserva, ligada a segmentos.</p>
+          </div>
+          <div class="node">
+            <h3>4. Viaje</h3>
+            <p>Asiento, equipaje, check-in y validacion de abordaje.</p>
+          </div>
+          <div class="node">
+            <h3>5. Pago</h3>
+            <p>Pago, transaccion y trazabilidad operacional.</p>
+          </div>
+          <div class="node">
+            <h3>6. Factura</h3>
+            <p>Factura, lineas, impuestos y reembolso controlado.</p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="grid">
+      <article class="panel">
+        <h2>Estado de preparacion</h2>
+        <div class="highlight">
+          <p><strong>Listo hoy:</strong> DDL validado, contenedor estable en puerto 5435, seed canonico implementado con 3 flujos E2E completos (BOG-MIA-MAD, BOG-MDE, BOG-MIA Economy), seed volumetrico extendido con cobertura de viaje y validaciones post-seed con gate canónico + volumétrico bloqueantes.</p>
+          <p><strong>Siguiente salto:</strong> cerrar QA cruzado documental (landing, reportes y cronograma) para congelar narrativa unica antes del release tecnico.</p>
+        </div>
+        <table class="mini-table">
+          <thead>
+            <tr>
+              <th>Componente</th>
+              <th>Estado</th>
+              <th>Uso</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>DDL canonico</td>
+              <td>Validado</td>
+              <td>Estructura maestra 3FN</td>
+            </tr>
+            <tr>
+              <td>Contenedor Docker</td>
+              <td>Operativo</td>
+              <td>Ejecucion local repetible (5435)</td>
+            </tr>
+            <tr>
+              <td>Seed canonico</td>
+              <td>Implementado</td>
+              <td>3 flujos E2E completos validados</td>
+            </tr>
+            <tr>
+              <td>Politica cronologica</td>
+              <td>Cerrada</td>
+              <td>Contrato obligatorio del seed volumetrico</td>
+            </tr>
+            <tr>
+              <td>Validaciones post-seed</td>
+              <td>Bloqueantes</td>
+              <td>Gate canónico + gate volumétrico (7 fases de verificación)</td>
+            </tr>
+            <tr>
+              <td>Seed volumetrico</td>
+              <td>Cerrado</td>
+              <td>Umbral operativo cumplido en entidades aplicables y flujo de viaje</td>
+            </tr>
+            <tr>
+              <td>Seguimiento de inconsistencias</td>
+              <td>Activo</td>
+              <td>IE-001, IE-002 e IE-008 en seguimiento</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="footnote">Fuente operativa: `db/seeds/00_seed_canonico.sql`, `db/seeds/01_seed_volumetrico.sql`, `db/seeds/99_validaciones_post_seed.sql`, `docs/validacion/SEGUIMIENTO_INCONSISTENCIAS_ESTRUCTURALES.md` y `docs/validacion/POLITICA_CRONOLOGIA_DATOS_SINTETICOS.md`.</p>
+      </article>
+
+      <article class="panel">
+        <h2>Artefactos para explicacion</h2>
+        <p>El paquete ya se puede presentar desde varios niveles de profundidad sin cambiar de narrativa.</p>
+        <div class="links">
+          <a href="../../docs/datos/modelo_documentado.md">Modelo documentado</a>
+          <a href="../../docs/datos/NORMALIZACION_3FN.md">Normalizacion 3FN</a>
+          <a href="../../docs/validacion/VALIDACION_DDL_3FN.md">Validacion DDL</a>
+          <a href="../../docs/planes/PLAN_FASE_DATOS_MASIVOS_Y_REPORTES.md">Plan de fase</a>
+          <a href="../../docs/validacion/SEGUIMIENTO_INCONSISTENCIAS_ESTRUCTURALES.md">Seguimiento estructural</a>
+          <a href="../../docs/validacion/POLITICA_CRONOLOGIA_DATOS_SINTETICOS.md">Politica cronologica</a>
+          <a href="../../docs/validacion/MATRIZ_ORDEN_CARGA_SEEDS.md">Matriz de carga</a>
+          <a href="../cronograma/cronograma_realizacion.html">Cronograma</a>
+        </div>
+        <p class="footnote">Este informe esta pensado para mostrar funcionalidades, madurez actual y ruta inmediata de construccion.</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

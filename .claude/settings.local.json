@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -lh /c/www/code-dev-projects/fly-manager/db/ddl/modelo_postgresql.sql /c/www/code-dev-projects/fly-manager/db/seeds/*.sql)",
+      "Bash(find /c/www/code-dev-projects/fly-manager -type f ! -path '*/\\\\.git/*' -exec ls -lh {})",
+      "Bash(sort -k2)",
+      "Bash(wc -l /c/www/code-dev-projects/fly-manager/app/landing/*.* /c/www/code-dev-projects/fly-manager/architecture/canvas/*.html)"
+    ]
+  }
+}

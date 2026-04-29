@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema FLY - Modelo Relacional 3FN de Aerolínea</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Hero Section -->
+    <header class="hero">
+        <nav class="nav">
+            <div class="logo">
+                <svg class="logo-icon" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                    <path d="M16 2L4 14L16 10L28 14L16 2Z" fill="url(#plane-gradient)"/>
+                    <path d="M16 10L4 14L16 30L28 14L16 10Z" fill="url(#plane-gradient-2)"/>
+                    <defs>
+                        <linearGradient id="plane-gradient" x1="4" y1="2" x2="28" y2="14">
+                            <stop stop-color="#60A5FA"/>
+                            <stop offset="1" stop-color="#3B82F6"/>
+                        </linearGradient>
+                        <linearGradient id="plane-gradient-2" x1="4" y1="14" x2="28" y2="30">
+                            <stop stop-color="#3B82F6"/>
+                            <stop offset="1" stop-color="#1D4ED8"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span class="logo-text">FLY</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#overview">Vista General</a></li>
+                <li><a href="#modules">Módulos</a></li>
+                <li><a href="#diagram">Diagrama ER</a></li>
+                <li><a href="#downloads">Descargas</a></li>
+            </ul>
+        </nav>
+        
+        <div class="hero-content">
+            <div class="hero-badge">PostgreSQL 16 · 12 Módulos · 76 Tablas · 3FN · Seed Canónico ✓ · Seed Volumétrico ✓</div>
+            <h1 class="hero-title">
+                Modelo Relacional<br>
+                <span class="gradient-text">Sistema de Aerolínea</span>
+            </h1>
+            <p class="hero-description">
+                Arquitectura relacional 3FN validada con seed canónico y seed volumétrico implementados:
+                cobertura comercial y de viaje cerrada con gates de validación en verde.
+            </p>
+            <div class="hero-actions">
+                <a href="#status" class="btn btn-primary">Ver Estado</a>
+                <a href="#modules" class="btn btn-secondary">Explorar Módulos</a>
+            </div>
+        </div>
+        
+        <!-- Hero SVG Illustration -->
+        <div class="hero-visual">
+            <svg viewBox="0 0 500 400" class="hero-svg">
+                <!-- Background circles -->
+                <circle cx="250" cy="200" r="150" fill="none" stroke="rgba(59,130,246,0.1)" stroke-width="1" class="orbit orbit-1"/>
+                <circle cx="250" cy="200" r="110" fill="none" stroke="rgba(59,130,246,0.15)" stroke-width="1" class="orbit orbit-2"/>
+                <circle cx="250" cy="200" r="70" fill="none" stroke="rgba(59,130,246,0.2)" stroke-width="1" class="orbit orbit-3"/>
+                
+                <!-- Center plane icon -->
+                <g transform="translate(225, 175)">
+                    <circle cx="25" cy="25" r="30" fill="url(#center-glow)"/>
+                    <path d="M25 10L15 25L25 22L35 25L25 10Z" fill="#3B82F6"/>
+                    <path d="M25 22L15 25L25 40L35 25L25 22Z" fill="#1D4ED8"/>
+                </g>
+                
+                <!-- Module nodes on orbits -->
+                <g class="module-nodes">
+                    <!-- Identity -->
+                    <g class="node node-1" transform="translate(250, 50)">
+                        <circle r="24" fill="#1E293B" stroke="#3B82F6" stroke-width="2"/>
+                        <text y="5" text-anchor="middle" fill="#E2E8F0" font-size="16">👤</text>
+                    </g>
+                    <!-- Security -->
+                    <g class="node node-2" transform="translate(380, 120)">
+                        <circle r="24" fill="#1E293B" stroke="#F59E0B" stroke-width="2"/>
+                        <text y="5" text-anchor="middle" fill="#E2E8F0" font-size="16">🔐</text>
+                    </g>
+                    <!-- Customer -->
+                    <g class="node node-3" transform="translate(400, 250)">
+                        <circle r="24" fill="#1E293B" stroke="#10B981" stroke-width="2"/>
+                        <text y="5" text-anchor="middle" fill="#E2E8F0" font-size="16">⭐</text>
+                    </g>
+                    <!-- Aircraft -->
+                    <g class="node node-4" transform="translate(320, 340)">
+                        <circle r="24" fill="#1E293B" stroke="#8B5CF6" stroke-width="2"/>
+                        <text y="5" text-anchor="middle" fill="#E2E8F0" font-size="16">✈️</text>
+                    </g>
+                    <!-- Airport -->
+                    <g class="node node-5" transform="translate(180, 340)">
+                        <circle r="24" fill="#1E293B" stroke="#EC4899" stroke-width="2"/>
+                        <text y="5" text-anchor="middle" fill="#E2E8F0" font-size="16">🏢</text>
+                    </g>
+                    <!-- Flight -->
+                    <g class="node node-6" transform="translate(100, 250)">
+                        <circle r="24" fill="#1E293B" stroke="#06B6D4" stroke-width="2"/>
+                        <text y="5" text-anchor="middle" fill="#E2E8F0" font-size="16">🛩️</text>
+                    </g>
+                    <!-- Sales -->
+                    <g class="node node-7" transform="translate(120, 120)">
+                        <circle r="24" fill="#1E293B" stroke="#F97316" stroke-width="2"/>
+                        <text y="5" text-anchor="middle" fill="#E2E8F0" font-size="16">🛒</text>
+                    </g>
+                </g>
+                
+                <!-- Connection lines -->
+                <g class="connections" stroke-width="1" fill="none" opacity="0.3">
+                    <line x1="250" y1="74" x2="250" y2="170" stroke="#3B82F6"/>
+                    <line x1="356" y1="120" x2="280" y2="185" stroke="#F59E0B"/>
+                    <line x1="376" y1="250" x2="280" y2="215" stroke="#10B981"/>
+                    <line x1="296" y1="340" x2="265" y2="230" stroke="#8B5CF6"/>
+                    <line x1="204" y1="340" x2="235" y2="230" stroke="#EC4899"/>
+                    <line x1="124" y1="250" x2="220" y2="215" stroke="#06B6D4"/>
+                    <line x1="144" y1="120" x2="220" y2="185" stroke="#F97316"/>
+                </g>
+                
+                <defs>
+                    <radialGradient id="center-glow">
+                        <stop offset="0%" stop-color="rgba(59,130,246,0.4)"/>
+                        <stop offset="100%" stop-color="rgba(59,130,246,0)"/>
+                    </radialGradient>
+                </defs>
+            </svg>
+        </div>
+    </header>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stat-card">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <rect x="4" y="8" width="12" height="24" rx="2" fill="#3B82F6"/>
+                <rect x="20" y="14" width="12" height="18" rx="2" fill="#60A5FA"/>
+                <rect x="12" y="4" width="12" height="28" rx="2" fill="#1D4ED8"/>
+            </svg>
+            <span class="stat-number">12</span>
+            <span class="stat-label">Módulos</span>
+        </div>
+        <div class="stat-card">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <rect x="4" y="4" width="14" height="14" rx="3" fill="#10B981"/>
+                <rect x="22" y="4" width="14" height="14" rx="3" fill="#34D399"/>
+                <rect x="4" y="22" width="14" height="14" rx="3" fill="#34D399"/>
+                <rect x="22" y="22" width="14" height="14" rx="3" fill="#10B981"/>
+            </svg>
+            <span class="stat-number">76</span>
+            <span class="stat-label">Tablas</span>
+        </div>
+        <div class="stat-card">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <circle cx="12" cy="12" r="6" fill="#F59E0B"/>
+                <circle cx="28" cy="12" r="6" fill="#F59E0B"/>
+                <circle cx="20" cy="28" r="6" fill="#F59E0B"/>
+                <line x1="12" y1="18" x2="20" y2="22" stroke="#F59E0B" stroke-width="2"/>
+                <line x1="28" y1="18" x2="20" y2="22" stroke="#F59E0B" stroke-width="2"/>
+            </svg>
+            <span class="stat-number">100+</span>
+            <span class="stat-label">Relaciones FK</span>
+        </div>
+        <div class="stat-card">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <circle cx="20" cy="20" r="16" fill="none" stroke="#8B5CF6" stroke-width="3"/>
+                <path d="M12 20L18 26L28 14" stroke="#8B5CF6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="stat-number">3NF</span>
+            <span class="stat-label">Normalizado</span>
+        </div>
+        <div class="stat-card">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <path d="M20 4L8 12V20C8 29.4 13.2 37.8 20 40C26.8 37.8 32 29.4 32 20V12L20 4Z" fill="#10B981" opacity="0.2" stroke="#10B981" stroke-width="2"/>
+                <path d="M13 20L18 25L27 14" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="stat-number">3</span>
+            <span class="stat-label">Flujos E2E</span>
+        </div>
+    </section>
+
+    <!-- Status Section -->
+    <section id="status" class="project-status">
+        <div class="status-header">
+            <span class="section-tag">Estado del Proyecto</span>
+            <h2>Pipeline de datos al 19-Mar-2026 (corte técnico)</h2>
+            <p>Cada fase refleja el contrato operativo entre DDL, seeds y validaciones</p>
+        </div>
+        <div class="status-phases">
+            <div class="phase phase-done">
+                <div class="phase-icon">✓</div>
+                <div class="phase-name">DDL Validado</div>
+                <div class="phase-detail">76 tablas · 100+ FKs · 112 UNIQUE</div>
+            </div>
+            <div class="phase-arrow">→</div>
+            <div class="phase phase-done">
+                <div class="phase-icon">✓</div>
+                <div class="phase-name">Seed Canónico</div>
+                <div class="phase-detail">3 flujos E2E · Política cronológica · Gate de validación</div>
+            </div>
+            <div class="phase-arrow">→</div>
+            <div class="phase phase-done">
+                <div class="phase-icon">✓</div>
+                <div class="phase-name">Seed Volumétrico</div>
+                <div class="phase-detail">Cobertura comercial + viaje · Gate canónico + volumétrico</div>
+            </div>
+            <div class="phase-arrow">→</div>
+            <div class="phase phase-active">
+                <div class="phase-icon pulse">◉</div>
+                <div class="phase-name">QA Cruzado Documental</div>
+                <div class="phase-detail">Alineación landing/canvas/reportes · IE-002 · IE-008</div>
+            </div>
+            <div class="phase-arrow">→</div>
+            <div class="phase phase-pending">
+                <div class="phase-icon">○</div>
+                <div class="phase-name">Release Técnico</div>
+                <div class="phase-detail">QA documental · Paquete final</div>
+            </div>
+        </div>
+        <div class="status-flows">
+            <div class="flow-card">
+                <div class="flow-label">Flujo 1 — Ana García</div>
+                <div class="flow-route">BOG → MIA → MAD · Business con conexión · FY210 + FY711 · 10-Mar-2026</div>
+            </div>
+            <div class="flow-card">
+                <div class="flow-label">Flujo 2 — Carlos Mendoza</div>
+                <div class="flow-route">BOG → MDE · Economy · FY101 · 12-Mar-2026</div>
+            </div>
+            <div class="flow-card">
+                <div class="flow-label">Flujo 3 — Laura Torres</div>
+                <div class="flow-route">BOG → MIA · Economy · FY305 · 15-Mar-2026</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section id="overview" class="overview">
+        <div class="section-header">
+            <span class="section-tag">Arquitectura</span>
+            <h2>Vista General del Sistema</h2>
+            <p>Diseño modular que separa responsabilidades y garantiza escalabilidad</p>
+        </div>
+        
+        <div class="architecture-diagram">
+            <svg viewBox="0 0 900 500" class="arch-svg">
+                <!-- Background grid -->
+                <defs>
+                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(59,130,246,0.05)" stroke-width="1"/>
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid)"/>
+                
+                <!-- Layer labels -->
+                <text x="50" y="60" fill="#64748B" font-size="12" font-weight="600">CAPA CORE</text>
+                <text x="50" y="200" fill="#64748B" font-size="12" font-weight="600">CAPA OPERATIVA</text>
+                <text x="50" y="340" fill="#64748B" font-size="12" font-weight="600">CAPA COMERCIAL</text>
+                
+                <!-- Core Layer -->
+                <g class="layer-core">
+                    <rect x="150" y="40" width="200" height="80" rx="8" fill="#1E293B" stroke="#3B82F6" stroke-width="2"/>
+                    <text x="250" y="70" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="600">Identity Module</text>
+                    <text x="250" y="95" text-anchor="middle" fill="#94A3B8" font-size="11">person, person_document</text>
+                    
+                    <rect x="380" y="40" width="200" height="80" rx="8" fill="#1E293B" stroke="#F59E0B" stroke-width="2"/>
+                    <text x="480" y="70" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="600">Security Module</text>
+                    <text x="480" y="95" text-anchor="middle" fill="#94A3B8" font-size="11">user_account, role, permission</text>
+                    
+                    <rect x="610" y="40" width="200" height="80" rx="8" fill="#1E293B" stroke="#10B981" stroke-width="2"/>
+                    <text x="710" y="70" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="600">Customer Module</text>
+                    <text x="710" y="95" text-anchor="middle" fill="#94A3B8" font-size="11">customer, loyalty_account</text>
+                </g>
+                
+                <!-- Arrows Core to Operations -->
+                <g class="arrows" stroke="#475569" stroke-width="1.5" fill="none">
+                    <path d="M250 120 L250 160 L300 180" marker-end="url(#arrowhead)"/>
+                    <path d="M480 120 L480 160 L450 180" marker-end="url(#arrowhead)"/>
+                    <path d="M710 120 L710 160 L650 180" marker-end="url(#arrowhead)"/>
+                </g>
+                
+                <!-- Operations Layer -->
+                <g class="layer-ops">
+                    <rect x="150" y="180" width="180" height="80" rx="8" fill="#1E293B" stroke="#8B5CF6" stroke-width="2"/>
+                    <text x="240" y="210" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="600">Aircraft</text>
+                    <text x="240" y="235" text-anchor="middle" fill="#94A3B8" font-size="11">aircraft, seat, maintenance</text>
+                    
+                    <rect x="360" y="180" width="180" height="80" rx="8" fill="#1E293B" stroke="#EC4899" stroke-width="2"/>
+                    <text x="450" y="210" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="600">Airport</text>
+                    <text x="450" y="235" text-anchor="middle" fill="#94A3B8" font-size="11">airport, terminal, gate</text>
+                    
+                    <rect x="570" y="180" width="180" height="80" rx="8" fill="#1E293B" stroke="#06B6D4" stroke-width="2"/>
+                    <text x="660" y="210" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="600">Flight Control</text>
+                    <text x="660" y="235" text-anchor="middle" fill="#94A3B8" font-size="11">flight, flight_segment</text>
+                </g>
+                
+                <!-- Arrows Ops to Commercial -->
+                <g class="arrows" stroke="#475569" stroke-width="1.5" fill="none">
+                    <path d="M240 260 L240 300 L280 320" marker-end="url(#arrowhead)"/>
+                    <path d="M450 260 L450 320" marker-end="url(#arrowhead)"/>
+                    <path d="M660 260 L660 300 L620 320" marker-end="url(#arrowhead)"/>
+                </g>
+                
+                <!-- Commercial Layer -->
+                <g class="layer-commercial">
+                    <rect x="120" y="320" width="160" height="80" rx="8" fill="#1E293B" stroke="#F97316" stroke-width="2"/>
+                    <text x="200" y="350" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="600">Sales</text>
+                    <text x="200" y="375" text-anchor="middle" fill="#94A3B8" font-size="11">sale, ticket, reservation</text>
+                    
+                    <rect x="310" y="320" width="160" height="80" rx="8" fill="#1E293B" stroke="#EF4444" stroke-width="2"/>
+                    <text x="390" y="350" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="600">Boarding</text>
+                    <text x="390" y="375" text-anchor="middle" fill="#94A3B8" font-size="11">check_in, boarding_pass</text>
+                    
+                    <rect x="500" y="320" width="160" height="80" rx="8" fill="#1E293B" stroke="#14B8A6" stroke-width="2"/>
+                    <text x="580" y="350" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="600">Payment</text>
+                    <text x="580" y="375" text-anchor="middle" fill="#94A3B8" font-size="11">payment, refund</text>
+                    
+                    <rect x="690" y="320" width="160" height="80" rx="8" fill="#1E293B" stroke="#A855F7" stroke-width="2"/>
+                    <text x="770" y="350" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="600">Billing</text>
+                    <text x="770" y="375" text-anchor="middle" fill="#94A3B8" font-size="11">invoice, currency</text>
+                </g>
+                
+                <!-- Support modules (bottom) -->
+                <g class="layer-support">
+                    <rect x="300" y="440" width="300" height="50" rx="8" fill="#0F172A" stroke="#64748B" stroke-width="1"/>
+                    <text x="450" y="470" text-anchor="middle" fill="#94A3B8" font-size="12">🌍 Geolocation Module (continent → country → state_province → city → address)</text>
+                </g>
+                
+                <!-- Arrow marker -->
+                <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+                    </marker>
+                </defs>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Modules Section -->
+    <section id="modules" class="modules">
+        <div class="section-header">
+            <span class="section-tag">Módulos</span>
+            <h2>Los 12 Módulos del Sistema</h2>
+            <p>Cada módulo encapsula un dominio específico del negocio</p>
+        </div>
+        
+        <div class="modules-grid">
+            <article class="module-card" data-module="identity">
+                <div class="module-header">
+                    <div class="module-number">01</div>
+                    <svg class="module-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <circle cx="24" cy="16" r="8" fill="#3B82F6"/>
+                        <path d="M8 40C8 31.16 15.16 24 24 24C32.84 24 40 31.16 40 40" stroke="#3B82F6" stroke-width="4" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h3>Identity</h3>
+                <p>Gestión de personas, documentos de identidad y contacto.</p>
+                <div class="module-entities">
+                    <span>person</span>
+                    <span>person_document</span>
+                    <span>person_contact</span>
+                    <span>document_type</span>
+                    <span>person_type</span>
+                    <span>contact_type</span>
+                </div>
+                <div class="module-count">6 entidades</div>
+            </article>
+            
+            <article class="module-card" data-module="security">
+                <div class="module-header">
+                    <div class="module-number">02</div>
+                    <svg class="module-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <path d="M24 4L8 12V22C8 33.1 14.84 43.32 24 46C33.16 43.32 40 33.1 40 22V12L24 4Z" fill="#F59E0B"/>
+                        <path d="M20 24L23 27L28 20" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h3>Security</h3>
+                <p>Autenticación, roles, permisos y estados de usuario.</p>
+                <div class="module-entities">
+                    <span>user_account</span>
+                    <span>security_role</span>
+                    <span>security_permission</span>
+                    <span>user_role</span>
+                    <span>role_permission</span>
+                    <span>user_status</span>
+                </div>
+                <div class="module-count">6 entidades</div>
+            </article>
+            
+            <article class="module-card" data-module="customer">
+                <div class="module-header">
+                    <div class="module-number">03</div>
+                    <svg class="module-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <path d="M24 4L28.5 17H42L31 26L35.5 39L24 30L12.5 39L17 26L6 17H19.5L24 4Z" fill="#10B981"/>
+                    </svg>
+                </div>
+                <h3>Customer</h3>
+                <p>Clientes, programas de lealtad, millas y beneficios.</p>
+                <div class="module-entities">
+                    <span>customer</span>
+                    <span>loyalty_program</span>
+                    <span>loyalty_tier</span>
+                    <span>loyalty_account</span>
+                    <span>loyalty_account_tier</span>
+                    <span>miles_transaction</span>
+                    <span>customer_benefit</span>
+                    <span>customer_category</span>
+                    <span>benefit_type</span>
+                </div>
+                <div class="module-count">9 entidades</div>
+            </article>
+            
+            <article class="module-card" data-module="aircraft">
+                <div class="module-header">
+                    <div class="module-number">04</div>
+                    <svg class="module-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <path d="M24 6L18 18H8L14 24L8 42L24 34L40 42L34 24L40 18H30L24 6Z" fill="#8B5CF6"/>
+                    </svg>
+                </div>
+                <h3>Aircraft Management</h3>
+                <p>Flota, modelos, cabinas, asientos y mantenimiento.</p>
+                <div class="module-entities">
+                    <span>aircraft</span>
+                    <span>aircraft_manufacturer</span>
+                    <span>aircraft_model</span>
+                    <span>aircraft_cabin</span>
+                    <span>aircraft_seat</span>
+                    <span>maintenance_event</span>
+                    <span>maintenance_provider</span>
+                    <span>maintenance_type</span>
+                    <span>cabin_class</span>
+                </div>
+                <div class="module-count">9 entidades</div>
+            </article>
+            
+            <article class="module-card" data-module="airport">
+                <div class="module-header">
+                    <div class="module-number">05</div>
+                    <svg class="module-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <rect x="8" y="20" width="32" height="22" rx="2" fill="#EC4899"/>
+                        <rect x="14" y="8" width="20" height="12" rx="2" fill="#EC4899"/>
+                        <rect x="12" y="26" width="6" height="8" fill="#1E293B"/>
+                        <rect x="21" y="26" width="6" height="8" fill="#1E293B"/>
+                        <rect x="30" y="26" width="6" height="8" fill="#1E293B"/>
+                    </svg>
+                </div>
+                <h3>Airport Management</h3>
+                <p>Aeropuertos, terminales, puertas y pistas.</p>
+                <div class="module-entities">
+                    <span>airport</span>
+                    <span>terminal</span>
+                    <span>boarding_gate</span>
+                    <span>runway</span>
+                    <span>airport_regulation</span>
+                </div>
+                <div class="module-count">5 entidades</div>
+            </article>
+            
+            <article class="module-card" data-module="flight">
+                <div class="module-header">
+                    <div class="module-number">06</div>
+                    <svg class="module-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <path d="M42 18L28 24L18 20L6 24L18 28L28 24L42 30L44 24L42 18Z" fill="#06B6D4"/>
+                        <circle cx="14" cy="24" r="4" fill="#06B6D4"/>
+                    </svg>
+                </div>
+                <h3>Flight Control</h3>
+                <p>Vuelos, segmentos, estados y razones de demora.</p>
+                <div class="module-entities">
+                    <span>flight</span>
+                    <span>flight_segment</span>
+                    <span>flight_delay</span>
+                    <span>flight_status</span>
+                    <span>delay_reason_type</span>
+                </div>
+                <div class="module-count">5 entidades</div>
+            </article>
+            
+            <article class="module-card" data-module="boarding">
+                <div class="module-header">
+                    <div class="module-number">07</div>
+                    <svg class="module-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <rect x="10" y="8" width="28" height="32" rx="4" fill="#EF4444"/>
+                        <rect x="14" y="14" width="12" height="4" fill="white"/>
+                        <rect x="14" y="22" width="20" height="2" fill="white" opacity="0.6"/>
+                        <rect x="14" y="28" width="20" height="2" fill="white" opacity="0.6"/>
+                        <rect x="28" y="32" width="8" height="4" fill="white"/>
+                    </svg>
+                </div>
+                <h3>Boarding</h3>
+                <p>Check-in, pases de abordar y validación.</p>
+                <div class="module-entities">
+                    <span>check_in</span>
+                    <span>check_in_status</span>
+                    <span>boarding_pass</span>
+                    <span>boarding_group</span>
+                    <span>boarding_validation</span>
+                </div>
+                <div class="module-count">5 entidades</div>
+            </article>
+            
+            <article class="module-card" data-module="sales">
+                <div class="module-header">
+                    <div class="module-number">08</div>
+                    <svg class="module-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <path d="M14 16H40L36 32H18L14 16Z" fill="#F97316"/>
+                        <circle cx="20" cy="38" r="3" fill="#F97316"/>
+                        <circle cx="34" cy="38" r="3" fill="#F97316"/>
+                        <path d="M8 8H12L14 16" stroke="#F97316" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h3>Sales</h3>
+                <p>Reservas, ventas, tarifas, ticketing, segmentos y asignación de asientos.</p>
+                <div class="module-entities">
+                    <span>reservation</span>
+                    <span>sale</span>
+                    <span>reservation_passenger</span>
+                    <span>ticket</span>
+                    <span>ticket_segment</span>
+                    <span>fare</span>
+                    <span>fare_class</span>
+                    <span>seat_assignment</span>
+                    <span>baggage</span>
+                    <span>reservation_status</span>
+                    <span>sale_channel</span>
+                    <span>ticket_status</span>
+                </div>
+                <div class="module-count">12 entidades</div>
+            </article>
+            
+            <article class="module-card" data-module="payment">
+                <div class="module-header">
+                    <div class="module-number">09</div>
+                    <svg class="module-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <rect x="6" y="12" width="36" height="24" rx="4" fill="#14B8A6"/>
+                        <rect x="6" y="18" width="36" height="6" fill="#0D9488"/>
+                        <rect x="10" y="28" width="12" height="4" rx="1" fill="white"/>
+                    </svg>
+                </div>
+                <h3>Payment</h3>
+                <p>Pagos, transacciones y reembolsos.</p>
+                <div class="module-entities">
+                    <span>payment</span>
+                    <span>payment_transaction</span>
+                    <span>refund</span>
+                    <span>payment_status</span>
+                    <span>payment_method</span>
+                </div>
+                <div class="module-count">5 entidades</div>
+            </article>
+            
+            <article class="module-card" data-module="billing">
+                <div class="module-header">
+                    <div class="module-number">10</div>
+                    <svg class="module-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <rect x="10" y="6" width="28" height="36" rx="2" fill="#A855F7"/>
+                        <rect x="14" y="12" width="16" height="3" fill="white"/>
+                        <rect x="14" y="18" width="20" height="2" fill="white" opacity="0.5"/>
+                        <rect x="14" y="23" width="20" height="2" fill="white" opacity="0.5"/>
+                        <rect x="14" y="28" width="20" height="2" fill="white" opacity="0.5"/>
+                        <rect x="24" y="34" width="10" height="4" fill="white"/>
+                    </svg>
+                </div>
+                <h3>Billing</h3>
+                <p>Facturas, impuestos y tasas de cambio.</p>
+                <div class="module-entities">
+                    <span>invoice</span>
+                    <span>invoice_line</span>
+                    <span>tax</span>
+                    <span>exchange_rate</span>
+                    <span>currency</span>
+                    <span>invoice_status</span>
+                </div>
+                <div class="module-count">6 entidades</div>
+            </article>
+            
+            <article class="module-card" data-module="geolocation">
+                <div class="module-header">
+                    <div class="module-number">11</div>
+                    <svg class="module-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <circle cx="24" cy="24" r="18" fill="none" stroke="#22C55E" stroke-width="3"/>
+                        <ellipse cx="24" cy="24" rx="8" ry="18" fill="none" stroke="#22C55E" stroke-width="2"/>
+                        <line x1="6" y1="24" x2="42" y2="24" stroke="#22C55E" stroke-width="2"/>
+                        <line x1="24" y1="6" x2="24" y2="42" stroke="#22C55E" stroke-width="2"/>
+                    </svg>
+                </div>
+                <h3>Geolocation</h3>
+                <p>Jerarquía geográfica completa y zonas horarias.</p>
+                <div class="module-entities">
+                    <span>continent</span>
+                    <span>country</span>
+                    <span>state_province</span>
+                    <span>city</span>
+                    <span>district</span>
+                    <span>address</span>
+                    <span>time_zone</span>
+                </div>
+                <div class="module-count">7 entidades</div>
+            </article>
+            
+            <article class="module-card" data-module="airline">
+                <div class="module-header">
+                    <div class="module-number">12</div>
+                    <svg class="module-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <circle cx="24" cy="24" r="18" fill="#6366F1"/>
+                        <path d="M24 12L20 20H14L18 24L14 36L24 30L34 36L30 24L34 20H28L24 12Z" fill="white"/>
+                    </svg>
+                </div>
+                <h3>Airline</h3>
+                <p>Entidad central de la aerolínea.</p>
+                <div class="module-entities">
+                    <span>airline</span>
+                </div>
+                <div class="module-count">1 entidad</div>
+            </article>
+        </div>
+    </section>
+
+    <!-- ER Diagram Section -->
+    <section id="diagram" class="er-diagram">
+        <div class="section-header">
+            <span class="section-tag">Diagrama ER</span>
+            <h2>Relaciones entre Entidades</h2>
+            <p>Flujo principal de datos: Person → Customer → Reservation → Sale → Ticket → Ticket Segment</p>
+        </div>
+        
+        <div class="diagram-container">
+            <svg viewBox="0 0 1100 700" class="er-svg">
+                <!-- Background -->
+                <defs>
+                    <pattern id="er-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(59,130,246,0.03)" stroke-width="1"/>
+                    </pattern>
+                    <filter id="glow">
+                        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                        <feMerge>
+                            <feMergeNode in="coloredBlur"/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#er-grid)"/>
+                
+                <!-- Connection lines (behind entities) -->
+                <g class="er-connections" stroke-width="2" fill="none">
+                    <!-- person to user_account -->
+                    <path d="M200 100 Q250 100 280 140" stroke="#3B82F6" opacity="0.6"/>
+                    <!-- person to customer -->
+                    <path d="M200 100 Q250 150 280 200" stroke="#10B981" opacity="0.6"/>
+                    <!-- person to person_document -->
+                    <path d="M120 130 L120 180" stroke="#64748B" opacity="0.4"/>
+                    
+                    <!-- user_account to user_role -->
+                    <path d="M400 160 L450 160" stroke="#F59E0B" opacity="0.6"/>
+                    <!-- role to user_role -->
+                    <path d="M550 120 L550 160 L500 160" stroke="#F59E0B" opacity="0.6"/>
+                    
+                    <!-- customer to sale -->
+                    <path d="M350 230 Q400 280 450 300" stroke="#F97316" opacity="0.6"/>
+                    <!-- customer to loyalty_account -->
+                    <path d="M350 230 L400 280" stroke="#10B981" opacity="0.6"/>
+                    
+                    <!-- sale to ticket -->
+                    <path d="M550 320 L620 320" stroke="#F97316" opacity="0.6"/>
+                    <!-- sale to payment -->
+                    <path d="M500 350 L500 420" stroke="#14B8A6" opacity="0.6"/>
+                    <!-- sale to invoice -->
+                    <path d="M550 350 Q600 400 650 450" stroke="#A855F7" opacity="0.6"/>
+                    
+                    <!-- ticket to flight_segment -->
+                    <path d="M750 320 L820 320" stroke="#06B6D4" opacity="0.6"/>
+                    <!-- ticket to seat_assignment -->
+                    <path d="M700 350 L700 400" stroke="#8B5CF6" opacity="0.6"/>
+                    <!-- ticket to boarding_pass -->
+                    <path d="M750 350 Q800 380 850 400" stroke="#EF4444" opacity="0.6"/>
+                    
+                    <!-- flight_segment to flight -->
+                    <path d="M920 290 L920 220" stroke="#06B6D4" opacity="0.6"/>
+                    <!-- flight to aircraft -->
+                    <path d="M870 180 L800 140" stroke="#8B5CF6" opacity="0.6"/>
+                    <!-- flight to airport (origin) -->
+                    <path d="M870 180 Q820 100 750 80" stroke="#EC4899" opacity="0.6"/>
+                    <!-- flight to airport (destination) -->
+                    <path d="M970 180 Q1020 100 1000 80" stroke="#EC4899" opacity="0.6"/>
+                    
+                    <!-- airport to geolocation -->
+                    <path d="M700 80 L650 120" stroke="#22C55E" opacity="0.4"/>
+                    
+                    <!-- loyalty_account to loyalty_program -->
+                    <path d="M450 300 Q500 320 500 360" stroke="#10B981" opacity="0.4"/>
+                    <!-- loyalty_program to airline -->
+                    <path d="M500 400 L500 450" stroke="#6366F1" opacity="0.4"/>
+                </g>
+                
+                <!-- Entity boxes -->
+                <g class="er-entities">
+                    <!-- IDENTITY MODULE -->
+                    <g class="entity" transform="translate(80, 60)">
+                        <rect width="160" height="70" rx="6" fill="#1E293B" stroke="#3B82F6" stroke-width="2"/>
+                        <text x="80" y="25" text-anchor="middle" fill="#3B82F6" font-size="11" font-weight="600">IDENTITY</text>
+                        <text x="80" y="45" text-anchor="middle" fill="#E2E8F0" font-size="13" font-weight="700">person</text>
+                        <text x="80" y="60" text-anchor="middle" fill="#64748B" font-size="9">id (PK) • person_type_id (FK)</text>
+                    </g>
+                    
+                    <g class="entity" transform="translate(60, 180)">
+                        <rect width="140" height="60" rx="6" fill="#0F172A" stroke="#64748B" stroke-width="1"/>
+                        <text x="70" y="25" text-anchor="middle" fill="#94A3B8" font-size="10">person_document</text>
+                        <text x="70" y="45" text-anchor="middle" fill="#64748B" font-size="9">person_id (FK)</text>
+                    </g>
+                    
+                    <!-- SECURITY MODULE -->
+                    <g class="entity" transform="translate(280, 120)">
+                        <rect width="160" height="70" rx="6" fill="#1E293B" stroke="#F59E0B" stroke-width="2"/>
+                        <text x="80" y="25" text-anchor="middle" fill="#F59E0B" font-size="11" font-weight="600">SECURITY</text>
+                        <text x="80" y="45" text-anchor="middle" fill="#E2E8F0" font-size="13" font-weight="700">user_account</text>
+                        <text x="80" y="60" text-anchor="middle" fill="#64748B" font-size="9">person_id (FK) • user_status_id</text>
+                    </g>
+                    
+                    <g class="entity" transform="translate(460, 130)">
+                        <rect width="100" height="50" rx="6" fill="#0F172A" stroke="#F59E0B" stroke-width="1"/>
+                        <text x="50" y="25" text-anchor="middle" fill="#FBBF24" font-size="10">user_role</text>
+                        <text x="50" y="40" text-anchor="middle" fill="#64748B" font-size="8">user_id • role_id</text>
+                    </g>
+                    
+                    <g class="entity" transform="translate(500, 80)">
+                        <rect width="80" height="40" rx="6" fill="#0F172A" stroke="#F59E0B" stroke-width="1"/>
+                        <text x="40" y="25" text-anchor="middle" fill="#FBBF24" font-size="10">role</text>
+                    </g>
+                    
+                    <!-- CUSTOMER MODULE -->
+                    <g class="entity" transform="translate(260, 200)">
+                        <rect width="140" height="70" rx="6" fill="#1E293B" stroke="#10B981" stroke-width="2"/>
+                        <text x="70" y="25" text-anchor="middle" fill="#10B981" font-size="11" font-weight="600">CUSTOMER</text>
+                        <text x="70" y="45" text-anchor="middle" fill="#E2E8F0" font-size="13" font-weight="700">customer</text>
+                        <text x="70" y="60" text-anchor="middle" fill="#64748B" font-size="9">person_id (FK)</text>
+                    </g>
+                    
+                    <g class="entity" transform="translate(360, 260)">
+                        <rect width="120" height="50" rx="6" fill="#0F172A" stroke="#10B981" stroke-width="1"/>
+                        <text x="60" y="25" text-anchor="middle" fill="#34D399" font-size="10">loyalty_account</text>
+                        <text x="60" y="40" text-anchor="middle" fill="#64748B" font-size="8">customer_id (FK)</text>
+                    </g>
+                    
+                    <g class="entity" transform="translate(440, 360)">
+                        <rect width="120" height="50" rx="6" fill="#0F172A" stroke="#10B981" stroke-width="1"/>
+                        <text x="60" y="25" text-anchor="middle" fill="#34D399" font-size="10">loyalty_program</text>
+                        <text x="60" y="40" text-anchor="middle" fill="#64748B" font-size="8">airline_id (FK)</text>
+                    </g>
+                    
+                    <!-- SALES MODULE -->
+                    <g class="entity" transform="translate(450, 280)">
+                        <rect width="140" height="70" rx="6" fill="#1E293B" stroke="#F97316" stroke-width="2"/>
+                        <text x="70" y="25" text-anchor="middle" fill="#F97316" font-size="11" font-weight="600">SALES</text>
+                        <text x="70" y="45" text-anchor="middle" fill="#E2E8F0" font-size="13" font-weight="700">reservation</text>
+                        <text x="70" y="60" text-anchor="middle" fill="#64748B" font-size="9">customer_id • reservation_status_id</text>
+                    </g>
+                    
+                    <g class="entity" transform="translate(620, 290)">
+                        <rect width="130" height="70" rx="6" fill="#1E293B" stroke="#F97316" stroke-width="2"/>
+                        <text x="65" y="25" text-anchor="middle" fill="#FB923C" font-size="10">ticket</text>
+                        <text x="65" y="42" text-anchor="middle" fill="#64748B" font-size="8">sale_id (FK)</text>
+                        <text x="65" y="54" text-anchor="middle" fill="#64748B" font-size="8">reservation_passenger_id</text>
+                        <text x="65" y="66" text-anchor="middle" fill="#64748B" font-size="8">fare_id</text>
+                    </g>
+                    
+                    <g class="entity" transform="translate(640, 400)">
+                        <rect width="120" height="50" rx="6" fill="#0F172A" stroke="#8B5CF6" stroke-width="1"/>
+                        <text x="60" y="25" text-anchor="middle" fill="#A78BFA" font-size="10">seat_assignment</text>
+                        <text x="60" y="40" text-anchor="middle" fill="#64748B" font-size="8">ticket_segment_id • seat_id</text>
+                    </g>
+                    
+                    <!-- PAYMENT MODULE -->
+                    <g class="entity" transform="translate(420, 420)">
+                        <rect width="130" height="60" rx="6" fill="#1E293B" stroke="#14B8A6" stroke-width="2"/>
+                        <text x="65" y="22" text-anchor="middle" fill="#14B8A6" font-size="11" font-weight="600">PAYMENT</text>
+                        <text x="65" y="42" text-anchor="middle" fill="#E2E8F0" font-size="12" font-weight="700">payment</text>
+                        <text x="65" y="55" text-anchor="middle" fill="#64748B" font-size="8">sale_id (FK)</text>
+                    </g>
+                    
+                    <!-- BILLING MODULE -->
+                    <g class="entity" transform="translate(600, 460)">
+                        <rect width="130" height="60" rx="6" fill="#1E293B" stroke="#A855F7" stroke-width="2"/>
+                        <text x="65" y="22" text-anchor="middle" fill="#A855F7" font-size="11" font-weight="600">BILLING</text>
+                        <text x="65" y="42" text-anchor="middle" fill="#E2E8F0" font-size="12" font-weight="700">invoice</text>
+                        <text x="65" y="55" text-anchor="middle" fill="#64748B" font-size="8">sale_id • currency_id</text>
+                    </g>
+                    
+                    <!-- BOARDING MODULE -->
+                    <g class="entity" transform="translate(800, 400)">
+                        <rect width="130" height="60" rx="6" fill="#1E293B" stroke="#EF4444" stroke-width="2"/>
+                        <text x="65" y="22" text-anchor="middle" fill="#EF4444" font-size="11" font-weight="600">BOARDING</text>
+                        <text x="65" y="42" text-anchor="middle" fill="#E2E8F0" font-size="12" font-weight="700">boarding_pass</text>
+                        <text x="65" y="55" text-anchor="middle" fill="#64748B" font-size="8">check_in_id (FK)</text>
+                    </g>
+                    
+                    <!-- FLIGHT MODULE -->
+                    <g class="entity" transform="translate(850, 280)">
+                        <rect width="140" height="60" rx="6" fill="#1E293B" stroke="#06B6D4" stroke-width="2"/>
+                        <text x="70" y="22" text-anchor="middle" fill="#06B6D4" font-size="10">flight_segment</text>
+                        <text x="70" y="40" text-anchor="middle" fill="#64748B" font-size="8">flight_id (FK)</text>
+                        <text x="70" y="52" text-anchor="middle" fill="#64748B" font-size="8">origin • destination</text>
+                    </g>
+                    
+                    <g class="entity" transform="translate(850, 160)">
+                        <rect width="140" height="70" rx="6" fill="#1E293B" stroke="#06B6D4" stroke-width="2"/>
+                        <text x="70" y="25" text-anchor="middle" fill="#06B6D4" font-size="11" font-weight="600">FLIGHT</text>
+                        <text x="70" y="45" text-anchor="middle" fill="#E2E8F0" font-size="13" font-weight="700">flight</text>
+                        <text x="70" y="60" text-anchor="middle" fill="#64748B" font-size="9">aircraft_id • airports</text>
+                    </g>
+                    
+                    <!-- AIRCRAFT MODULE -->
+                    <g class="entity" transform="translate(700, 100)">
+                        <rect width="130" height="60" rx="6" fill="#1E293B" stroke="#8B5CF6" stroke-width="2"/>
+                        <text x="65" y="22" text-anchor="middle" fill="#8B5CF6" font-size="11" font-weight="600">AIRCRAFT</text>
+                        <text x="65" y="42" text-anchor="middle" fill="#E2E8F0" font-size="12" font-weight="700">aircraft</text>
+                        <text x="65" y="55" text-anchor="middle" fill="#64748B" font-size="8">aircraft_model_id</text>
+                    </g>
+                    
+                    <!-- AIRPORT MODULE -->
+                    <g class="entity" transform="translate(650, 40)">
+                        <rect width="120" height="50" rx="6" fill="#1E293B" stroke="#EC4899" stroke-width="2"/>
+                        <text x="60" y="22" text-anchor="middle" fill="#EC4899" font-size="11" font-weight="600">AIRPORT</text>
+                        <text x="60" y="40" text-anchor="middle" fill="#E2E8F0" font-size="11" font-weight="700">airport</text>
+                    </g>
+                    
+                    <g class="entity" transform="translate(950, 40)">
+                        <rect width="120" height="50" rx="6" fill="#0F172A" stroke="#EC4899" stroke-width="1"/>
+                        <text x="60" y="22" text-anchor="middle" fill="#F472B6" font-size="10">terminal</text>
+                        <text x="60" y="38" text-anchor="middle" fill="#64748B" font-size="8">airport_id (FK)</text>
+                    </g>
+                    
+                    <!-- GEOLOCATION MODULE -->
+                    <g class="entity" transform="translate(560, 100)">
+                        <rect width="110" height="50" rx="6" fill="#0F172A" stroke="#22C55E" stroke-width="1"/>
+                        <text x="55" y="22" text-anchor="middle" fill="#22C55E" font-size="10">address</text>
+                        <text x="55" y="38" text-anchor="middle" fill="#64748B" font-size="8">district • city • ...</text>
+                    </g>
+                    
+                    <!-- AIRLINE MODULE -->
+                    <g class="entity" transform="translate(460, 450)">
+                        <rect width="100" height="50" rx="6" fill="#1E293B" stroke="#6366F1" stroke-width="2"/>
+                        <text x="50" y="22" text-anchor="middle" fill="#6366F1" font-size="11" font-weight="600">AIRLINE</text>
+                        <text x="50" y="40" text-anchor="middle" fill="#E2E8F0" font-size="11" font-weight="700">airline</text>
+                    </g>
+                </g>
+                
+                <!-- Legend -->
+                <g class="legend" transform="translate(50, 550)">
+                    <text x="0" y="0" fill="#94A3B8" font-size="11" font-weight="600">LEYENDA:</text>
+                    <circle cx="20" cy="25" r="6" fill="#3B82F6"/>
+                    <text x="35" y="30" fill="#94A3B8" font-size="10">Identity</text>
+                    <circle cx="100" cy="25" r="6" fill="#F59E0B"/>
+                    <text x="115" y="30" fill="#94A3B8" font-size="10">Security</text>
+                    <circle cx="180" cy="25" r="6" fill="#10B981"/>
+                    <text x="195" y="30" fill="#94A3B8" font-size="10">Customer</text>
+                    <circle cx="270" cy="25" r="6" fill="#F97316"/>
+                    <text x="285" y="30" fill="#94A3B8" font-size="10">Sales</text>
+                    <circle cx="340" cy="25" r="6" fill="#06B6D4"/>
+                    <text x="355" y="30" fill="#94A3B8" font-size="10">Flight</text>
+                    <circle cx="410" cy="25" r="6" fill="#8B5CF6"/>
+                    <text x="425" y="30" fill="#94A3B8" font-size="10">Aircraft</text>
+                    <circle cx="495" cy="25" r="6" fill="#EC4899"/>
+                    <text x="510" y="30" fill="#94A3B8" font-size="10">Airport</text>
+                    <circle cx="575" cy="25" r="6" fill="#EF4444"/>
+                    <text x="590" y="30" fill="#94A3B8" font-size="10">Boarding</text>
+                </g>
+                
+                <!-- Flow annotation -->
+                <g class="flow-annotation" transform="translate(50, 620)">
+                    <text fill="#64748B" font-size="10">
+                        <tspan x="0" y="0">→ Flujo principal: person → customer → reservation → sale → ticket → ticket_segment → flight_segment</tspan>
+                        <tspan x="0" y="18">→ Líneas sólidas = FK directa | Líneas punteadas = relación indirecta</tspan>
+                    </text>
+                </g>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Downloads Section -->
+    <section id="downloads" class="downloads">
+        <div class="section-header">
+            <span class="section-tag">Descargas</span>
+            <h2>Archivos del Modelo</h2>
+            <p>Paquete documental y operativo para explicacion, validacion y seguimiento arquitectonico</p>
+        </div>
+        
+        <div class="downloads-grid">
+            <div class="download-card">
+                <div class="download-icon">
+                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                        <rect x="12" y="4" width="40" height="56" rx="4" fill="#10B981"/>
+                        <text x="32" y="38" text-anchor="middle" fill="white" font-size="14" font-weight="700">SQL</text>
+                    </svg>
+                </div>
+                <div class="download-badge done">Validado</div>
+                <h3>DDL PostgreSQL</h3>
+                <p>DDL maestro ejecutado en PostgreSQL 16. 76 tablas, PKs, FKs, restricciones UNIQUE y CHECK.</p>
+                <span class="download-format">SQL (.sql)</span>
+                <a href="../../db/ddl/modelo_postgresql.sql" class="btn btn-primary" download>Descargar DDL</a>
+            </div>
+
+            <div class="download-card">
+                <div class="download-icon">
+                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                        <rect x="12" y="4" width="40" height="56" rx="4" fill="#3B82F6"/>
+                        <text x="32" y="38" text-anchor="middle" fill="white" font-size="11" font-weight="700">SEED</text>
+                    </svg>
+                </div>
+                <div class="download-badge done">Implementado</div>
+                <h3>Seed Canónico</h3>
+                <p>3 flujos E2E completos: person → customer → reservation → sale → ticket → payment → invoice → boarding.</p>
+                <span class="download-format">SQL (.sql)</span>
+                <a href="../../db/seeds/00_seed_canonico.sql" class="btn btn-primary" download>Descargar Seed</a>
+            </div>
+
+            <div class="download-card">
+                <div class="download-icon">
+                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                        <rect x="12" y="4" width="40" height="56" rx="4" fill="#1D4ED8"/>
+                        <rect x="18" y="14" width="20" height="4" fill="white"/>
+                        <rect x="18" y="24" width="28" height="2" fill="white" opacity="0.6"/>
+                        <rect x="18" y="30" width="28" height="2" fill="white" opacity="0.6"/>
+                        <rect x="18" y="36" width="28" height="2" fill="white" opacity="0.6"/>
+                        <rect x="18" y="42" width="20" height="2" fill="white" opacity="0.6"/>
+                    </svg>
+                </div>
+                <div class="download-badge done">Documentado</div>
+                <h3>Modelo Documentado</h3>
+                <p>Modelo 3FN con módulos, decisiones de diseño, jerarquías y trazabilidad arquitectónica.</p>
+                <span class="download-format">Markdown (.md)</span>
+                <a href="../../docs/datos/modelo_documentado.md" class="btn btn-primary" download>Descargar Doc</a>
+            </div>
+
+            <div class="download-card">
+                <div class="download-icon">
+                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                        <rect x="8" y="8" width="48" height="48" rx="8" fill="#16324f"/>
+                        <rect x="14" y="20" width="36" height="6" rx="2" fill="#1f6feb" opacity="0.8"/>
+                        <rect x="14" y="30" width="24" height="4" rx="2" fill="#1f6feb" opacity="0.5"/>
+                        <rect x="14" y="38" width="30" height="4" rx="2" fill="#1f6feb" opacity="0.5"/>
+                    </svg>
+                </div>
+                <div class="download-badge done">Actualizado</div>
+                <h3>Canvas Arquitectónico</h3>
+                <p>Vista técnica de decisiones, métricas, flujo canónico, riesgos activos y siguiente fase.</p>
+                <span class="download-format">HTML (.html)</span>
+                <a href="../../architecture/canvas/canvas_arquitectura.html" class="btn btn-primary">Abrir Canvas</a>
+            </div>
+
+            <div class="download-card">
+                <div class="download-icon">
+                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                        <rect x="12" y="4" width="40" height="56" rx="4" fill="#c3562c"/>
+                        <rect x="18" y="16" width="28" height="4" fill="white"/>
+                        <rect x="18" y="26" width="24" height="4" fill="white" opacity="0.75"/>
+                        <rect x="18" y="36" width="28" height="4" fill="white" opacity="0.6"/>
+                        <rect x="18" y="46" width="18" height="4" fill="white" opacity="0.45"/>
+                    </svg>
+                </div>
+                <div class="download-badge done">Actualizado</div>
+                <h3>Informe de Funcionalidades</h3>
+                <p>Estado del sistema, capacidades por módulo, flujo operativo visible y artefactos disponibles.</p>
+                <span class="download-format">HTML (.html)</span>
+                <a href="../../reports/html/funcionalidades_sistema.html" class="btn btn-primary">Abrir Informe</a>
+            </div>
+
+            <div class="download-card">
+                <div class="download-icon">
+                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                        <rect x="10" y="10" width="44" height="44" rx="10" fill="#214d3b"/>
+                        <rect x="18" y="18" width="6" height="28" fill="#4e9b78"/>
+                        <rect x="28" y="24" width="6" height="22" fill="#4e9b78" opacity="0.8"/>
+                        <rect x="38" y="14" width="6" height="32" fill="#4e9b78" opacity="0.6"/>
+                    </svg>
+                </div>
+                <div class="download-badge active">En curso</div>
+                <h3>Cronograma de Realización</h3>
+                <p>Hitos técnicos cerrados al 19-Mar y fase en curso: QA cruzado documental para consistencia de narrativa y release.</p>
+                <span class="download-format">HTML (.html)</span>
+                <a href="../../reports/cronograma/cronograma_realizacion.html" class="btn btn-primary">Abrir Cronograma</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+                    <path d="M16 2L4 14L16 10L28 14L16 2Z" fill="#3B82F6"/>
+                    <path d="M16 10L4 14L16 30L28 14L16 10Z" fill="#1D4ED8"/>
+                </svg>
+                <span>FLY</span>
+            </div>
+            <p>Modelo Relacional 3FN para Sistema de Aerolínea</p>
+            <p class="footer-meta">PostgreSQL 16 · 12 Módulos · 76 Tablas · 100+ FKs · Seed Canónico ✓ · Seed Volumétrico ✓ · QA Documental en curso</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
