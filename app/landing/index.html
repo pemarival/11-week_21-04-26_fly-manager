@@ -30,6 +30,7 @@
             </div>
             <ul class="nav-links">
                 <li><a href="#overview">Vista General</a></li>
+                <li><a href="#evolution">Evolutivo</a></li>
                 <li><a href="#modules">Módulos</a></li>
                 <li><a href="#diagram">Diagrama ER</a></li>
                 <li><a href="#downloads">Descargas</a></li>
@@ -37,18 +38,19 @@
         </nav>
         
         <div class="hero-content">
-            <div class="hero-badge">PostgreSQL 16 · 12 Módulos · 76 Tablas · 3FN · Seed Canónico ✓ · Seed Volumétrico ✓</div>
+            <div class="hero-badge">PostgreSQL 16 · 12 Módulos · 76 Tablas · 3FN · Release Congelado ✓ · S4.6 Continuidad ✓</div>
             <h1 class="hero-title">
                 Modelo Relacional<br>
                 <span class="gradient-text">Sistema de Aerolínea</span>
             </h1>
             <p class="hero-description">
-                Arquitectura relacional 3FN validada con seed canónico y seed volumétrico implementados:
-                cobertura comercial y de viaje cerrada con gates de validación en verde.
+                Arquitectura relacional 3FN validada y luego estabilizada sobre PostgreSQL 16 con
+                migraciones versionadas, rebuild limpio alineado con journal, recovery probado, baseline de performance, observabilidad mínima
+                y hardening local de seguridad ya integrados al flujo operativo.
             </p>
             <div class="hero-actions">
-                <a href="#status" class="btn btn-primary">Ver Estado</a>
-                <a href="#modules" class="btn btn-secondary">Explorar Módulos</a>
+                <a href="#evolution" class="btn btn-primary">Ver Evolutivo</a>
+                <a href="#downloads" class="btn btn-secondary">Ver Artefactos</a>
             </div>
         </div>
         
@@ -172,8 +174,8 @@
                 <path d="M20 4L8 12V20C8 29.4 13.2 37.8 20 40C26.8 37.8 32 29.4 32 20V12L20 4Z" fill="#10B981" opacity="0.2" stroke="#10B981" stroke-width="2"/>
                 <path d="M13 20L18 25L27 14" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <span class="stat-number">3</span>
-            <span class="stat-label">Flujos E2E</span>
+            <span class="stat-number">S4.6</span>
+            <span class="stat-label">Estabilización</span>
         </div>
     </section>
 
@@ -181,53 +183,134 @@
     <section id="status" class="project-status">
         <div class="status-header">
             <span class="section-tag">Estado del Proyecto</span>
-            <h2>Pipeline de datos al 19-Mar-2026 (corte técnico)</h2>
-            <p>Cada fase refleja el contrato operativo entre DDL, seeds y validaciones</p>
+            <h2>Evolución del paquete al 20-Mar-2026</h2>
+            <p>El baseline técnico ya quedó expandido a una base operable con controles de gobierno, capacidad, seguridad y menor privilegio operativo</p>
         </div>
         <div class="status-phases">
             <div class="phase phase-done">
                 <div class="phase-icon">✓</div>
-                <div class="phase-name">DDL Validado</div>
-                <div class="phase-detail">76 tablas · 100+ FKs · 112 UNIQUE</div>
+                <div class="phase-name">Release Congelado</div>
+                <div class="phase-detail">DDL, seeds, QA cruzado y gate integral en verde</div>
             </div>
             <div class="phase-arrow">→</div>
             <div class="phase phase-done">
                 <div class="phase-icon">✓</div>
-                <div class="phase-name">Seed Canónico</div>
-                <div class="phase-detail">3 flujos E2E · Política cronológica · Gate de validación</div>
+                <div class="phase-name">S2 Gobierno Operativo</div>
+                <div class="phase-detail">Migraciones, rollback, backup/restore y runbook local</div>
             </div>
             <div class="phase-arrow">→</div>
             <div class="phase phase-done">
                 <div class="phase-icon">✓</div>
-                <div class="phase-name">Seed Volumétrico</div>
-                <div class="phase-detail">Cobertura comercial + viaje · Gate canónico + volumétrico</div>
+                <div class="phase-name">S3.1 Performance</div>
+                <div class="phase-detail">6 consultas medidas · 0 fuera de umbral</div>
             </div>
             <div class="phase-arrow">→</div>
-            <div class="phase phase-active">
-                <div class="phase-icon pulse">◉</div>
-                <div class="phase-name">QA Cruzado Documental</div>
-                <div class="phase-detail">Alineación landing/canvas/reportes · IE-002 · IE-008</div>
+            <div class="phase phase-done">
+                <div class="phase-icon">✓</div>
+                <div class="phase-name">S3.2 Observabilidad</div>
+                <div class="phase-detail">Locks 0 · idle 0 · cache hit 99.88%</div>
             </div>
             <div class="phase-arrow">→</div>
-            <div class="phase phase-pending">
-                <div class="phase-icon">○</div>
-                <div class="phase-name">Release Técnico</div>
-                <div class="phase-detail">QA documental · Paquete final</div>
+            <div class="phase phase-done">
+                <div class="phase-icon">✓</div>
+                <div class="phase-name">S3.3 Seguridad</div>
+                <div class="phase-detail">Hardening aplicado · auditoría sin fallas bloqueantes</div>
+            </div>
+            <div class="phase-arrow">→</div>
+            <div class="phase phase-done">
+                <div class="phase-icon">✓</div>
+                <div class="phase-name">S4.6 Continuidad</div>
+                <div class="phase-detail">Puerto PostgreSQL confinado a `127.0.0.1` y admin bootstrap aislado como break-glass interno</div>
             </div>
         </div>
         <div class="status-flows">
             <div class="flow-card">
-                <div class="flow-label">Flujo 1 — Ana García</div>
-                <div class="flow-route">BOG → MIA → MAD · Business con conexión · FY210 + FY711 · 10-Mar-2026</div>
+                <div class="flow-label">Recovery Validado</div>
+                <div class="flow-route">Backup 420 ms · Restore 2478 ms · 78 tablas comparadas · 0 diferencias</div>
             </div>
             <div class="flow-card">
-                <div class="flow-label">Flujo 2 — Carlos Mendoza</div>
-                <div class="flow-route">BOG → MDE · Economy · FY101 · 12-Mar-2026</div>
+                <div class="flow-label">Baseline Performance</div>
+                <div class="flow-route">6 consultas · 0 fuera de umbral · boarding_flow_join 2.15 ms</div>
             </div>
             <div class="flow-card">
-                <div class="flow-label">Flujo 3 — Laura Torres</div>
-                <div class="flow-route">BOG → MIA · Economy · FY305 · 15-Mar-2026</div>
+                <div class="flow-label">Observabilidad + Seguridad + Accesos</div>
+                <div class="flow-route">waiting_locks 0 · idle 0 · journal materializado en rebuild · bind 127.0.0.1 · 3 flujos no-admin OK · residuales expuestos 0</div>
             </div>
+        </div>
+    </section>
+
+    <!-- Evolution Section -->
+    <section id="evolution" class="stabilization">
+        <div class="section-header">
+            <span class="section-tag">Evolutivo Senior</span>
+            <h2>Cómo evolucionó el paquete después del release congelado</h2>
+            <p>La visualización ya no se queda en el corte técnico: ahora expone el avance real de estabilización que sí quedó implementado y validado.</p>
+        </div>
+
+        <div class="stability-grid">
+            <article class="stability-card">
+                <span class="stability-stage">S1 · Estabilización inmediata</span>
+                <h3>Controles base cerrados</h3>
+                <p>Se consolidó la higiene residual, la plantilla de evidencia y la regresión SQL post-seed como contrato de salida.</p>
+                <ul class="stability-list">
+                    <li>Gate arquitectónico reforzado y en verde</li>
+                    <li>Validación de rutas documentales automatizada</li>
+                    <li>Release congelado preservado como baseline</li>
+                </ul>
+                <div class="stability-metrics">
+                    <span>BR-003 ✓</span>
+                    <span>BR-004 ✓</span>
+                    <span>BR-005 ✓</span>
+                </div>
+            </article>
+
+            <article class="stability-card">
+                <span class="stability-stage">S2 · Gobierno operativo</span>
+                <h3>Operación repetible y recuperable</h3>
+                <p>La base local dejó de depender de memoria tribal y ahora tiene migraciones versionadas, rollback, recuperación comprobada y rebuild limpio con journal materializado.</p>
+                <ul class="stability-list">
+                    <li>Migraciones `up/down` con journal bootstrap</li>
+                    <li>Prueba de recuperación con 78 tablas y 0 diferencias</li>
+                    <li>Runbook operativo y diagnóstico rápido publicados</li>
+                </ul>
+                <div class="stability-metrics">
+                    <span>1 migración reversible</span>
+                    <span>0 diferencias</span>
+                    <span>Runbook ✓</span>
+                </div>
+            </article>
+
+            <article class="stability-card">
+                <span class="stability-stage">S3 · Confiabilidad y capacidad</span>
+                <h3>Performance, observabilidad y seguridad</h3>
+                <p>El baseline local ya mide consultas reales, captura salud operativa y aplica hardening con auditoría integrada al flujo limpio.</p>
+                <ul class="stability-list">
+                    <li>6 consultas críticas medidas con 0 desvíos</li>
+                    <li>`waiting_locks = 0` e `idle_in_transaction = 0`</li>
+                    <li>Auditoría de seguridad sin fallas bloqueantes</li>
+                </ul>
+                <div class="stability-metrics">
+                    <span>cache 99.88%</span>
+                    <span>security 0 fallas</span>
+                    <span>S3.3 ✓</span>
+                </div>
+            </article>
+
+            <article class="stability-card current">
+                <span class="stability-stage">S4 · Continuidad operativa</span>
+                <h3>Menor privilegio operativo cerrado</h3>
+                <p>S4 ya cubre secretos locales, accesos operativos y defaults no administrativos: el entorno bloquea placeholders, exige `.env` valido, aísla el admin bootstrap por TCP y ejecuta diagnostico, observabilidad y baseline con AUDIT/RO/RW. El siguiente frente natural ya es F1: industrializacion CI/CD del delivery DB, con workflow de GitHub Actions endurecido y primera corrida remota pendiente de evidencia.</p>
+                <ul class="stability-list">
+                    <li>`infra/docker/.env` local no versionado validado por gate</li>
+                    <li>RW, RO y AUDIT conectables por password con roles heredados</li>
+                    <li>Diagnóstico AUDIT, observabilidad AUDIT y baseline RO/RW validados en Docker real</li>
+                </ul>
+                <div class="stability-metrics">
+                    <span>3 flujos no-admin</span>
+                    <span>0 residuales expuestos</span>
+                    <span>S4.6 ✓</span>
+                </div>
+            </article>
         </div>
     </section>
 
@@ -970,9 +1053,9 @@
                         <rect x="38" y="14" width="6" height="32" fill="#4e9b78" opacity="0.6"/>
                     </svg>
                 </div>
-                <div class="download-badge active">En curso</div>
+                <div class="download-badge done">Actualizado</div>
                 <h3>Cronograma de Realización</h3>
-                <p>Hitos técnicos cerrados al 19-Mar y fase en curso: QA cruzado documental para consistencia de narrativa y release.</p>
+                <p>Vista evolutiva del release congelado hacia S2, S3 y S4.6, con continuidad operativa validada, baseline limpio unificado, red local confinada y admin bootstrap encapsulado.</p>
                 <span class="download-format">HTML (.html)</span>
                 <a href="../../reports/cronograma/cronograma_realizacion.html" class="btn btn-primary">Abrir Cronograma</a>
             </div>
@@ -990,7 +1073,7 @@
                 <span>FLY</span>
             </div>
             <p>Modelo Relacional 3FN para Sistema de Aerolínea</p>
-            <p class="footer-meta">PostgreSQL 16 · 12 Módulos · 76 Tablas · 100+ FKs · Seed Canónico ✓ · Seed Volumétrico ✓ · QA Documental en curso</p>
+            <p class="footer-meta">PostgreSQL 16 · 12 Módulos · 76 Tablas · 100+ FKs · Seed Canónico ✓ · Seed Volumétrico ✓ · Pre-release arquitectónico en curso</p>
         </div>
     </footer>
 

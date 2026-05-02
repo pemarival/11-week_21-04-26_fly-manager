@@ -1,5 +1,5 @@
 // ============================================
-// SkyDB Landing Page - JavaScript
+// Sistema FLY Landing Page - JavaScript
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -27,10 +27,11 @@ La meta operativa no es "hacer una demo", sino construir una fuente unica de ver
 - `db/ddl/modelo_postgresql.sql`
 - `docs/datos/modelo_documentado.md`
 - `docs/datos/diccionario_datos.md`
-- baseline arquitectonico
-- matriz de consistencia
-- checklist de validacion del DDL
-- checklist de release
+- `docs/arquitectura/BASELINE_ARQUITECTONICO.md`
+- `docs/arquitectura/MATRIZ_CONSISTENCIA_INICIAL.md`
+- `docs/validacion/VALIDACION_DDL_3FN.md`
+- `docs/validacion/CHECKLIST_RELEASE_ARQUITECTONICO.md`
+- `docs/planes/BACKLOG_REFACTOR_POST_RELEASE.md`
 
 ### 3.2 Alcance funcional minimo
 
@@ -256,5 +257,5 @@ Hasta tener confirmacion formal en contra, se recomienda trabajar con estas regl
 
 - tratar el paquete actual como pre-release no consolidado
 - tomar `Sistema FLY` como nombre funcional provisional del sistema
-- retirar `SkyDB` del mensaje final salvo que se defina como marca oficial
+- retirar referencias a marca previa del mensaje final salvo definicion formal en contrario
 - tomar como objetivo la construccion de un modelo canonico estable antes de hablar de v3

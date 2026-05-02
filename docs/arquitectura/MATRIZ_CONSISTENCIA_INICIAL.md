@@ -1,5 +1,11 @@
 # Matriz de Consistencia Inicial
 
+> Estado documental: **Historico (Fase 0)**.
+> Fecha de referencia: **2026-03-19**.
+> Uso correcto: registro de contradicciones iniciales antes de la consolidacion tecnica.
+> No usar esta matriz como estado vigente de release; para estado actual revisar
+> `docs/planes/PLAN_CONTINUIDAD_FASES_2026-03-19.md` y `docs/validacion/SEGUIMIENTO_INCONSISTENCIAS_ESTRUCTURALES.md`.
+
 ## Objetivo
 
 Registrar contradicciones, vacios y decisiones necesarias para lograr una entrega coherente entre landing, DDL y documentacion.

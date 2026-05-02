@@ -1,5 +1,11 @@
 # Baseline Arquitectonico Inicial
 
+> Estado documental: **Historico (Fase 0)**.
+> Fecha de referencia: **2026-03-19**.
+> Uso correcto: evidencia de arranque y brechas iniciales.
+> No usar este documento como estado vigente de release; para estado actual revisar
+> `docs/planes/PLAN_CONTINUIDAD_FASES_2026-03-19.md` y `docs/validacion/SEGUIMIENTO_INCONSISTENCIAS_ESTRUCTURALES.md`.
+
 ## 1. Proposito
 
 Este documento fija la linea base de arranque del proyecto para evitar que la landing, el DDL y la documentacion evolucionen por caminos distintos.
@@ -202,4 +208,3 @@ Estado actual recomendado:
 - semaforo: amarillo
 - apto para continuar: si
 - apto para release: no
-

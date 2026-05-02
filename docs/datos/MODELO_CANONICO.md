@@ -36,7 +36,7 @@ Queda fuera del alcance del release base:
 Regla provisional:
 
 - nombre funcional del sistema: `Sistema FLY`
-- `SkyDB` no debe usarse en el release final salvo definicion formal en contrario
+- no debe usarse marca previa en el release final salvo definicion formal en contrario
 - version objetivo del paquete: `v2 estable`
 
 ## 4. Flujo canonico del negocio

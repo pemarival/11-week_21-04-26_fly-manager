@@ -296,19 +296,19 @@
       <a href="funcionalidades_sistema.html" class="active">Funcionalidades</a>
       <a href="../cronograma/cronograma_realizacion.html">Cronograma</a>
     </div>
-    <span class="docnav-badge">Canónico ✓ · Volumétrico ✓</span>
+    <span class="docnav-badge">Release congelado ✓ · S4.6 ✓</span>
   </nav>
 
   <main class="wrap">
     <section class="hero">
       <div>
         <span class="eyebrow">Informe Arquitectonico Funcional</span>
-        <h1>Seeds canonico y volumetrico validados.</h1>
-        <p>El seed canonico esta implementado con 3 flujos comerciales E2E completos sobre el modelo 3FN validado en PostgreSQL 16. El seed volumetrico ya quedo cerrado con cobertura comercial + viaje y validacion bloqueante en verde. La politica cronologica y las validaciones post-seed estan operativas como contrato tecnico.</p>
+        <h1>Paquete tecnico estabilizado y trazable.</h1>
+        <p>El modelo 3FN no solo quedo validado con seed canonico y volumetrico; despues del release congelado se consolidaron migraciones versionadas, recovery local, baseline de performance, observabilidad minima, hardening de seguridad, menor privilegio operativo y aislamiento del admin bootstrap sin fallas bloqueantes.</p>
         <div class="links">
           <a href="../../app/landing/index.html">Abrir landing</a>
           <a href="../../architecture/canvas/canvas_arquitectura.html">Abrir canvas</a>
-          <a href="../../db/ddl/modelo_postgresql.sql">Ver DDL maestro</a>
+          <a href="../../docs/planes/ROADMAP_ESTABILIZACION_DB_SENIOR.md">Ver roadmap senior</a>
         </div>
       </div>
       <div class="stats">
@@ -317,16 +317,16 @@
           tablas implementadas
         </div>
         <div class="stat">
-          <strong>100</strong>
-          llaves foraneas validadas
+          <strong>1223</strong>
+          reservas y tickets trazables
         </div>
         <div class="stat">
-          <strong>112</strong>
-          restricciones UNIQUE
+          <strong>6</strong>
+          consultas criticas medidas
         </div>
         <div class="stat">
-          <strong>3</strong>
-          flujos E2E validados
+          <strong>0</strong>
+          fallas bloqueantes S4.6
         </div>
       </div>
     </section>
@@ -423,8 +423,8 @@
       <article class="panel">
         <h2>Estado de preparacion</h2>
         <div class="highlight">
-          <p><strong>Listo hoy:</strong> DDL validado, contenedor estable en puerto 5435, seed canonico implementado con 3 flujos E2E completos (BOG-MIA-MAD, BOG-MDE, BOG-MIA Economy), seed volumetrico extendido con cobertura de viaje y validaciones post-seed con gate canónico + volumétrico bloqueantes.</p>
-          <p><strong>Siguiente salto:</strong> cerrar QA cruzado documental (landing, reportes y cronograma) para congelar narrativa unica antes del release tecnico.</p>
+          <p><strong>Listo hoy:</strong> DDL validado, release congelado preservado, seed canonico y volumetrico cerrados, migraciones versionadas operativas, rebuild limpio unificado con journal, recovery probado, baseline de performance medido, observabilidad local en verde, seguridad local auditada, secretos runtime locales validados, logins operativos RW/RO/AUDIT conectables, menor privilegio operativo validado, publicacion local de PostgreSQL confinada a loopback y `fly_admin` aislado como break-glass interno.</p>
+          <p><strong>Siguiente salto:</strong> ejecutar la primera corrida remota del workflow `GitHub Actions` del delivery DB sobre el repo actual y registrar su evidencia, sin Liquibase ni repositorio separado en esta fase.</p>
         </div>
         <table class="mini-table">
           <thead>
@@ -441,6 +441,16 @@
               <td>Estructura maestra 3FN</td>
             </tr>
             <tr>
+              <td>Migraciones versionadas</td>
+              <td>Operativas</td>
+              <td>Journal, `up/down`, rollback controlado y rebuild limpio alineado</td>
+            </tr>
+            <tr>
+              <td>Backup/restore local</td>
+              <td>Probado</td>
+              <td>Recovery con 78 tablas y 0 diferencias</td>
+            </tr>
+            <tr>
               <td>Contenedor Docker</td>
               <td>Operativo</td>
               <td>Ejecucion local repetible (5435)</td>
@@ -451,44 +461,47 @@
               <td>3 flujos E2E completos validados</td>
             </tr>
             <tr>
-              <td>Politica cronologica</td>
-              <td>Cerrada</td>
-              <td>Contrato obligatorio del seed volumetrico</td>
+              <td>Baseline performance</td>
+              <td>OK</td>
+              <td>6 consultas medidas, 0 fuera de umbral</td>
             </tr>
             <tr>
-              <td>Validaciones post-seed</td>
-              <td>Bloqueantes</td>
-              <td>Gate canónico + gate volumétrico (7 fases de verificación)</td>
+              <td>Observabilidad minima</td>
+              <td>OK</td>
+              <td>Locks 0, idle 0, cache hit 99.88%</td>
             </tr>
             <tr>
-              <td>Seed volumetrico</td>
-              <td>Cerrado</td>
-              <td>Umbral operativo cumplido en entidades aplicables y flujo de viaje</td>
+              <td>Seguridad local</td>
+              <td>Auditada</td>
+              <td>Roles minimos y auditoria sin fallas bloqueantes</td>
             </tr>
             <tr>
-              <td>Seguimiento de inconsistencias</td>
-              <td>Activo</td>
-              <td>IE-001, IE-002 e IE-008 en seguimiento</td>
+              <td>Riesgos residuales</td>
+              <td>Cerrados al host</td>
+              <td>Bootstrap admin encapsulado por socket interno; red local confinada a `127.0.0.1`</td>
             </tr>
           </tbody>
         </table>
-        <p class="footnote">Fuente operativa: `db/seeds/00_seed_canonico.sql`, `db/seeds/01_seed_volumetrico.sql`, `db/seeds/99_validaciones_post_seed.sql`, `docs/validacion/SEGUIMIENTO_INCONSISTENCIAS_ESTRUCTURALES.md` y `docs/validacion/POLITICA_CRONOLOGIA_DATOS_SINTETICOS.md`.</p>
+        <p class="footnote">Fuente operativa: `db/seeds/00_seed_canonico.sql`, `db/seeds/01_seed_volumetrico.sql`, `docs/planes/ROADMAP_ESTABILIZACION_DB_SENIOR.md` y carpeta `docs/validacion/`.</p>
       </article>
 
       <article class="panel">
         <h2>Artefactos para explicacion</h2>
-        <p>El paquete ya se puede presentar desde varios niveles de profundidad sin cambiar de narrativa.</p>
+        <p>El paquete ya se puede explicar desde modelo, operacion, performance y seguridad sin cambiar de narrativa.</p>
         <div class="links">
           <a href="../../docs/datos/modelo_documentado.md">Modelo documentado</a>
-          <a href="../../docs/datos/NORMALIZACION_3FN.md">Normalizacion 3FN</a>
-          <a href="../../docs/validacion/VALIDACION_DDL_3FN.md">Validacion DDL</a>
-          <a href="../../docs/planes/PLAN_FASE_DATOS_MASIVOS_Y_REPORTES.md">Plan de fase</a>
-          <a href="../../docs/validacion/SEGUIMIENTO_INCONSISTENCIAS_ESTRUCTURALES.md">Seguimiento estructural</a>
-          <a href="../../docs/validacion/POLITICA_CRONOLOGIA_DATOS_SINTETICOS.md">Politica cronologica</a>
-          <a href="../../docs/validacion/MATRIZ_ORDEN_CARGA_SEEDS.md">Matriz de carga</a>
+          <a href="../../docs/validacion/POLITICA_MIGRACIONES_Y_ROLLBACK.md">Migraciones y rollback</a>
+          <a href="../../docs/validacion/EVIDENCIA_RECUPERACION_LOCAL_2026-03-19.md">Evidencia recovery</a>
+          <a href="../../docs/validacion/EVIDENCIA_BASELINE_PERFORMANCE_LOCAL_2026-03-19.md">Baseline performance</a>
+          <a href="../../docs/validacion/EVIDENCIA_OBSERVABILIDAD_LOCAL_2026-03-19.md">Observabilidad local</a>
+          <a href="../../docs/validacion/EVIDENCIA_MENOR_PRIVILEGIO_OPERATIVO_LOCAL_2026-03-20.md">Menor privilegio operativo</a>
+          <a href="../../docs/validacion/EVIDENCIA_AUDITORIA_SEGURIDAD_LOCAL_2026-03-20.md">Auditoria seguridad</a>
+          <a href="../../docs/validacion/POLITICA_SEGURIDAD_DB_LOCAL.md">Politica seguridad</a>
+          <a href="../../docs/planes/ROADMAP_ESTABILIZACION_DB_SENIOR.md">Roadmap senior</a>
+          <a href="../../docs/planes/BACKLOG_REFACTOR_POST_RELEASE.md">Backlog post-release</a>
           <a href="../cronograma/cronograma_realizacion.html">Cronograma</a>
         </div>
-        <p class="footnote">Este informe esta pensado para mostrar funcionalidades, madurez actual y ruta inmediata de construccion.</p>
+        <p class="footnote">Este informe ahora muestra funcionalidad, madurez operativa y ruta inmediata de continuidad sin reabrir el baseline congelado.</p>
       </article>
     </section>
   </main>

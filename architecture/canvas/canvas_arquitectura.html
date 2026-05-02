@@ -254,18 +254,18 @@
       <a href="../../reports/html/funcionalidades_sistema.html" style="color:rgba(255,255,255,.6);padding:6px 14px;border-radius:999px;font-size:.85rem;font-weight:600;text-decoration:none;">Funcionalidades</a>
       <a href="../../reports/cronograma/cronograma_realizacion.html" style="color:rgba(255,255,255,.6);padding:6px 14px;border-radius:999px;font-size:.85rem;font-weight:600;text-decoration:none;">Cronograma</a>
     </div>
-    <span style="font-size:.75rem;font-weight:700;padding:4px 12px;border-radius:999px;background:rgba(31,111,235,.18);color:#60a5fa;border:1px solid rgba(31,111,235,.35);white-space:nowrap;">v2-estable-3fn</span>
+    <span style="font-size:.75rem;font-weight:700;padding:4px 12px;border-radius:999px;background:rgba(31,111,235,.18);color:#60a5fa;border:1px solid rgba(31,111,235,.35);white-space:nowrap;">v2-estable-3fn-s46</span>
   </nav>
 
   <header>
     <div>
       <h1>&#9992; Sistema FLY - Canvas de Arquitectura</h1>
-      <p>Paquete arquitectonico de datos alineado a 3FN y validado sobre PostgreSQL 16</p>
+      <p>Paquete arquitectonico de datos alineado a 3FN, validado y estabilizado sobre PostgreSQL 16</p>
     </div>
     <div class="meta">
-      <strong>2026-03-19</strong>
-      Version: v2-estable-3fn<br>
-      Alcance: arquitectura de datos y entrega documental<br>
+      <strong>2026-03-20</strong>
+      Version: v2-estable-3fn-s46<br>
+      Alcance: arquitectura de datos, operacion local y entrega documental<br>
       Fuente local: <code>C:/www/code-dev-projects/fly-manager/</code>
     </div>
   </header>
@@ -290,8 +290,16 @@
       <p><span class="tag tag-ok">3FN</span> La estructura fue construida con reglas formales de normalizacion.</p>
       <p><span class="tag tag-ok">SEED CANONICO</span> 3 flujos E2E completos implementados y politica cronologica cerrada.</p>
       <p><span class="tag tag-ok">SEED VOLUMETRICO</span> Seed volumetrico (01_seed_volumetrico.sql) ejecuta completo con cobertura comercial + viaje en umbral operativo.</p>
+      <p><span class="tag tag-ok">S2</span> Migraciones versionadas, rollback, recovery local y journal bootstrap quedaron operativos y probados.</p>
+      <p><span class="tag tag-ok">S3</span> Performance, observabilidad y seguridad local cerrados sin fallas bloqueantes.</p>
+      <p><span class="tag tag-ok">S4.1</span> Secretos locales no versionados validados e integrados al gate arquitectonico.</p>
+      <p><span class="tag tag-ok">S4.2</span> Logins operativos RW, RO y AUDIT validados por conexion real y menor privilegio.</p>
+      <p><span class="tag tag-ok">S4.3</span> Diagnostico, observabilidad y baseline validados con defaults AUDIT/RO/RW.</p>
+      <p><span class="tag tag-ok">S4.4</span> La recreacion limpia ya ejecuta `DDL base -> migraciones -> seeds` y deja el journal materializado desde el baseline.</p>
+      <p><span class="tag tag-ok">S4.5</span> El puerto local de PostgreSQL queda confinado a `127.0.0.1` por defecto y ya no abre todas las interfaces del host.</p>
+      <p><span class="tag tag-ok">S4.6</span> `fly_admin` queda aislado por `pg_hba.conf`, rechazado sobre TCP y disponible solo por socket local interno como break-glass.</p>
       <p><span class="tag tag-future">ROADMAP</span> Soft delete, auditoria transversal y particionamiento quedan fuera del release base.</p>
-      <p class="note">Seed canonico y volumetrico cierran IE-003, IE-005, IE-007 e IE-009 en el frente tecnico. Pendientes activos: IE-001 (excepcion controlada), IE-002 e IE-008.</p>
+      <p class="note">El release ya no esta en pre-release: el baseline quedo congelado y luego estabilizado hasta S4.6. El bootstrap admin se mantiene solo por restriccion del motor, pero ya no queda expuesto sobre TCP.</p>
     </section>
 
     <section>
@@ -417,12 +425,15 @@
     <section class="span-2">
       <h2>Riesgos Vigentes</h2>
       <ul>
-        <li><span class="tag tag-ok">Cerrado</span> Seed canonico implementado con 3 flujos E2E completos y validaciones post-seed de 7 fases (canónico + volumétrico).</li>
-        <li><span class="tag tag-risk">Alto</span> IE-001: catalogos cerrados del dominio no pueden inflarse arbitrariamente para volumetria — excepcion controlada activa.</li>
-        <li><span class="tag tag-risk">Medio</span> IE-002: documentos heredados con rutas y referencias anteriores a la reorganizacion aun sin alinear completamente.</li>
-        <li><span class="tag tag-ok">Cerrado</span> Seed volumetrico validado con gate bloqueante y controles de cronologia/orfandad en verde.</li>
-        <li><span class="tag tag-risk">Medio</span> Soft delete y auditoria transversal todavia no forman parte del esquema base.</li>
-        <li><span class="tag tag-warn">Bajo</span> No se han ejecutado pruebas de rendimiento bajo carga concurrente.</li>
+        <li><span class="tag tag-ok">Cerrado</span> Migraciones versionadas, rollback, journal local activo y rebuild limpio alineado.</li>
+        <li><span class="tag tag-ok">Cerrado</span> Recovery local probado con 78 tablas y 0 diferencias.</li>
+        <li><span class="tag tag-ok">Cerrado</span> Baseline de performance y observabilidad minima en verde.</li>
+        <li><span class="tag tag-ok">Cerrado</span> `infra/docker/.env` local validado, no versionado y bloqueado contra placeholders runtime.</li>
+        <li><span class="tag tag-ok">Cerrado</span> Logins operativos locales RW/RO/AUDIT validados con conexion real y membresias correctas.</li>
+        <li><span class="tag tag-ok">Cerrado</span> Diagnostico y observabilidad resuelven `AUDIT`; baseline separa `RO` para lectura y `RW` para probe temporal.</li>
+        <li><span class="tag tag-ok">Cerrado</span> `fly_admin` permanece solo como bootstrap break-glass y queda rechazado sobre TCP.</li>
+        <li><span class="tag tag-ok">Cerrado</span> El puerto 5435 sigue publicado al host para desarrollo, pero limitado a loopback.</li>
+        <li><span class="tag tag-future">Roadmap</span> Soft delete, auditoria transversal y carga concurrente quedan como siguiente iteracion.</li>
       </ul>
     </section>
 
@@ -438,7 +449,7 @@
     </section>
 
     <section class="span-3">
-      <h2>Siguiente Fase Recomendada</h2>
+      <h2>Siguiente Tramo Recomendado</h2>
       <table>
         <thead>
           <tr>
@@ -449,33 +460,43 @@
         </thead>
         <tbody>
           <tr>
-            <td>1. Catalogos base y seed canonico</td>
-            <td>Cargar estados, tipos, clases, monedas, actores y flujo E2E completo</td>
-            <td><span class="tag tag-ok">Completado</span> 00_seed_canonico.sql</td>
+            <td>1. Release congelado</td>
+            <td>Preservar baseline tecnico y narrativa unica del paquete</td>
+            <td><span class="tag tag-ok">Completado</span> Gate y checklist en verde</td>
           </tr>
           <tr>
-            <td>2. Escenario funcional E2E</td>
-            <td>3 flujos completos: reservation → sale → ticket → payment → invoice → boarding</td>
-            <td><span class="tag tag-ok">Completado</span> Validado por IE-007</td>
+            <td>2. S2 Gobierno operativo</td>
+            <td>Migraciones, rollback, backup/restore y runbook local</td>
+            <td><span class="tag tag-ok">Completado</span> Politicas y evidencia publicadas</td>
           </tr>
           <tr>
-            <td>3. Seed volumetrico</td>
-            <td>Escalar con vuelos futuros (2026-04-01 a 2026-06-30) y reservas adicionales</td>
-            <td><span class="tag tag-ok">Completado</span> 01_seed_volumetrico.sql (umbral operativo cerrado)</td>
+            <td>3. S3.1 Performance</td>
+            <td>Medir consultas criticas y fijar umbrales iniciales</td>
+            <td><span class="tag tag-ok">Completado</span> 6 consultas, 0 fuera de umbral</td>
           </tr>
           <tr>
-            <td>4. QA documental y auditoria</td>
-            <td>Alinear cronograma/canvas/reportes al estado tecnico y cerrar IE-002 / IE-008</td>
-            <td><span class="tag tag-warn">En curso</span> QA cruzado narrativo y consistencia documental</td>
+            <td>4. S3.2 Observabilidad</td>
+            <td>Capturar locks, actividad, cache y crecimiento base</td>
+            <td><span class="tag tag-ok">Completado</span> waiting_locks 0, cache 99.88%</td>
           </tr>
           <tr>
-            <td>5. Release tecnico</td>
-            <td>Congelar version y preparar entrega con evidencia completa</td>
-            <td><span class="tag tag-future">Planificado</span> Paquete final</td>
+            <td>5. S3.3 Seguridad local</td>
+            <td>Aplicar hardening, roles de minimo privilegio y auditoria</td>
+            <td><span class="tag tag-ok">Completado</span> 0 fallas bloqueantes</td>
+          </tr>
+          <tr>
+            <td>6. S4 Continuidad</td>
+            <td>Secretos, logins operativos y menor privilegio operativo validados en scripts cotidianos</td>
+            <td><span class="tag tag-ok">Completado</span> S4.6 cerrado; sin residuales expuestos al host</td>
+          </tr>
+          <tr>
+            <td>7. F1 Industrializacion</td>
+            <td>Formalizar ADR y montar CI/CD del delivery DB sobre el baseline ya estabilizado</td>
+            <td><span class="tag tag-warn">En curso</span> ADR, subplan, workflow GitHub Actions y plantilla de evidencia publicados; resta primera corrida remota</td>
           </tr>
         </tbody>
       </table>
-      <p class="note">Estado actual: DDL validado ✓ → seed canonico ✓ → seed volumetrico ✓ → QA cruzado documental (en curso) → release.</p>
+      <p class="note">Estado actual: release congelado ✓ → S2 gobierno operativo ✓ → S3.1 performance ✓ → S3.2 observabilidad ✓ → S3.3 seguridad ✓ → S4.1 secretos ✓ → S4.2 logins ✓ → S4.3 menor privilegio ✓ → S4.4 baseline limpio + journal ✓ → S4.5 confinamiento de red local ✓ → S4.6 admin bootstrap interno only ✓ → F1 industrializacion CI/CD en curso con workflow GitHub Actions endurecido y evidencia remota pendiente.</p>
     </section>
 
   </main>

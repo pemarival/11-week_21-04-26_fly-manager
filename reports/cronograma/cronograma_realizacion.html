@@ -248,18 +248,18 @@
       <a href="../html/funcionalidades_sistema.html">Funcionalidades</a>
       <a href="cronograma_realizacion.html" class="active">Cronograma</a>
     </div>
-    <span class="docnav-badge">Corte tecnico 19-Mar-2026</span>
+    <span class="docnav-badge">Evolutivo 20-Mar-2026</span>
   </nav>
 
   <main class="wrap">
     <section class="hero">
       <span class="eyebrow">Cronograma de Realizacion</span>
-      <h1>Estado de ejecucion al 19 de marzo de 2026</h1>
-      <p>El seed canonico y el seed volumetrico quedaron cerrados con validaciones bloqueantes en verde. El cronograma refleja los hitos ejecutados y la fase actual de QA cruzado documental previa al release.</p>
+      <h1>Evolucion del release congelado hacia S4.6</h1>
+      <p>El cronograma ya no se queda en el cierre tecnico del 19-Mar. Refleja el avance real posterior: gobierno operativo S2 completo, performance y observabilidad cerradas, seguridad local integrada al flujo limpio, menor privilegio operativo validado en Docker real, rebuild deterministico alineado con el journal, publicacion local de PostgreSQL confinada a loopback y admin bootstrap encapsulado por socket interno.</p>
       <div class="links">
-        <a href="../../docs/planes/PLAN_FASE_DATOS_MASIVOS_Y_REPORTES.md">Plan maestro de fase</a>
+        <a href="../../docs/planes/ROADMAP_ESTABILIZACION_DB_SENIOR.md">Roadmap senior</a>
         <a href="../../reports/html/funcionalidades_sistema.html">Informe funcional</a>
-        <a href="../../docs/validacion/SEGUIMIENTO_INCONSISTENCIAS_ESTRUCTURALES.md">Seguimiento estructural</a>
+        <a href="../../docs/validacion/EVIDENCIA_AUDITORIA_SEGURIDAD_LOCAL_2026-03-20.md">Auditoria seguridad</a>
       </div>
       <div class="legend">
         <span><i class="dot" style="background: var(--done);"></i>Completado</span>
@@ -271,14 +271,14 @@
     <section class="board">
       <div class="timeline">
         <div class="cell head">Fase</div>
-        <div class="cell head">19-21 Mar</div>
-        <div class="cell head">22-26 Mar</div>
-        <div class="cell head">27-31 Mar</div>
+        <div class="cell head">19 Mar</div>
+        <div class="cell head">20 Mar</div>
+        <div class="cell head">21-24 Mar</div>
+        <div class="cell head">25-31 Mar</div>
         <div class="cell head">1-5 Abr</div>
         <div class="cell head">6-10 Abr</div>
-        <div class="cell head">11-14 Abr</div>
 
-        <div class="cell phase">1. Reorganizacion y contenedor<div class="meta">Estructura de carpetas, Docker 5435, referencias locales</div></div>
+        <div class="cell phase">1. Release congelado baseline<div class="meta">Paquete tecnico y narrativo preservado como referencia comun</div></div>
         <div class="cell"><div class="bar done">Completado</div></div>
         <div class="cell"></div>
         <div class="cell"></div>
@@ -286,7 +286,7 @@
         <div class="cell"></div>
         <div class="cell"></div>
 
-        <div class="cell phase">2. Arquitectura de seeds<div class="meta">Reglas, orden de carga, politica cronologica y validaciones post-seed</div></div>
+        <div class="cell phase">2. S2.1 Migraciones versionadas<div class="meta">Journal, up/down, validacion y rollback controlado</div></div>
         <div class="cell"><div class="bar done">Completado</div></div>
         <div class="cell"></div>
         <div class="cell"></div>
@@ -294,7 +294,7 @@
         <div class="cell"></div>
         <div class="cell"></div>
 
-        <div class="cell phase">3. Seed canonico<div class="meta">3 flujos E2E completos: BOG-MIA-MAD, BOG-MDE, BOG-MIA</div></div>
+        <div class="cell phase">3. S2.2 Backup y recovery<div class="meta">Restauracion local con 78 tablas y 0 diferencias</div></div>
         <div class="cell"><div class="bar done">Completado</div></div>
         <div class="cell"></div>
         <div class="cell"></div>
@@ -302,7 +302,7 @@
         <div class="cell"></div>
         <div class="cell"></div>
 
-        <div class="cell phase">4. Seed volumetrico<div class="meta">Vuelos futuros, reservas adicionales, escala de volumetria</div></div>
+        <div class="cell phase">4. S2.3 Runbook y diagnostico<div class="meta">Respuesta local a incidentes, diagnostico y recuperacion operativa</div></div>
         <div class="cell"><div class="bar done">Completado</div></div>
         <div class="cell"></div>
         <div class="cell"></div>
@@ -310,58 +310,64 @@
         <div class="cell"></div>
         <div class="cell"></div>
 
-        <div class="cell phase">5. Auditoria estructural<div class="meta">Hallazgos, inconsistencias y base de refactor</div></div>
-        <div class="cell"><div class="bar run">En curso</div></div>
-        <div class="cell"><div class="bar plan">Hallazgos</div></div>
-        <div class="cell"><div class="bar plan">Priorizacion</div></div>
+        <div class="cell phase">5. S3.1 Baseline performance<div class="meta">Consultas criticas medidas con umbrales definidos</div></div>
+        <div class="cell"><div class="bar done">Completado</div></div>
         <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-
-        <div class="cell phase">6. Reportes y narrativa<div class="meta">HTML de funcionalidades, cronograma y soporte ejecutivo</div></div>
-        <div class="cell"><div class="bar run">Ajuste QA cruzado</div></div>
-        <div class="cell"><div class="bar plan">Cierre narrativo</div></div>
         <div class="cell"></div>
         <div class="cell"></div>
         <div class="cell"></div>
         <div class="cell"></div>
 
-        <div class="cell phase">7. Validacion integral<div class="meta">Conteos, flujo punta a punta y coherencia documental</div></div>
+        <div class="cell phase">6. S3.2 Observabilidad minima<div class="meta">Locks, actividad, cache y crecimiento base publicados</div></div>
+        <div class="cell"><div class="bar done">Completado</div></div>
         <div class="cell"></div>
         <div class="cell"></div>
         <div class="cell"></div>
         <div class="cell"></div>
-        <div class="cell"><div class="bar plan">QA tecnico</div></div>
         <div class="cell"></div>
 
-        <div class="cell phase">8. Base documental para refactor<div class="meta">Cierre de evidencia, decisiones y backlog de refactor</div></div>
+        <div class="cell phase">7. S3.3 Seguridad local<div class="meta">Hardening, roles minimos y auditoria sin fallas bloqueantes</div></div>
+        <div class="cell"></div>
+        <div class="cell"><div class="bar done">Completado</div></div>
         <div class="cell"></div>
         <div class="cell"></div>
         <div class="cell"></div>
         <div class="cell"></div>
-        <div class="cell"><div class="bar plan">Consolidacion</div></div>
-        <div class="cell"><div class="bar plan">Entrega</div></div>
+
+        <div class="cell phase">8. S4 Continuidad operativa<div class="meta">Secretos, logins operativos, menor privilegio, unificacion DDL+migraciones, confinamiento de red local y aislamiento del admin bootstrap cerrados</div></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"><div class="bar done">Secretos locales</div></div>
+        <div class="cell"><div class="bar done">Logins operativos</div></div>
+        <div class="cell"><div class="bar done">Menor privilegio</div></div>
+        <div class="cell"><div class="bar done">Admin bootstrap interno</div></div>
       </div>
     </section>
 
     <section class="notes">
       <article class="note">
-        <h2>Hitos completados al 19-Mar</h2>
+        <h2>Hitos completados al 20-Mar</h2>
         <ul>
-          <li>Seed canonico cerrado con 3 flujos E2E completos (IE-007 resuelto).</li>
-          <li>Politica cronologica documentada y aplicada en todos los timestamps (IE-005 resuelto).</li>
-          <li>Validaciones post-seed extendidas con gate canónico + volumétrico bloqueantes (7 fases).</li>
-          <li>Seed volumetrico cerrado con cobertura comercial + viaje y umbral operativo cumplido (IE-003 resuelto).</li>
-          <li>Orden de carga topologico documentado como contrato operativo (IE-004 resuelto).</li>
+          <li>Release congelado preservado como baseline tecnico y narrativo.</li>
+          <li>Migraciones versionadas y rollback controlado operativos.</li>
+          <li>Recovery local probado con 78 tablas comparadas y 0 diferencias.</li>
+          <li>Runbook de incidentes y diagnostico rapido publicados.</li>
+          <li>Performance local medida: 6 consultas, 0 fuera de umbral.</li>
+          <li>Observabilidad minima y seguridad local auditadas en verde.</li>
+          <li>Secretos locales no versionados validados y convertidos en control bloqueante.</li>
+          <li>Logins operativos RW, RO y AUDIT validados 3/3 por conexion real.</li>
+          <li>Diagnostico/observabilidad/baseline validados con defaults AUDIT, RO y RW.</li>
+          <li>La recreacion limpia ahora deja `schema_migration_journal` materializado desde el rebuild.</li>
+          <li>El puerto PostgreSQL local ahora queda ligado a `127.0.0.1` por defecto.</li>
         </ul>
       </article>
       <article class="note">
-        <h2>Riesgos activos de cierre</h2>
+        <h2>Cierre del tramo y siguiente foco</h2>
         <ul>
-          <li>IE-001 activo: catalogos cerrados del dominio deben tratarse como excepcion, no inflarse para llegar a volumetria arbitraria.</li>
-          <li>IE-002 activo: documentos heredados con rutas previas a la reorganizacion deben marcarse o alinearse.</li>
-          <li>IE-008 activo: asegurar que canvas, landing y reportes reflejen el mismo estado tecnico.</li>
-          <li>Mantener ejecucion de `99_validaciones_post_seed.sql` despues de cambios para evitar regresiones.</li>
+          <li><code>fly_admin</code> permanece como bootstrap superuser solo por restriccion del motor y ya no acepta TCP.</li>
+          <li>El puerto 5435 sigue disponible para desarrollo, pero confinado a loopback por defecto.</li>
+          <li><code>infra/docker/.env</code> y los logins operativos locales ya quedaron definidos fuera del repo y validados.</li>
+          <li>El siguiente tramo recomendado es ejecutar la primera corrida remota de `F1.2/F1.3` en GitHub Actions y registrar evidencia del pipeline sin introducir todavia Liquibase.</li>
         </ul>
       </article>
     </section>

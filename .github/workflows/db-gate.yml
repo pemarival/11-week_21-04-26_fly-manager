@@ -1,0 +1,109 @@
+name: db-gate
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: pwsh
+
+concurrency:
+  group: db-gate-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quick-gate:
+    name: Quick Gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show toolchain versions
+        run: |
+          $PSVersionTable.PSVersion.ToString()
+          docker --version
+          docker compose version
+
+      - name: Validate versioned migrations
+        run: |
+          ./infra/tools/validar_migraciones.ps1
+
+      - name: Generate CI local env
+        run: |
+          ./infra/tools/inicializar_secretos_locales.ps1 -PasswordLength 32 -MinPasswordLength 24
+
+      - name: Run quick architectural gate
+        run: |
+          ./infra/tools/ejecutar_gate_pre_release.ps1 -SkipDocker
+
+      - name: Publish quick gate summary
+        if: always()
+        run: |
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "## Quick Gate"
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- Ref: ${{ github.ref_name }}"
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- SHA: ${{ github.sha }}"
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- Status: ${{ job.status }}"
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- Artifact: quick-gate-artifacts-${{ github.run_number }}-${{ github.run_attempt }}"
+
+      - name: Upload quick gate artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quick-gate-artifacts-${{ github.run_number }}-${{ github.run_attempt }}
+          if-no-files-found: warn
+          retention-days: 14
+          path: |
+            docs/validacion/
+
+  full-db-gate:
+    name: Full DB Gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    needs:
+      - quick-gate
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show toolchain versions
+        run: |
+          $PSVersionTable.PSVersion.ToString()
+          docker --version
+          docker compose version
+
+      - name: Generate CI local env
+        run: |
+          ./infra/tools/inicializar_secretos_locales.ps1 -PasswordLength 32 -MinPasswordLength 24
+
+      - name: Run full architectural gate
+        run: |
+          ./infra/tools/ejecutar_gate_pre_release.ps1
+
+      - name: Publish full gate summary
+        if: always()
+        run: |
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "## Full DB Gate"
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- Ref: ${{ github.ref_name }}"
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- SHA: ${{ github.sha }}"
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- Status: ${{ job.status }}"
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- Artifact: full-db-gate-artifacts-${{ github.run_number }}-${{ github.run_attempt }}"
+
+      - name: Upload full gate artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-db-gate-artifacts-${{ github.run_number }}-${{ github.run_attempt }}
+          if-no-files-found: warn
+          retention-days: 14
+          path: |
+            docs/validacion/
+            infra/runtime/
