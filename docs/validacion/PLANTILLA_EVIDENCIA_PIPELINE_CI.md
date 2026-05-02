@@ -40,6 +40,7 @@
 - Decision del run:
 - Siguiente ajuste:
 - Estado de industrializacion:
+- Estado de promocion:
 
 ## 6. Proximos pasos
 

@@ -20,6 +20,7 @@ $operationalLoginsValidationScript = Join-Path $repoRoot "infra\tools\validar_lo
 $leastPrivilegeValidationScript = Join-Path $repoRoot "infra\tools\validar_menor_privilegio_operativo_local.ps1"
 $bootstrapAdminValidationScript = Join-Path $repoRoot "infra\tools\validar_admin_bootstrap_local.ps1"
 $securityAuditScript = Join-Path $repoRoot "infra\tools\auditar_seguridad_postgres_local.ps1"
+$promotionGuardValidationScript = Join-Path $repoRoot "infra\tools\validar_control_promocion_ci.ps1"
 $checklistPath = Join-Path $repoRoot "docs\validacion\CHECKLIST_RELEASE_ARQUITECTONICO.md"
 $notePath = Join-Path $repoRoot "docs\planes\NOTA_EJECUTIVA_PRE_RELEASE_2026-03-19.md"
 
@@ -74,6 +75,7 @@ Invoke-Step -Label "Verificacion de archivos base" -Action {
     Assert-FileExists -Path $leastPrivilegeValidationScript
     Assert-FileExists -Path $bootstrapAdminValidationScript
     Assert-FileExists -Path $securityAuditScript
+    Assert-FileExists -Path $promotionGuardValidationScript
     Assert-FileExists -Path $checklistPath
     Assert-FileExists -Path $notePath
     if (-not $SkipDocker) {
@@ -149,6 +151,13 @@ Invoke-Step -Label "Validacion de rutas documentales" -Action {
     }
     if (-not $?) {
         throw "Fallo la validacion de rutas documentales."
+    }
+}
+
+Invoke-Step -Label "Validacion de control de promocion CI" -Action {
+    & $promotionGuardValidationScript
+    if (-not $?) {
+        throw "Fallo la validacion de control de promocion CI."
     }
 }
 

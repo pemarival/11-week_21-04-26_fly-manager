@@ -87,3 +87,15 @@ Registrar la primera corrida remota en:
 
 Si el pipeline remoto falla, el corte no debe considerarse industrializado
 hasta ajustar la diferencia runner/local.
+
+## Paso 7. Ejecutar release guard de promocion
+
+```powershell
+.\infra\tools\validar_control_promocion_ci.ps1
+```
+
+Resultado esperado:
+
+- evidencia remota del pipeline en verde
+- checklist de promocion en `OK`
+- politica de promocion alineada al workflow oficial

@@ -132,3 +132,7 @@ Se considera que el pipeline requiere ajuste si ocurre cualquiera de estos casos
   - `infra/tools/preparar_evidencia_pipeline_ci.ps1`
 - Procedimiento de corte:
   - `docs/validacion/PROCEDIMIENTO_CORTE_RELEASE.md`
+- Release guard:
+  - `docs/validacion/POLITICA_PROMOCION_DB_RELEASE_GUARD.md`
+  - `docs/validacion/CHECKLIST_PROMOCION_CI_DB.md`
+  - `infra/tools/validar_control_promocion_ci.ps1`

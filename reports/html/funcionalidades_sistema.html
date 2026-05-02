@@ -3,507 +3,644 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Informe de Funcionalidades - Sistema FLY</title>
+  <title>Capacidades Funcionales | FLY Data Platform</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f5f1e8;
-      --ink: #15212b;
-      --muted: #556370;
-      --panel: rgba(255, 252, 246, 0.88);
-      --line: rgba(21, 33, 43, 0.12);
-      --accent: #c3562c;
-      --forest: #255946;
-      --gold: #c28b2c;
-      --shadow: 0 20px 60px rgba(21, 33, 43, 0.12);
+      --bg: #f2f5ef;
+      --ink: #162722;
+      --ink-soft: #5a6d65;
+      --surface: rgba(255, 255, 255, 0.86);
+      --surface-strong: #ffffff;
+      --line: rgba(22, 39, 34, 0.12);
+      --line-strong: rgba(22, 39, 34, 0.22);
+      --primary: #1b6e59;
+      --blue: #1f5ca8;
+      --amber: #b87520;
+      --ok: #1a7a57;
+      --shadow-lg: 0 20px 58px rgba(22, 39, 34, 0.14);
+      --shadow-md: 0 12px 28px rgba(22, 39, 34, 0.09);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --font-main: "Sora", "Segoe UI", sans-serif;
+      --font-mono: "IBM Plex Mono", "Consolas", monospace;
     }
 
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
-      font-family: "Segoe UI", sans-serif;
+      font-family: var(--font-main);
       color: var(--ink);
       background:
-        radial-gradient(circle at top left, rgba(195, 86, 44, 0.16), transparent 30%),
-        radial-gradient(circle at top right, rgba(37, 89, 70, 0.12), transparent 28%),
-        linear-gradient(180deg, #fbf8f2 0%, var(--bg) 100%);
+        radial-gradient(circle at 8% -8%, rgba(27, 110, 89, 0.2), rgba(27, 110, 89, 0) 40%),
+        radial-gradient(circle at 92% -10%, rgba(31, 92, 168, 0.14), rgba(31, 92, 168, 0) 36%),
+        linear-gradient(180deg, #f8fbf6 0%, #edf3ee 52%, #e6ece8 100%);
     }
 
-    .wrap {
-      width: min(1180px, calc(100% - 40px));
+    a { color: inherit; text-decoration: none; }
+    p { margin: 0; color: var(--ink-soft); line-height: 1.7; }
+
+    .topbar,
+    .page,
+    .footer {
+      width: min(1240px, calc(100% - 34px));
       margin: 0 auto;
-      padding: 40px 0 56px;
     }
 
-    .hero,
-    .panel {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(16px);
-    }
-
-    .hero {
-      padding: 36px;
-      display: grid;
-      grid-template-columns: 1.5fr 1fr;
-      gap: 24px;
-      margin-bottom: 24px;
-    }
-
-    .eyebrow {
-      display: inline-block;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(195, 86, 44, 0.12);
-      color: var(--accent);
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      font-size: 12px;
-    }
-
-    h1, h2, h3 { margin: 0 0 12px; }
-
-    h1 {
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      line-height: 1.02;
-      max-width: 10ch;
+    .topbar {
       margin-top: 16px;
-    }
-
-    p {
-      margin: 0 0 12px;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      align-self: start;
-    }
-
-    .stat {
-      padding: 18px;
-      border-radius: 20px;
-      background: white;
-      border: 1px solid var(--line);
-    }
-
-    .stat strong {
-      display: block;
-      font-size: 1.7rem;
-      margin-bottom: 6px;
-      color: var(--forest);
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 24px;
-      margin-bottom: 24px;
-    }
-
-    .panel {
-      padding: 28px;
-    }
-
-    .modules {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-      margin-top: 18px;
-    }
-
-    .module {
-      padding: 18px;
-      border-radius: 20px;
-      background: white;
-      border: 1px solid var(--line);
-    }
-
-    .module h3 {
-      font-size: 1rem;
-      margin-bottom: 8px;
-    }
-
-    .module ul {
-      margin: 0;
-      padding-left: 18px;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .flow {
-      display: grid;
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 18px;
-    }
-
-    .node {
-      position: relative;
-      padding: 16px;
-      border-radius: 20px;
-      background: linear-gradient(180deg, white 0%, rgba(194, 139, 44, 0.12) 100%);
-      border: 1px solid var(--line);
-      min-height: 112px;
-    }
-
-    .node:not(:last-child)::after {
-      content: "";
-      position: absolute;
-      top: 50%;
-      right: -10px;
-      width: 20px;
-      height: 2px;
-      background: var(--accent);
-    }
-
-    .links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 16px;
-    }
-
-    .links a {
-      text-decoration: none;
-      color: var(--ink);
       padding: 12px 16px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: white;
-      font-weight: 600;
-    }
-
-    .highlight {
-      padding: 18px;
-      border-radius: 20px;
-      background: linear-gradient(135deg, rgba(37, 89, 70, 0.1), rgba(194, 139, 44, 0.12));
-      border: 1px solid rgba(37, 89, 70, 0.16);
-    }
-
-    .mini-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 14px;
-      background: white;
-      border-radius: 18px;
-      overflow: hidden;
-    }
-
-    .mini-table th,
-    .mini-table td {
-      padding: 12px 14px;
-      border-bottom: 1px solid var(--line);
-      text-align: left;
-    }
-
-    .mini-table th {
-      background: rgba(21, 33, 43, 0.04);
-      font-size: 0.9rem;
-    }
-
-    .footnote {
-      margin-top: 10px;
-      font-size: 0.92rem;
-      color: var(--muted);
-    }
-
-    .docnav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
       display: flex;
       align-items: center;
-      gap: 16px;
-      padding: 10px 24px;
-      background: rgba(21, 33, 43, 0.96);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(21, 33, 43, 0.14);
+      gap: 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.66);
+      background: rgba(255, 255, 255, 0.68);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: 12px;
+      z-index: 30;
     }
 
-    .docnav-home {
-      font-weight: 800;
-      font-size: 1rem;
-      color: #fff;
-      text-decoration: none;
-      letter-spacing: 0.06em;
-    }
-
-    .docnav-links {
+    .brand {
       display: flex;
-      gap: 4px;
-      flex: 1;
+      align-items: center;
+      gap: 10px;
     }
 
-    .docnav-links a {
-      text-decoration: none;
-      color: rgba(255,255,255,0.6);
-      padding: 6px 14px;
+    .brand-badge {
+      min-width: 54px;
       border-radius: 999px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      transition: background 0.2s, color 0.2s;
-    }
-
-    .docnav-links a:hover,
-    .docnav-links a.active {
-      background: rgba(255,255,255,0.12);
+      padding: 10px 12px;
+      text-align: center;
       color: #fff;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      background: linear-gradient(140deg, var(--primary), var(--blue));
+      box-shadow: 0 10px 22px rgba(27, 110, 89, 0.28);
     }
 
-    .docnav-badge {
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 4px 12px;
+    .brand-copy {
+      display: grid;
+      gap: 2px;
+    }
+
+    .brand-copy strong { font-size: 0.92rem; }
+    .brand-copy small { font-size: 0.74rem; color: var(--ink-soft); }
+
+    .topnav {
+      margin-left: auto;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .topnav a {
+      padding: 8px 12px;
       border-radius: 999px;
-      background: rgba(37, 89, 70, 0.3);
-      color: #7ecba5;
-      border: 1px solid rgba(37, 89, 70, 0.4);
+      color: var(--ink-soft);
+      font-size: 0.84rem;
+      font-weight: 600;
+      transition: 0.2s ease;
+    }
+
+    .topnav a:hover { background: rgba(22, 39, 34, 0.08); color: var(--ink); }
+    .topnav a.active { background: rgba(27, 110, 89, 0.14); color: var(--primary); }
+
+    .state-pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--primary);
+      border: 1px solid rgba(27, 110, 89, 0.24);
+      background: rgba(27, 110, 89, 0.1);
       white-space: nowrap;
     }
 
-    @media (max-width: 980px) {
+    .page {
+      margin-top: 16px;
+      margin-bottom: 22px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .hero,
+    .section,
+    .footer {
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(255, 255, 255, 0.64);
+      background: var(--surface);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .hero {
+      padding: 24px;
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 1.2fr 0.8fr;
+    }
+
+    .hero-main,
+    .hero-side {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      background: var(--surface-strong);
+    }
+
+    .hero-main {
+      background:
+        radial-gradient(circle at 96% 10%, rgba(31, 92, 168, 0.12), rgba(31, 92, 168, 0) 30%),
+        linear-gradient(165deg, rgba(255, 255, 255, 0.96), rgba(249, 253, 251, 0.88));
+    }
+
+    .kicker {
+      display: inline-flex;
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--primary);
+      background: rgba(27, 110, 89, 0.1);
+    }
+
+    h1 {
+      margin: 14px 0 12px;
+      font-size: clamp(1.7rem, 3.4vw, 2.65rem);
+      line-height: 1.08;
+      max-width: 16ch;
+    }
+
+    .hero-actions {
+      margin-top: 18px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .hero-actions a {
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      padding: 9px 12px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: rgba(27, 110, 89, 0.08);
+    }
+
+    .hero-actions a.primary {
+      color: #fff;
+      background: linear-gradient(140deg, var(--primary), var(--blue));
+      border-color: transparent;
+      box-shadow: 0 10px 20px rgba(27, 110, 89, 0.26);
+    }
+
+    .kpi-grid {
+      margin-top: 16px;
+      display: grid;
+      gap: 8px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .kpi {
+      border: 1px solid rgba(22, 39, 34, 0.14);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 12px;
+    }
+
+    .kpi strong {
+      display: block;
+      font-size: 1.5rem;
+      line-height: 1;
+      color: var(--ink);
+    }
+
+    .kpi span {
+      margin-top: 5px;
+      display: block;
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+    }
+
+    .hero-side h2 {
+      margin: 0 0 6px;
+      font-size: 1.1rem;
+    }
+
+    .hero-side ul {
+      margin: 12px 0 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 7px;
+    }
+
+    .hero-side li {
+      color: var(--ink-soft);
+      line-height: 1.5;
+      font-size: 0.9rem;
+    }
+
+    .section {
+      padding: 22px;
+    }
+
+    .section-head {
+      margin-bottom: 14px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: clamp(1.25rem, 2.3vw, 2rem);
+      line-height: 1.15;
+      max-width: 24ch;
+    }
+
+    .domain-grid,
+    .handoff-grid,
+    .artifact-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .domain-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .handoff-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .artifact-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    .card,
+    .lane-step {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: var(--surface-strong);
+      padding: 14px;
+    }
+
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 0.96rem;
+      line-height: 1.3;
+    }
+
+    .lane {
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-md);
+      background: linear-gradient(160deg, rgba(27, 110, 89, 0.08), rgba(31, 92, 168, 0.08));
+      padding: 16px;
+    }
+
+    .lane h3 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+    }
+
+    .lane-grid {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+
+    .lane-step {
+      position: relative;
+      min-height: 92px;
+      font-size: 0.84rem;
+      line-height: 1.45;
+      color: #274239;
+    }
+
+    .lane-step:not(:last-child)::after {
+      content: ">";
+      position: absolute;
+      right: -8px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary);
+      font-weight: 700;
+      font-family: var(--font-main);
+    }
+
+    .flag {
+      margin-bottom: 8px;
+      display: inline-flex;
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .flag.ok { color: var(--ok); background: rgba(26, 122, 87, 0.12); }
+    .flag.info { color: var(--blue); background: rgba(31, 92, 168, 0.12); }
+    .flag.next { color: var(--amber); background: rgba(184, 117, 32, 0.14); }
+
+    .checklist {
+      margin: 8px 0 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 7px;
+    }
+
+    .checklist li {
+      color: var(--ink-soft);
+      line-height: 1.5;
+      font-size: 0.9rem;
+    }
+
+    .artifact-card ul {
+      margin: 8px 0 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 7px;
+    }
+
+    .artifact-card a {
+      color: var(--blue);
+      font-weight: 600;
+    }
+
+    .footer {
+      padding: 16px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .footer p {
+      margin-top: 4px;
+      max-width: 64ch;
+      font-size: 0.86rem;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .footer-links a {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px 10px;
+      background: rgba(27, 110, 89, 0.08);
+      color: var(--primary);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    @media (max-width: 1140px) {
       .hero,
-      .grid,
-      .modules,
-      .flow {
+      .domain-grid,
+      .handoff-grid,
+      .artifact-grid {
         grid-template-columns: 1fr;
       }
 
-      .node:not(:last-child)::after {
-        top: auto;
-        bottom: -8px;
-        left: 50%;
-        right: auto;
-        width: 2px;
-        height: 16px;
-        transform: translateX(-50%);
+      .lane-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .lane-step:not(:last-child)::after {
+        content: "";
+      }
+
+      .topbar {
+        border-radius: 22px;
+        position: static;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .topbar,
+      .page,
+      .footer {
+        width: min(100%, calc(100% - 18px));
+      }
+
+      .topbar,
+      .hero,
+      .section,
+      .footer,
+      .hero-main,
+      .hero-side {
+        padding: 14px;
+      }
+
+      h1,
+      .section-head h2 {
+        max-width: none;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .hero-actions a {
+        width: 100%;
+        text-align: center;
+      }
+
+      .kpi-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
-  <nav class="docnav">
-    <a href="../../app/landing/index.html" class="docnav-home">&#9992; FLY</a>
-    <div class="docnav-links">
+  <header class="topbar">
+    <a class="brand" href="../../app/landing/index.html">
+      <span class="brand-badge">FLY</span>
+      <span class="brand-copy">
+        <strong>Data Platform Portal</strong>
+        <small>Vista funcional y handoff para equipos</small>
+      </span>
+    </a>
+    <nav class="topnav" aria-label="Navegacion principal">
+      <a href="../../app/landing/index.html">Portal</a>
       <a href="../../architecture/canvas/canvas_arquitectura.html">Canvas</a>
       <a href="funcionalidades_sistema.html" class="active">Funcionalidades</a>
       <a href="../cronograma/cronograma_realizacion.html">Cronograma</a>
-    </div>
-    <span class="docnav-badge">Release congelado ✓ · S4.6 ✓</span>
-  </nav>
+    </nav>
+    <span class="state-pill">S4.6 + F1</span>
+  </header>
 
-  <main class="wrap">
+  <main class="page">
     <section class="hero">
-      <div>
-        <span class="eyebrow">Informe Arquitectonico Funcional</span>
-        <h1>Paquete tecnico estabilizado y trazable.</h1>
-        <p>El modelo 3FN no solo quedo validado con seed canonico y volumetrico; despues del release congelado se consolidaron migraciones versionadas, recovery local, baseline de performance, observabilidad minima, hardening de seguridad, menor privilegio operativo y aislamiento del admin bootstrap sin fallas bloqueantes.</p>
-        <div class="links">
-          <a href="../../app/landing/index.html">Abrir landing</a>
-          <a href="../../architecture/canvas/canvas_arquitectura.html">Abrir canvas</a>
-          <a href="../../docs/planes/ROADMAP_ESTABILIZACION_DB_SENIOR.md">Ver roadmap senior</a>
-        </div>
-      </div>
-      <div class="stats">
-        <div class="stat">
-          <strong>76</strong>
-          tablas implementadas
-        </div>
-        <div class="stat">
-          <strong>1223</strong>
-          reservas y tickets trazables
-        </div>
-        <div class="stat">
-          <strong>6</strong>
-          consultas criticas medidas
-        </div>
-        <div class="stat">
-          <strong>0</strong>
-          fallas bloqueantes S4.6
-        </div>
-      </div>
-    </section>
-
-    <section class="grid">
-      <article class="panel">
-        <h2>Capacidades nucleares</h2>
-        <p>El sistema no es solo una base transaccional; es una columna vertebral para aerolinea comercial con trazabilidad desde identidad hasta facturacion.</p>
-        <div class="modules">
-          <div class="module">
-            <h3>Identidad y seguridad</h3>
-            <ul>
-              <li>Personas, documentos y contactos</li>
-              <li>Cuentas, roles y permisos</li>
-              <li>Estados de acceso y asignacion de roles</li>
-            </ul>
-          </div>
-          <div class="module">
-            <h3>Cliente y lealtad</h3>
-            <ul>
-              <li>Cliente comercial desacoplado de persona</li>
-              <li>Programa, cuenta, nivel y movimientos de millas</li>
-              <li>Beneficios asociados a categoria</li>
-            </ul>
-          </div>
-          <div class="module">
-            <h3>Geografia y aeropuerto</h3>
-            <ul>
-              <li>Jerarquia normalizada de ubicacion</li>
-              <li>Aeropuertos, terminales, puertas y pistas</li>
-              <li>Regulaciones aeroportuarias trazables</li>
-            </ul>
-          </div>
-          <div class="module">
-            <h3>Flota y mantenimiento</h3>
-            <ul>
-              <li>Fabricante, modelo, aeronave y cabinas</li>
-              <li>Asientos por configuracion</li>
-              <li>Eventos, tipos y proveedores de mantenimiento</li>
-            </ul>
-          </div>
-          <div class="module">
-            <h3>Operacion de vuelo</h3>
-            <ul>
-              <li>Vuelos, segmentos y estado operativo</li>
-              <li>Motivos y registro de retrasos</li>
-              <li>Base para programacion y control operacional</li>
-            </ul>
-          </div>
-          <div class="module">
-            <h3>Venta y viaje</h3>
-            <ul>
-              <li>Reserva como raiz comercial</li>
-              <li>Venta, ticket, segmento y asignacion de asiento</li>
-              <li>Equipaje, check-in y pase de abordar</li>
-            </ul>
-          </div>
-        </div>
-      </article>
-
-      <article class="panel">
-        <h2>Flujo operativo visible</h2>
-        <p>El flujo critico queda alineado con la arquitectura 3FN y puede ser explicado sin ambiguedad funcional.</p>
-        <div class="flow">
-          <div class="node">
-            <h3>1. Cliente</h3>
-            <p>Persona, documentos, contactos y cuenta comercial.</p>
-          </div>
-          <div class="node">
-            <h3>2. Reserva</h3>
-            <p>PNR, pasajeros, canal y estado de reservacion.</p>
-          </div>
-          <div class="node">
-            <h3>3. Ticket</h3>
-            <p>Emision separada de la reserva, ligada a segmentos.</p>
-          </div>
-          <div class="node">
-            <h3>4. Viaje</h3>
-            <p>Asiento, equipaje, check-in y validacion de abordaje.</p>
-          </div>
-          <div class="node">
-            <h3>5. Pago</h3>
-            <p>Pago, transaccion y trazabilidad operacional.</p>
-          </div>
-          <div class="node">
-            <h3>6. Factura</h3>
-            <p>Factura, lineas, impuestos y reembolso controlado.</p>
-          </div>
-        </div>
-      </article>
-    </section>
-
-    <section class="grid">
-      <article class="panel">
-        <h2>Estado de preparacion</h2>
-        <div class="highlight">
-          <p><strong>Listo hoy:</strong> DDL validado, release congelado preservado, seed canonico y volumetrico cerrados, migraciones versionadas operativas, rebuild limpio unificado con journal, recovery probado, baseline de performance medido, observabilidad local en verde, seguridad local auditada, secretos runtime locales validados, logins operativos RW/RO/AUDIT conectables, menor privilegio operativo validado, publicacion local de PostgreSQL confinada a loopback y `fly_admin` aislado como break-glass interno.</p>
-          <p><strong>Siguiente salto:</strong> ejecutar la primera corrida remota del workflow `GitHub Actions` del delivery DB sobre el repo actual y registrar su evidencia, sin Liquibase ni repositorio separado en esta fase.</p>
-        </div>
-        <table class="mini-table">
-          <thead>
-            <tr>
-              <th>Componente</th>
-              <th>Estado</th>
-              <th>Uso</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>DDL canonico</td>
-              <td>Validado</td>
-              <td>Estructura maestra 3FN</td>
-            </tr>
-            <tr>
-              <td>Migraciones versionadas</td>
-              <td>Operativas</td>
-              <td>Journal, `up/down`, rollback controlado y rebuild limpio alineado</td>
-            </tr>
-            <tr>
-              <td>Backup/restore local</td>
-              <td>Probado</td>
-              <td>Recovery con 78 tablas y 0 diferencias</td>
-            </tr>
-            <tr>
-              <td>Contenedor Docker</td>
-              <td>Operativo</td>
-              <td>Ejecucion local repetible (5435)</td>
-            </tr>
-            <tr>
-              <td>Seed canonico</td>
-              <td>Implementado</td>
-              <td>3 flujos E2E completos validados</td>
-            </tr>
-            <tr>
-              <td>Baseline performance</td>
-              <td>OK</td>
-              <td>6 consultas medidas, 0 fuera de umbral</td>
-            </tr>
-            <tr>
-              <td>Observabilidad minima</td>
-              <td>OK</td>
-              <td>Locks 0, idle 0, cache hit 99.88%</td>
-            </tr>
-            <tr>
-              <td>Seguridad local</td>
-              <td>Auditada</td>
-              <td>Roles minimos y auditoria sin fallas bloqueantes</td>
-            </tr>
-            <tr>
-              <td>Riesgos residuales</td>
-              <td>Cerrados al host</td>
-              <td>Bootstrap admin encapsulado por socket interno; red local confinada a `127.0.0.1`</td>
-            </tr>
-          </tbody>
-        </table>
-        <p class="footnote">Fuente operativa: `db/seeds/00_seed_canonico.sql`, `db/seeds/01_seed_volumetrico.sql`, `docs/planes/ROADMAP_ESTABILIZACION_DB_SENIOR.md` y carpeta `docs/validacion/`.</p>
-      </article>
-
-      <article class="panel">
-        <h2>Artefactos para explicacion</h2>
-        <p>El paquete ya se puede explicar desde modelo, operacion, performance y seguridad sin cambiar de narrativa.</p>
-        <div class="links">
-          <a href="../../docs/datos/modelo_documentado.md">Modelo documentado</a>
-          <a href="../../docs/validacion/POLITICA_MIGRACIONES_Y_ROLLBACK.md">Migraciones y rollback</a>
-          <a href="../../docs/validacion/EVIDENCIA_RECUPERACION_LOCAL_2026-03-19.md">Evidencia recovery</a>
-          <a href="../../docs/validacion/EVIDENCIA_BASELINE_PERFORMANCE_LOCAL_2026-03-19.md">Baseline performance</a>
-          <a href="../../docs/validacion/EVIDENCIA_OBSERVABILIDAD_LOCAL_2026-03-19.md">Observabilidad local</a>
-          <a href="../../docs/validacion/EVIDENCIA_MENOR_PRIVILEGIO_OPERATIVO_LOCAL_2026-03-20.md">Menor privilegio operativo</a>
-          <a href="../../docs/validacion/EVIDENCIA_AUDITORIA_SEGURIDAD_LOCAL_2026-03-20.md">Auditoria seguridad</a>
-          <a href="../../docs/validacion/POLITICA_SEGURIDAD_DB_LOCAL.md">Politica seguridad</a>
+      <article class="hero-main">
+        <span class="kicker">Capacidades del sistema</span>
+        <h1>Lo que backend, frontend y producto pueden usar hoy sin ambiguedad.</h1>
+        <p>
+          Esta vista traduce la arquitectura de datos a capacidades operativas y
+          flujos de negocio. El objetivo es acelerar implementacion sobre un
+          contrato estable, no volver a discutir el modelo en cada modulo.
+        </p>
+        <div class="hero-actions">
+          <a class="primary" href="../../app/landing/index.html">Volver al portal</a>
+          <a href="../../architecture/canvas/canvas_arquitectura.html">Ver canvas tecnico</a>
           <a href="../../docs/planes/ROADMAP_ESTABILIZACION_DB_SENIOR.md">Roadmap senior</a>
-          <a href="../../docs/planes/BACKLOG_REFACTOR_POST_RELEASE.md">Backlog post-release</a>
-          <a href="../cronograma/cronograma_realizacion.html">Cronograma</a>
         </div>
-        <p class="footnote">Este informe ahora muestra funcionalidad, madurez operativa y ruta inmediata de continuidad sin reabrir el baseline congelado.</p>
+        <div class="kpi-grid">
+          <article class="kpi"><strong>76</strong><span>tablas en baseline</span></article>
+          <article class="kpi"><strong>12</strong><span>modulos funcionales</span></article>
+          <article class="kpi"><strong>23</strong><span>reservas y tickets canonicos</span></article>
+          <article class="kpi"><strong>253</strong><span>clientes operativos en seed</span></article>
+        </div>
       </article>
+
+      <aside class="hero-side">
+        <h2>Estado de preparacion</h2>
+        <p>Resumen para consumo de equipos de aplicacion.</p>
+        <ul>
+          <li>Flujo comercial y de viaje modelado de punta a punta.</li>
+          <li>Catalogos, estados y relaciones ya normalizados.</li>
+          <li>Rebuild limpio y gate listos para integracion continua local.</li>
+          <li>Evidencias de recovery, performance y seguridad publicadas.</li>
+          <li>CI remoto inicial corriendo con db-gate.</li>
+        </ul>
+      </aside>
+    </section>
+
+    <section class="section">
+      <header class="section-head">
+        <h2>Capacidades nucleares por dominio</h2>
+        <p>Resumen funcional del alcance actual del baseline.</p>
+      </header>
+      <div class="domain-grid">
+        <article class="card">
+          <h3>Identidad y seguridad</h3>
+          <p>Personas, documentos, contactos, cuentas, roles y permisos operativos.</p>
+        </article>
+        <article class="card">
+          <h3>Cliente y lealtad</h3>
+          <p>Cliente comercial, beneficios, cuentas de millas, niveles y transacciones.</p>
+        </article>
+        <article class="card">
+          <h3>Geografia y aeropuerto</h3>
+          <p>Jerarquia territorial, aeropuertos, terminales, puertas, pistas y regulacion.</p>
+        </article>
+        <article class="card">
+          <h3>Flota y operacion aerea</h3>
+          <p>Aeronave, cabina, asiento, vuelo, segmento, retrasos y mantenimiento.</p>
+        </article>
+        <article class="card">
+          <h3>Venta y viaje</h3>
+          <p>Reserva, venta, ticket, segmento, asiento, equipaje, check-in y abordaje.</p>
+        </article>
+        <article class="card">
+          <h3>Pago y facturacion</h3>
+          <p>Pago, transaccion, factura, lineas, impuestos y reembolso controlado.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <header class="section-head">
+        <h2>Flujo funcional de referencia</h2>
+        <p>Cadena de negocio usada como base para APIs, pantallas y QA.</p>
+      </header>
+      <div class="lane">
+        <h3>Persona a factura en un solo recorrido trazable</h3>
+        <div class="lane-grid">
+          <article class="lane-step"><span class="flag ok">01</span>Persona y cliente</article>
+          <article class="lane-step"><span class="flag ok">02</span>Reserva y pasajeros</article>
+          <article class="lane-step"><span class="flag ok">03</span>Venta y ticket</article>
+          <article class="lane-step"><span class="flag ok">04</span>Viaje y abordaje</article>
+          <article class="lane-step"><span class="flag ok">05</span>Pago y transaccion</article>
+          <article class="lane-step"><span class="flag ok">06</span>Factura y lineas</article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <header class="section-head">
+        <h2>Handoff tecnico por equipo</h2>
+        <p>Lo minimo necesario para arrancar con claridad.</p>
+      </header>
+      <div class="handoff-grid">
+        <article class="card">
+          <span class="flag info">Backend</span>
+          <h3>Contrato de implementacion</h3>
+          <ul class="checklist">
+            <li>Usar `reservation` como raiz comercial.</li>
+            <li>Modelar itinerario con `ticket_segment` y `flight_segment`.</li>
+            <li>Recrear baseline con `recrear_instalacion_limpia.ps1` antes de pruebas.</li>
+            <li>Validar cambios con `ejecutar_gate_pre_release.ps1`.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <span class="flag info">Frontend y Producto</span>
+          <h3>Contrato de experiencia</h3>
+          <ul class="checklist">
+            <li>Mapear journey sobre estados de reserva, ticket, check-in y boarding.</li>
+            <li>Usar flujo de referencia para definir pantallas y validaciones.</li>
+            <li>Tomar reglas de negocio desde capacidades y cronograma.</li>
+            <li>Alinear backlog visual con evidencias reales del baseline.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <header class="section-head">
+        <h2>Artefactos de consumo</h2>
+        <p>Accesos directos para implementacion y validacion.</p>
+      </header>
+      <div class="artifact-grid">
+        <article class="card artifact-card">
+          <h3>Modelo</h3>
+          <ul>
+            <li><a href="../../db/ddl/modelo_postgresql.sql">DDL maestro</a></li>
+            <li><a href="../../docs/datos/modelo_documentado.md">Modelo documentado</a></li>
+          </ul>
+        </article>
+        <article class="card artifact-card">
+          <h3>Operativo</h3>
+          <ul>
+            <li><a href="../../infra/docker/recrear_instalacion_limpia.ps1">Rebuild limpio</a></li>
+            <li><a href="../../infra/tools/ejecutar_gate_pre_release.ps1">Gate pre-release</a></li>
+          </ul>
+        </article>
+        <article class="card artifact-card">
+          <h3>Evidencias</h3>
+          <ul>
+            <li><a href="../../docs/validacion/EVIDENCIA_RECUPERACION_LOCAL_2026-03-19.md">Recovery</a></li>
+            <li><a href="../../docs/validacion/EVIDENCIA_BASELINE_PERFORMANCE_LOCAL_2026-03-19.md">Performance</a></li>
+            <li><a href="../../docs/validacion/EVIDENCIA_AUDITORIA_SEGURIDAD_LOCAL_2026-03-20.md">Seguridad</a></li>
+          </ul>
+        </article>
+        <article class="card artifact-card">
+          <h3>Gobierno</h3>
+          <ul>
+            <li><a href="../../docs/planes/PLAN_CONTINUIDAD_FASES_2026-03-19.md">Continuidad</a></li>
+            <li><a href="../../docs/validacion/EVIDENCIA_PIPELINE_CI_REMOTO_2026-03-20.md">Pipeline CI</a></li>
+            <li><a href="../../docs/validacion/POLITICA_PROMOCION_DB_RELEASE_GUARD.md">Release guard</a></li>
+          </ul>
+        </article>
+      </div>
     </section>
   </main>
+
+  <footer class="footer">
+    <div>
+      <strong>Informe Funcional FLY</strong>
+      <p>Traduccion de arquitectura de datos a capacidades listas para equipos de aplicacion.</p>
+    </div>
+    <div class="footer-links">
+      <a href="../../app/landing/index.html">Portal</a>
+      <a href="../../architecture/canvas/canvas_arquitectura.html">Canvas</a>
+      <a href="../cronograma/cronograma_realizacion.html">Cronograma</a>
+    </div>
+  </footer>
 </body>
 </html>

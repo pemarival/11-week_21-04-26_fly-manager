@@ -116,6 +116,12 @@ docker exec -i fly-bd-pg-5435 psql -U fly_admin -d flydb -v ON_ERROR_STOP=1 -f /
 docker exec -i fly-bd-pg-5435 psql -U fly_admin -d flydb -v ON_ERROR_STOP=1 -f /workspace/seeds/99_validaciones_post_seed.sql
 ```
 
+Nota:
+
+- `fly_admin` debe usarse solo dentro del contenedor con `docker exec`.
+- si te conectas desde el host a `localhost:5435`, usa `FLY_APP_RO_USER`, `FLY_APP_RW_USER` o `FLY_APP_AUDIT_USER`
+- el rechazo `pg_hba.conf rejects connection ... user "fly_admin"` por TCP es esperado
+
 ## Bootstrap deterministico
 
 - la carga de `DDL + seeds + validaciones` se ejecuta de forma deterministica desde:
@@ -132,6 +138,7 @@ Set-Location infra\docker
 ## Estado Actual
 
 - el contenedor de trabajo ya esta disponible en `localhost:5435`
+- `localhost:5435` debe usarse con logins operativos; `fly_admin` queda reservado a socket interno en el contenedor
 - el DDL canonico ya se inicializa correctamente desde `db/ddl/modelo_postgresql.sql`
 - `00_seed_canonico.sql` ya puebla catalogos raiz, permisos, roles, monedas, impuestos y husos horarios
 - `01_seed_volumetrico.sql` ya implementa una expansion inicial (vuelos futuros Q2, personas/clientes, reservas, pagos y facturas volumetricas)

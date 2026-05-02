@@ -26,6 +26,8 @@ $SecretsValidationPath = Join-Path $ProjectRoot "infra\tools\validar_secretos_lo
 $SecurityHardeningPath = Join-Path $ProjectRoot "infra\tools\endurecer_seguridad_postgres_local.ps1"
 $BootstrapAdminConfinementPath = Join-Path $ProjectRoot "infra\tools\confinar_admin_bootstrap_local.ps1"
 $OperationalLoginsProvisionPath = Join-Path $ProjectRoot "infra\tools\provisionar_logins_operativos_locales.ps1"
+$DelegatedUsersProvisionPath = Join-Path $ProjectRoot "infra\tools\provisionar_usuarios_delegados_locales.ps1"
+$DelegatedUsersCsvPath = Join-Path $ProjectRoot "infra\runtime\security\delegated_users_local.csv"
 $OperationalLoginsValidationPath = Join-Path $ProjectRoot "infra\tools\validar_logins_operativos_locales.ps1"
 $OperationalLoginsEvidencePath   = Join-Path $ProjectRoot "docs\validacion\EVIDENCIA_LOGINS_OPERATIVOS_LOCALES_2026-03-20.md"
 $LeastPrivilegeValidationPath    = Join-Path $ProjectRoot "infra\tools\validar_menor_privilegio_operativo_local.ps1"
@@ -34,16 +36,45 @@ $BootstrapAdminValidationPath    = Join-Path $ProjectRoot "infra\tools\validar_a
 $BootstrapAdminEvidencePath      = Join-Path $ProjectRoot "docs\validacion\EVIDENCIA_ADMIN_BOOTSTRAP_LOCAL_2026-03-20.md"
 $SecurityAuditPath     = Join-Path $ProjectRoot "infra\tools\auditar_seguridad_postgres_local.ps1"
 $SecurityAuditEvidencePath = Join-Path $ProjectRoot "docs\validacion\EVIDENCIA_AUDITORIA_SEGURIDAD_LOCAL_2026-03-20.md"
+$EnvPath = Join-Path $ProjectRoot "infra\docker\.env"
 
 $ContainerName = "fly-bd-pg-5435"
 $DbUser = if ([string]::IsNullOrWhiteSpace($env:POSTGRES_USER)) { "fly_admin" } else { $env:POSTGRES_USER }
 $DbName = if ([string]::IsNullOrWhiteSpace($env:POSTGRES_DB))   { "flydb" }     else { $env:POSTGRES_DB }
+$HostBindIp = "127.0.0.1"
+$HostPort = "5435"
+$RuntimeLogin = "fly_local_rw"
+$ReadOnlyLogin = "fly_local_ro"
+$AuditLogin = "fly_local_audit"
 
 function Assert-RequiredFile {
     param([string]$Path)
     if (-not (Test-Path -LiteralPath $Path)) {
         throw "Archivo requerido no encontrado: $Path"
     }
+}
+
+function Get-EnvMap {
+    param([string]$Path)
+
+    $map = [ordered]@{}
+    foreach ($line in Get-Content -Path $Path) {
+        $trimmed = $line.Trim()
+        if ([string]::IsNullOrWhiteSpace($trimmed) -or $trimmed.StartsWith("#")) {
+            continue
+        }
+
+        $separator = $trimmed.IndexOf("=")
+        if ($separator -lt 1) {
+            throw "Formato invalido en archivo .env: $Path"
+        }
+
+        $key = $trimmed.Substring(0, $separator).Trim()
+        $value = $trimmed.Substring($separator + 1)
+        $map[$key] = $value
+    }
+
+    return $map
 }
 
 function Invoke-PsqlFile {
@@ -151,6 +182,7 @@ try {
     Assert-RequiredFile -Path $SecurityHardeningPath
     Assert-RequiredFile -Path $BootstrapAdminConfinementPath
     Assert-RequiredFile -Path $OperationalLoginsProvisionPath
+    Assert-RequiredFile -Path $DelegatedUsersProvisionPath
     Assert-RequiredFile -Path $OperationalLoginsValidationPath
     Assert-RequiredFile -Path $LeastPrivilegeValidationPath
     Assert-RequiredFile -Path $BootstrapAdminValidationPath
@@ -161,6 +193,23 @@ try {
     & $SecretsValidationPath | Out-Null
     if (-not $?) {
         throw "La validacion de secretos locales fallo. Ejecuta .\infra\tools\inicializar_secretos_locales.ps1"
+    }
+
+    $envMap = Get-EnvMap -Path $EnvPath
+    if ($envMap.Contains("POSTGRES_BIND_IP") -and (-not [string]::IsNullOrWhiteSpace([string]$envMap["POSTGRES_BIND_IP"]))) {
+        $HostBindIp = [string]$envMap["POSTGRES_BIND_IP"]
+    }
+    if ($envMap.Contains("POSTGRES_PORT") -and (-not [string]::IsNullOrWhiteSpace([string]$envMap["POSTGRES_PORT"]))) {
+        $HostPort = [string]$envMap["POSTGRES_PORT"]
+    }
+    if ($envMap.Contains("FLY_APP_RW_USER") -and (-not [string]::IsNullOrWhiteSpace([string]$envMap["FLY_APP_RW_USER"]))) {
+        $RuntimeLogin = [string]$envMap["FLY_APP_RW_USER"]
+    }
+    if ($envMap.Contains("FLY_APP_RO_USER") -and (-not [string]::IsNullOrWhiteSpace([string]$envMap["FLY_APP_RO_USER"]))) {
+        $ReadOnlyLogin = [string]$envMap["FLY_APP_RO_USER"]
+    }
+    if ($envMap.Contains("FLY_APP_AUDIT_USER") -and (-not [string]::IsNullOrWhiteSpace([string]$envMap["FLY_APP_AUDIT_USER"]))) {
+        $AuditLogin = [string]$envMap["FLY_APP_AUDIT_USER"]
     }
 
     docker compose config -q
@@ -362,6 +411,21 @@ SELECT
         throw "Fallo al provisionar logins operativos locales."
     }
 
+    if (Test-Path -LiteralPath $DelegatedUsersCsvPath) {
+        & $DelegatedUsersProvisionPath `
+            -ContainerName $ContainerName `
+            -DbAdminUser $DbUser `
+            -DbName $DbName `
+            -UsersCsvPath $DelegatedUsersCsvPath | Out-Null
+        if (-not $?) {
+            throw "Fallo al provisionar usuarios delegados locales."
+        }
+        Write-Host ("      Usuarios delegados cargados desde: {0}" -f $DelegatedUsersCsvPath)
+    }
+    else {
+        Write-Host ("      No se detecto archivo de usuarios delegados: {0}" -f $DelegatedUsersCsvPath)
+    }
+
     & $BootstrapAdminConfinementPath `
         -ContainerName $ContainerName `
         -DbUser $DbUser `
@@ -415,10 +479,14 @@ SELECT
     Write-Host "======================================================"
     Write-Host "  Instalacion completada con baseline DDL+migraciones, datos, seguridad y logins operativos verificados."
     Write-Host "  Conexion admin break-glass: docker exec -it $ContainerName psql -U $DbUser -d $DbName"
-    Write-Host "  Password: usa POSTGRES_PASSWORD desde infra/docker/.env o variable local."
+    Write-Host "  Password admin: usa POSTGRES_PASSWORD desde infra/docker/.env o variable local."
     Write-Host "  Nota: el admin bootstrap queda bloqueado por TCP y solo disponible por socket interno."
-    Write-Host "  Login RW local: usa FLY_APP_RW_USER / FLY_APP_RW_PASSWORD desde infra/docker/.env."
-    Write-Host "  Login AUDIT local: usa FLY_APP_AUDIT_USER / FLY_APP_AUDIT_PASSWORD para diagnostico y observabilidad."
+    Write-Host "  Si ves 'pg_hba.conf rejects connection ... user `"$DbUser`"' desde el host, el rechazo es esperado."
+    Write-Host "  Conexion host RO: psql -h $HostBindIp -p $HostPort -U $ReadOnlyLogin -d $DbName"
+    Write-Host "  Conexion host RW: psql -h $HostBindIp -p $HostPort -U $RuntimeLogin -d $DbName"
+    Write-Host "  Conexion host AUDIT: psql -h $HostBindIp -p $HostPort -U $AuditLogin -d $DbName"
+    Write-Host "  Passwords operativos: usa FLY_APP_RO_PASSWORD / FLY_APP_RW_PASSWORD / FLY_APP_AUDIT_PASSWORD desde infra/docker/.env."
+    Write-Host "  Archivo local usuarios delegados: $DelegatedUsersCsvPath"
     Write-Host "  Evidencia admin bootstrap: $BootstrapAdminEvidencePath"
     Write-Host "  Evidencia menor privilegio: $LeastPrivilegeEvidencePath"
     Write-Host "  Evidencia seguridad: $SecurityAuditEvidencePath"

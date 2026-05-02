@@ -284,6 +284,12 @@ reabrir el modelo ni introducir todavia un nuevo motor de migraciones.
   - `docs/validacion/PLANTILLA_EVIDENCIA_PIPELINE_CI.md`
 - Script operativo para materializar la evidencia del primer run:
   - `infra/tools/preparar_evidencia_pipeline_ci.ps1`
+- Primera evidencia remota validada en:
+  - `docs/validacion/EVIDENCIA_PIPELINE_CI_REMOTO_2026-03-20.md`
+- Release guard documentado y validable en:
+  - `docs/validacion/POLITICA_PROMOCION_DB_RELEASE_GUARD.md`
+  - `docs/validacion/CHECKLIST_PROMOCION_CI_DB.md`
+  - `infra/tools/validar_control_promocion_ci.ps1`
 
 ### Decisiones vigentes
 
@@ -294,6 +300,8 @@ reabrir el modelo ni introducir todavia un nuevo motor de migraciones.
 
 ### Siguiente paso recomendado
 
-- Ejecutar la primera corrida remota de `F1.2` en GitHub Actions y ajustar
-  cualquier diferencia runner/local alrededor de `validar_migraciones.ps1` y
-  `ejecutar_gate_pre_release.ps1`, dejando evidencia formal del run.
+- F1.2/F1.3 quedan cerrados con pipeline remoto en verde.
+- F1.4 queda implementado a nivel repo con release guard documental y validable.
+- Siguiente movimiento opcional:
+  - aplicar branch protection en GitHub
+  - o abrir el siguiente frente de industrializacion fuera del baseline local

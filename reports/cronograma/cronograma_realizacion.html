@@ -3,374 +3,641 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cronograma de Realizacion - Sistema FLY</title>
+  <title>Cronograma de Evolucion | FLY Data Platform</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #eef2eb;
-      --ink: #1c2a24;
-      --muted: #5d6b64;
-      --card: rgba(255, 255, 255, 0.9);
-      --line: rgba(28, 42, 36, 0.12);
-      --done: #2f7a59;
-      --run: #c17622;
-      --plan: #8f9a93;
-      --accent: #214d3b;
+      --bg: #f1f2f8;
+      --ink: #1a2036;
+      --ink-soft: #61667c;
+      --surface: rgba(255, 255, 255, 0.86);
+      --surface-strong: #ffffff;
+      --line: rgba(26, 32, 54, 0.12);
+      --line-strong: rgba(26, 32, 54, 0.22);
+      --primary: #2f4eb3;
+      --teal: #1f7a70;
+      --amber: #b97722;
+      --ok: #1d875a;
+      --future: #7d53ca;
+      --shadow-lg: 0 20px 56px rgba(26, 32, 54, 0.14);
+      --shadow-md: 0 12px 28px rgba(26, 32, 54, 0.1);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --font-main: "Sora", "Segoe UI", sans-serif;
+      --font-mono: "IBM Plex Mono", "Consolas", monospace;
     }
 
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
-      font-family: "Segoe UI", sans-serif;
+      font-family: var(--font-main);
       color: var(--ink);
       background:
-        linear-gradient(180deg, rgba(33, 77, 59, 0.08), transparent 30%),
-        linear-gradient(135deg, #f9fbf7 0%, var(--bg) 100%);
+        radial-gradient(circle at 12% -8%, rgba(47, 78, 179, 0.2), rgba(47, 78, 179, 0) 40%),
+        radial-gradient(circle at 88% -12%, rgba(31, 122, 112, 0.15), rgba(31, 122, 112, 0) 38%),
+        linear-gradient(180deg, #f8f9ff 0%, #eeeff8 52%, #e8eaf4 100%);
     }
 
-    .wrap {
-      width: min(1200px, calc(100% - 40px));
+    a { color: inherit; text-decoration: none; }
+    p { margin: 0; color: var(--ink-soft); line-height: 1.7; }
+
+    .topbar,
+    .page,
+    .footer {
+      width: min(1240px, calc(100% - 34px));
       margin: 0 auto;
-      padding: 36px 0 56px;
     }
 
-    .hero,
-    .board {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      box-shadow: 0 22px 60px rgba(28, 42, 36, 0.1);
+    .topbar {
+      margin-top: 16px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.66);
+      background: rgba(255, 255, 255, 0.68);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: 12px;
+      z-index: 30;
     }
 
-    .hero {
-      padding: 32px;
-      margin-bottom: 24px;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    .eyebrow {
-      display: inline-block;
+    .brand-badge {
+      min-width: 54px;
+      border-radius: 999px;
+      padding: 10px 12px;
+      text-align: center;
+      color: #fff;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      background: linear-gradient(140deg, var(--primary), var(--teal));
+      box-shadow: 0 10px 22px rgba(47, 78, 179, 0.28);
+    }
+
+    .brand-copy {
+      display: grid;
+      gap: 2px;
+    }
+
+    .brand-copy strong { font-size: 0.92rem; }
+    .brand-copy small { font-size: 0.74rem; color: var(--ink-soft); }
+
+    .topnav {
+      margin-left: auto;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .topnav a {
       padding: 8px 12px;
       border-radius: 999px;
-      background: rgba(33, 77, 59, 0.1);
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      font-weight: 700;
-      font-size: 12px;
-    }
-
-    h1, h2 { margin: 0 0 12px; }
-
-    p {
-      margin: 0 0 12px;
-      line-height: 1.7;
-      color: var(--muted);
-    }
-
-    .links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 16px;
-    }
-
-    .links a {
-      text-decoration: none;
-      color: var(--ink);
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      padding: 12px 16px;
+      color: var(--ink-soft);
+      font-size: 0.84rem;
       font-weight: 600;
+      transition: 0.2s ease;
     }
 
-    .legend {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-top: 18px;
-    }
+    .topnav a:hover { background: rgba(26, 32, 54, 0.08); color: var(--ink); }
+    .topnav a.active { background: rgba(47, 78, 179, 0.14); color: var(--primary); }
 
-    .legend span {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--muted);
-      font-size: 0.94rem;
-    }
-
-    .dot {
-      width: 12px;
-      height: 12px;
+    .state-pill {
+      padding: 8px 12px;
       border-radius: 999px;
-      display: inline-block;
-    }
-
-    .board {
-      padding: 24px;
-      overflow-x: auto;
-    }
-
-    .timeline {
-      min-width: 980px;
-      display: grid;
-      grid-template-columns: 260px repeat(6, 1fr);
-      gap: 10px;
-      align-items: stretch;
-    }
-
-    .cell {
-      padding: 12px 14px;
-      border-radius: 16px;
-      border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.8);
-    }
-
-    .head {
+      font-size: 0.76rem;
       font-weight: 700;
-      text-align: center;
-      background: rgba(33, 77, 59, 0.08);
-    }
-
-    .phase {
-      font-weight: 700;
-    }
-
-    .meta {
-      font-size: 0.92rem;
-      color: var(--muted);
-      margin-top: 6px;
-    }
-
-    .bar {
-      min-height: 100%;
-      border-radius: 16px;
-      color: white;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 12px;
-    }
-
-    .done { background: linear-gradient(135deg, #2f7a59, #4e9b78); }
-    .run { background: linear-gradient(135deg, #c17622, #e39a43); }
-    .plan { background: linear-gradient(135deg, #8f9a93, #aeb7b1); }
-
-    .notes {
-      margin-top: 24px;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 20px;
-    }
-
-    .note {
-      padding: 22px;
-      border-radius: 22px;
-      border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.84);
-    }
-
-    ul {
-      margin: 0;
-      padding-left: 18px;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    .docnav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 10px 24px;
-      background: rgba(28, 42, 36, 0.96);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(28, 42, 36, 0.14);
-    }
-
-    .docnav-home {
-      font-weight: 800;
-      font-size: 1rem;
-      color: #fff;
-      text-decoration: none;
-      letter-spacing: 0.06em;
-    }
-
-    .docnav-links {
-      display: flex;
-      gap: 4px;
-      flex: 1;
-    }
-
-    .docnav-links a {
-      text-decoration: none;
-      color: rgba(255,255,255,0.6);
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      transition: background 0.2s, color 0.2s;
-    }
-
-    .docnav-links a:hover,
-    .docnav-links a.active {
-      background: rgba(255,255,255,0.12);
-      color: #fff;
-    }
-
-    .docnav-badge {
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 4px 12px;
-      border-radius: 999px;
-      background: rgba(33, 77, 59, 0.35);
-      color: #7ecba5;
-      border: 1px solid rgba(33, 77, 59, 0.5);
+      color: var(--teal);
+      border: 1px solid rgba(31, 122, 112, 0.24);
+      background: rgba(31, 122, 112, 0.1);
       white-space: nowrap;
     }
 
-    @media (max-width: 900px) {
-      .notes {
+    .page {
+      margin-top: 16px;
+      margin-bottom: 22px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .hero,
+    .section,
+    .footer {
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(255, 255, 255, 0.64);
+      background: var(--surface);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .hero {
+      padding: 24px;
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 1.18fr 0.82fr;
+    }
+
+    .hero-main,
+    .hero-side {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      background: var(--surface-strong);
+    }
+
+    .hero-main {
+      background:
+        radial-gradient(circle at 95% 8%, rgba(47, 78, 179, 0.12), rgba(47, 78, 179, 0) 30%),
+        linear-gradient(165deg, rgba(255, 255, 255, 0.96), rgba(250, 252, 255, 0.9));
+    }
+
+    .kicker {
+      display: inline-flex;
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--primary);
+      background: rgba(47, 78, 179, 0.1);
+    }
+
+    h1 {
+      margin: 14px 0 12px;
+      font-size: clamp(1.7rem, 3.4vw, 2.65rem);
+      line-height: 1.08;
+      max-width: 16ch;
+    }
+
+    .hero-actions {
+      margin-top: 18px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .hero-actions a {
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      padding: 9px 12px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: rgba(47, 78, 179, 0.08);
+    }
+
+    .hero-actions a.primary {
+      color: #fff;
+      background: linear-gradient(140deg, var(--primary), var(--teal));
+      border-color: transparent;
+      box-shadow: 0 10px 20px rgba(47, 78, 179, 0.25);
+    }
+
+    .legend {
+      margin-top: 14px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .legend span {
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .legend .done { color: var(--ok); }
+    .legend .run { color: var(--amber); }
+    .legend .plan { color: var(--future); }
+
+    .hero-side h2 {
+      margin: 0 0 6px;
+      font-size: 1.1rem;
+    }
+
+    .hero-side ul {
+      margin: 12px 0 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 7px;
+    }
+
+    .hero-side li {
+      color: var(--ink-soft);
+      line-height: 1.5;
+      font-size: 0.9rem;
+    }
+
+    .section {
+      padding: 22px;
+    }
+
+    .section-head {
+      margin-bottom: 14px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: clamp(1.25rem, 2.3vw, 2rem);
+      line-height: 1.15;
+      max-width: 24ch;
+    }
+
+    .strip {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .strip-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: #fff;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .strip-card strong {
+      display: block;
+      font-size: 1.35rem;
+      line-height: 1;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .strip-card span {
+      font-size: 0.78rem;
+      color: var(--ink-soft);
+      font-weight: 600;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 10px;
+      position: relative;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 14px;
+      top: 4px;
+      bottom: 4px;
+      width: 2px;
+      background: linear-gradient(180deg, rgba(47, 78, 179, 0.45), rgba(31, 122, 112, 0.3));
+    }
+
+    .timeline-item {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: #fff;
+      margin-left: 32px;
+      padding: 14px 14px 14px 16px;
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -24px;
+      top: 20px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 0 4px rgba(47, 78, 179, 0.14);
+    }
+
+    .timeline-item.current::before {
+      background: var(--amber);
+      box-shadow: 0 0 0 4px rgba(185, 119, 34, 0.2);
+    }
+
+    .timeline-item h3 {
+      margin: 0 0 6px;
+      font-size: 1rem;
+      line-height: 1.3;
+    }
+
+    .meta {
+      margin-top: 8px;
+      display: inline-flex;
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      color: #27406a;
+      background: rgba(47, 78, 179, 0.12);
+    }
+
+    .two-col,
+    .artifact-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .two-col { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .artifact-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: #fff;
+      padding: 14px;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 0.98rem;
+      line-height: 1.3;
+    }
+
+    .card ul {
+      margin: 8px 0 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 7px;
+    }
+
+    .card li {
+      color: var(--ink-soft);
+      line-height: 1.5;
+      font-size: 0.9rem;
+    }
+
+    .artifact a {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .footer {
+      padding: 16px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .footer p {
+      margin-top: 4px;
+      max-width: 64ch;
+      font-size: 0.86rem;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .footer-links a {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px 10px;
+      background: rgba(47, 78, 179, 0.08);
+      color: var(--primary);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    @media (max-width: 1140px) {
+      .hero,
+      .strip,
+      .two-col,
+      .artifact-grid {
         grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        border-radius: 22px;
+        position: static;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .topbar,
+      .page,
+      .footer {
+        width: min(100%, calc(100% - 18px));
+      }
+
+      .topbar,
+      .hero,
+      .section,
+      .footer,
+      .hero-main,
+      .hero-side {
+        padding: 14px;
+      }
+
+      h1,
+      .section-head h2 {
+        max-width: none;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .hero-actions a {
+        width: 100%;
+        text-align: center;
+      }
+
+      .timeline-item {
+        margin-left: 24px;
+      }
+
+      .timeline::before {
+        left: 10px;
+      }
+
+      .timeline-item::before {
+        left: -18px;
       }
     }
   </style>
 </head>
 <body>
-  <nav class="docnav">
-    <a href="../../app/landing/index.html" class="docnav-home">&#9992; FLY</a>
-    <div class="docnav-links">
+  <header class="topbar">
+    <a class="brand" href="../../app/landing/index.html">
+      <span class="brand-badge">FLY</span>
+      <span class="brand-copy">
+        <strong>Data Platform Portal</strong>
+        <small>Vista de evolucion y continuidad</small>
+      </span>
+    </a>
+    <nav class="topnav" aria-label="Navegacion principal">
+      <a href="../../app/landing/index.html">Portal</a>
       <a href="../../architecture/canvas/canvas_arquitectura.html">Canvas</a>
       <a href="../html/funcionalidades_sistema.html">Funcionalidades</a>
       <a href="cronograma_realizacion.html" class="active">Cronograma</a>
-    </div>
-    <span class="docnav-badge">Evolutivo 20-Mar-2026</span>
-  </nav>
+    </nav>
+    <span class="state-pill">Evolucion 19-20 Mar 2026</span>
+  </header>
 
-  <main class="wrap">
+  <main class="page">
     <section class="hero">
-      <span class="eyebrow">Cronograma de Realizacion</span>
-      <h1>Evolucion del release congelado hacia S4.6</h1>
-      <p>El cronograma ya no se queda en el cierre tecnico del 19-Mar. Refleja el avance real posterior: gobierno operativo S2 completo, performance y observabilidad cerradas, seguridad local integrada al flujo limpio, menor privilegio operativo validado en Docker real, rebuild deterministico alineado con el journal, publicacion local de PostgreSQL confinada a loopback y admin bootstrap encapsulado por socket interno.</p>
-      <div class="links">
-        <a href="../../docs/planes/ROADMAP_ESTABILIZACION_DB_SENIOR.md">Roadmap senior</a>
-        <a href="../../reports/html/funcionalidades_sistema.html">Informe funcional</a>
-        <a href="../../docs/validacion/EVIDENCIA_AUDITORIA_SEGURIDAD_LOCAL_2026-03-20.md">Auditoria seguridad</a>
-      </div>
-      <div class="legend">
-        <span><i class="dot" style="background: var(--done);"></i>Completado</span>
-        <span><i class="dot" style="background: var(--run);"></i>En curso</span>
-        <span><i class="dot" style="background: var(--plan);"></i>Planificado</span>
+      <article class="hero-main">
+        <span class="kicker">Cronograma de evolucion</span>
+        <h1>Trayectoria del baseline desde release congelado hasta CI inicial.</h1>
+        <p>
+          Esta vista muestra el progreso real de estabilizacion por fecha y por
+          frente, con foco en hitos cerrados, estado actual y proximo tramo
+          recomendado para mantener continuidad del delivery de base de datos.
+        </p>
+        <div class="hero-actions">
+          <a class="primary" href="../../docs/planes/ROADMAP_ESTABILIZACION_DB_SENIOR.md">Roadmap senior</a>
+          <a href="../../reports/html/funcionalidades_sistema.html">Ver capacidades</a>
+          <a href="../../docs/validacion/EVIDENCIA_PIPELINE_CI_REMOTO_2026-03-20.md">Evidencia CI</a>
+        </div>
+        <div class="legend">
+          <span class="done">Completado</span>
+          <span class="run">En curso</span>
+          <span class="plan">Siguiente fase</span>
+        </div>
+      </article>
+
+      <aside class="hero-side">
+        <h2>Estado al 20-Mar-2026</h2>
+        <p>Resumen de continuidad tecnica sin fallas bloqueantes.</p>
+        <ul>
+          <li>S2 completo: migraciones, rollback, backup/restore y runbook.</li>
+          <li>S3 completo: performance, observabilidad y hardening local.</li>
+          <li>S4 completo: secretos, menor privilegio, confinamiento y aislamiento admin.</li>
+          <li>F1 inicial completo: db-gate remoto y release guard versionado.</li>
+        </ul>
+      </aside>
+    </section>
+
+    <section class="section">
+      <header class="section-head">
+        <h2>Indicadores de avance</h2>
+        <p>Medidas del tramo tecnico cerrado.</p>
+      </header>
+      <div class="strip">
+        <article class="strip-card"><strong>4</strong><span>fases mayores cerradas</span></article>
+        <article class="strip-card"><strong>1</strong><span>pipeline CI remoto activo</span></article>
+        <article class="strip-card"><strong>0</strong><span>residuales expuestos al host</span></article>
+        <article class="strip-card"><strong>78</strong><span>tablas comparadas en recovery</span></article>
+        <article class="strip-card"><strong>6</strong><span>consultas baseline medidas</span></article>
       </div>
     </section>
 
-    <section class="board">
+    <section class="section">
+      <header class="section-head">
+        <h2>Linea de tiempo del baseline</h2>
+        <p>Hitos confirmados en orden de ejecucion.</p>
+      </header>
       <div class="timeline">
-        <div class="cell head">Fase</div>
-        <div class="cell head">19 Mar</div>
-        <div class="cell head">20 Mar</div>
-        <div class="cell head">21-24 Mar</div>
-        <div class="cell head">25-31 Mar</div>
-        <div class="cell head">1-5 Abr</div>
-        <div class="cell head">6-10 Abr</div>
-
-        <div class="cell phase">1. Release congelado baseline<div class="meta">Paquete tecnico y narrativo preservado como referencia comun</div></div>
-        <div class="cell"><div class="bar done">Completado</div></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-
-        <div class="cell phase">2. S2.1 Migraciones versionadas<div class="meta">Journal, up/down, validacion y rollback controlado</div></div>
-        <div class="cell"><div class="bar done">Completado</div></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-
-        <div class="cell phase">3. S2.2 Backup y recovery<div class="meta">Restauracion local con 78 tablas y 0 diferencias</div></div>
-        <div class="cell"><div class="bar done">Completado</div></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-
-        <div class="cell phase">4. S2.3 Runbook y diagnostico<div class="meta">Respuesta local a incidentes, diagnostico y recuperacion operativa</div></div>
-        <div class="cell"><div class="bar done">Completado</div></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-
-        <div class="cell phase">5. S3.1 Baseline performance<div class="meta">Consultas criticas medidas con umbrales definidos</div></div>
-        <div class="cell"><div class="bar done">Completado</div></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-
-        <div class="cell phase">6. S3.2 Observabilidad minima<div class="meta">Locks, actividad, cache y crecimiento base publicados</div></div>
-        <div class="cell"><div class="bar done">Completado</div></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-
-        <div class="cell phase">7. S3.3 Seguridad local<div class="meta">Hardening, roles minimos y auditoria sin fallas bloqueantes</div></div>
-        <div class="cell"></div>
-        <div class="cell"><div class="bar done">Completado</div></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-
-        <div class="cell phase">8. S4 Continuidad operativa<div class="meta">Secretos, logins operativos, menor privilegio, unificacion DDL+migraciones, confinamiento de red local y aislamiento del admin bootstrap cerrados</div></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"><div class="bar done">Secretos locales</div></div>
-        <div class="cell"><div class="bar done">Logins operativos</div></div>
-        <div class="cell"><div class="bar done">Menor privilegio</div></div>
-        <div class="cell"><div class="bar done">Admin bootstrap interno</div></div>
+        <article class="timeline-item">
+          <h3>Release congelado (19-Mar-2026)</h3>
+          <p>DDL, seeds, QA cruzado y narrativa base alineados como referencia comun.</p>
+          <span class="meta">Estado: completado</span>
+        </article>
+        <article class="timeline-item">
+          <h3>S2 Gobierno operativo (19-Mar-2026)</h3>
+          <p>Migraciones versionadas, rollback, backup/restore y runbook local operativos.</p>
+          <span class="meta">Estado: completado</span>
+        </article>
+        <article class="timeline-item">
+          <h3>S3 Capacidad y seguridad (19-20 Mar 2026)</h3>
+          <p>Performance baseline, observabilidad minima y hardening local en verde.</p>
+          <span class="meta">Estado: completado</span>
+        </article>
+        <article class="timeline-item">
+          <h3>S4 Continuidad operativa (20-Mar-2026)</h3>
+          <p>Secretos, menor privilegio, rebuild unificado y admin bootstrap aislado.</p>
+          <span class="meta">Estado: completado</span>
+        </article>
+        <article class="timeline-item current">
+          <h3>F1 Industrializacion inicial (20-Mar-2026)</h3>
+          <p>Workflow db-gate en GitHub Actions y control de promocion formalizado.</p>
+          <span class="meta">Estado: completado</span>
+        </article>
       </div>
     </section>
 
-    <section class="notes">
-      <article class="note">
-        <h2>Hitos completados al 20-Mar</h2>
-        <ul>
-          <li>Release congelado preservado como baseline tecnico y narrativo.</li>
-          <li>Migraciones versionadas y rollback controlado operativos.</li>
-          <li>Recovery local probado con 78 tablas comparadas y 0 diferencias.</li>
-          <li>Runbook de incidentes y diagnostico rapido publicados.</li>
-          <li>Performance local medida: 6 consultas, 0 fuera de umbral.</li>
-          <li>Observabilidad minima y seguridad local auditadas en verde.</li>
-          <li>Secretos locales no versionados validados y convertidos en control bloqueante.</li>
-          <li>Logins operativos RW, RO y AUDIT validados 3/3 por conexion real.</li>
-          <li>Diagnostico/observabilidad/baseline validados con defaults AUDIT, RO y RW.</li>
-          <li>La recreacion limpia ahora deja `schema_migration_journal` materializado desde el rebuild.</li>
-          <li>El puerto PostgreSQL local ahora queda ligado a `127.0.0.1` por defecto.</li>
-        </ul>
-      </article>
-      <article class="note">
-        <h2>Cierre del tramo y siguiente foco</h2>
-        <ul>
-          <li><code>fly_admin</code> permanece como bootstrap superuser solo por restriccion del motor y ya no acepta TCP.</li>
-          <li>El puerto 5435 sigue disponible para desarrollo, pero confinado a loopback por defecto.</li>
-          <li><code>infra/docker/.env</code> y los logins operativos locales ya quedaron definidos fuera del repo y validados.</li>
-          <li>El siguiente tramo recomendado es ejecutar la primera corrida remota de `F1.2/F1.3` en GitHub Actions y registrar evidencia del pipeline sin introducir todavia Liquibase.</li>
-        </ul>
-      </article>
+    <section class="section">
+      <div class="two-col">
+        <article class="card">
+          <h3>Cierre del tramo actual</h3>
+          <ul>
+            <li>No hay brechas bloqueantes sobre el baseline local.</li>
+            <li>La reconstruccion deterministica se mantiene trazable.</li>
+            <li>La validacion documental y de control de promocion esta activa.</li>
+            <li>El paquete se mantiene apto para consumo por equipos de aplicacion.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Siguiente foco recomendado</h3>
+          <ul>
+            <li>Aplicar branch protection en GitHub para cerrar capa administrativa.</li>
+            <li>Continuar industrializacion sin introducir cambio de stack prematuro.</li>
+            <li>Completar V3-V5 del frente visual para unificar toda la capa HTML.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <header class="section-head">
+        <h2>Evidencias del cronograma</h2>
+        <p>Documentos que respaldan cada hito.</p>
+      </header>
+      <div class="artifact-grid">
+        <article class="card artifact">
+          <h3>Continuidad</h3>
+          <ul>
+            <li><a href="../../docs/planes/PLAN_CONTINUIDAD_FASES_2026-03-19.md">Plan continuidad</a></li>
+            <li><a href="../../docs/planes/ROADMAP_ESTABILIZACION_DB_SENIOR.md">Roadmap senior</a></li>
+          </ul>
+        </article>
+        <article class="card artifact">
+          <h3>Operacion y seguridad</h3>
+          <ul>
+            <li><a href="../../docs/validacion/EVIDENCIA_AUDITORIA_SEGURIDAD_LOCAL_2026-03-20.md">Auditoria seguridad</a></li>
+            <li><a href="../../docs/validacion/EVIDENCIA_MENOR_PRIVILEGIO_OPERATIVO_LOCAL_2026-03-20.md">Menor privilegio</a></li>
+          </ul>
+        </article>
+        <article class="card artifact">
+          <h3>CI y promocion</h3>
+          <ul>
+            <li><a href="../../docs/validacion/EVIDENCIA_PIPELINE_CI_REMOTO_2026-03-20.md">Evidencia CI</a></li>
+            <li><a href="../../docs/validacion/CHECKLIST_PROMOCION_CI_DB.md">Checklist promocion</a></li>
+          </ul>
+        </article>
+      </div>
     </section>
   </main>
+
+  <footer class="footer">
+    <div>
+      <strong>Cronograma FLY</strong>
+      <p>Trazabilidad temporal de estabilizacion y arranque de industrializacion DB.</p>
+    </div>
+    <div class="footer-links">
+      <a href="../../app/landing/index.html">Portal</a>
+      <a href="../../architecture/canvas/canvas_arquitectura.html">Canvas</a>
+      <a href="../html/funcionalidades_sistema.html">Funcionalidades</a>
+    </div>
+  </footer>
 </body>
 </html>

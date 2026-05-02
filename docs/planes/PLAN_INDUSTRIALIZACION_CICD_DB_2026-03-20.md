@@ -141,7 +141,8 @@ Razón:
   - `.github/workflows/db-gate.yml`
 - estado:
   - implementado en el repositorio
-  - pendiente primera corrida remota y captura de evidencia del pipeline
+  - primera corrida remota ya validada en `docs/validacion/EVIDENCIA_PIPELINE_CI_REMOTO_2026-03-20.md`
+  - control de promocion repo-local validado con `infra/tools/validar_control_promocion_ci.ps1`
 
 ### Secretos CI
 
@@ -216,6 +217,17 @@ Salida:
 - reglas de branch/release
 - artifacts retenidos
 - checklist enlazado al pipeline
+- politica de promocion y validador automatizado del release guard
+
+Estado actual:
+
+- implementado en repositorio con:
+  - `docs/validacion/POLITICA_PROMOCION_DB_RELEASE_GUARD.md`
+  - `docs/validacion/CHECKLIST_PROMOCION_CI_DB.md`
+  - `infra/tools/validar_control_promocion_ci.ps1`
+  - `docs/validacion/EVIDENCIA_PIPELINE_CI_REMOTO_2026-03-20.md`
+- pendiente externo al repo:
+  - aplicar branch protection en GitHub si se decide endurecer el control administrativo
 
 ## 9. Riesgos y mitigaciones
 
@@ -240,11 +252,10 @@ Se considerará industrialización inicial cerrada cuando exista:
 
 ## 11. Siguiente paso inmediato recomendado
 
-Implementar `F1.2`:
+`F1` queda cerrado a nivel repo. El siguiente frente recomendado es:
 
-- seleccionar el proveedor CI/CD objetivo
-- crear el primer archivo de pipeline
-- ejecutar el contrato mínimo sobre el repo actual
+- aplicar branch protection en GitHub si hay permisos administrativos
+- o continuar con observabilidad/reporting de pipeline y disciplina de promocion siguiente
 
 ## 12. Referencias
 

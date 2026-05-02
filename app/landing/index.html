@@ -3,1080 +3,575 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema FLY - Modelo Relacional 3FN de Aerolínea</title>
+    <title>FLY Data Platform | Portal Arquitectonico</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="script.js" defer></script>
 </head>
 <body>
-    <!-- Hero Section -->
-    <header class="hero">
-        <nav class="nav">
-            <div class="logo">
-                <svg class="logo-icon" width="32" height="32" viewBox="0 0 32 32" fill="none">
-                    <path d="M16 2L4 14L16 10L28 14L16 2Z" fill="url(#plane-gradient)"/>
-                    <path d="M16 10L4 14L16 30L28 14L16 10Z" fill="url(#plane-gradient-2)"/>
-                    <defs>
-                        <linearGradient id="plane-gradient" x1="4" y1="2" x2="28" y2="14">
-                            <stop stop-color="#60A5FA"/>
-                            <stop offset="1" stop-color="#3B82F6"/>
-                        </linearGradient>
-                        <linearGradient id="plane-gradient-2" x1="4" y1="14" x2="28" y2="30">
-                            <stop stop-color="#3B82F6"/>
-                            <stop offset="1" stop-color="#1D4ED8"/>
-                        </linearGradient>
-                    </defs>
-                </svg>
-                <span class="logo-text">FLY</span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="#overview">Vista General</a></li>
-                <li><a href="#evolution">Evolutivo</a></li>
-                <li><a href="#modules">Módulos</a></li>
-                <li><a href="#diagram">Diagrama ER</a></li>
-                <li><a href="#downloads">Descargas</a></li>
-            </ul>
+    <div class="ambient ambient-a" aria-hidden="true"></div>
+    <div class="ambient ambient-b" aria-hidden="true"></div>
+    <div class="ambient-grid" aria-hidden="true"></div>
+
+    <header class="topbar">
+        <a class="brand" href="index.html">
+            <span class="brand-badge">FLY</span>
+            <span class="brand-copy">
+                <strong>Data Platform Portal</strong>
+                <small>Baseline 3FN + Estabilizacion S4.6 + CI F1</small>
+            </span>
+        </a>
+        <nav class="topnav" aria-label="Navegacion principal">
+            <a href="#valor" data-nav-link>Valor</a>
+            <a href="#equipos" data-nav-link>Equipos</a>
+            <a href="#journeys" data-nav-link>Journeys</a>
+            <a href="#operar" data-nav-link>Operar</a>
+            <a href="#arquitectura" data-nav-link>Arquitectura</a>
+            <a href="#evolucion" data-nav-link>Evolucion</a>
+            <a href="#evidencias" data-nav-link>Evidencias</a>
         </nav>
-        
-        <div class="hero-content">
-            <div class="hero-badge">PostgreSQL 16 · 12 Módulos · 76 Tablas · 3FN · Release Congelado ✓ · S4.6 Continuidad ✓</div>
-            <h1 class="hero-title">
-                Modelo Relacional<br>
-                <span class="gradient-text">Sistema de Aerolínea</span>
-            </h1>
-            <p class="hero-description">
-                Arquitectura relacional 3FN validada y luego estabilizada sobre PostgreSQL 16 con
-                migraciones versionadas, rebuild limpio alineado con journal, recovery probado, baseline de performance, observabilidad mínima
-                y hardening local de seguridad ya integrados al flujo operativo.
-            </p>
-            <div class="hero-actions">
-                <a href="#evolution" class="btn btn-primary">Ver Evolutivo</a>
-                <a href="#downloads" class="btn btn-secondary">Ver Artefactos</a>
-            </div>
-        </div>
-        
-        <!-- Hero SVG Illustration -->
-        <div class="hero-visual">
-            <svg viewBox="0 0 500 400" class="hero-svg">
-                <!-- Background circles -->
-                <circle cx="250" cy="200" r="150" fill="none" stroke="rgba(59,130,246,0.1)" stroke-width="1" class="orbit orbit-1"/>
-                <circle cx="250" cy="200" r="110" fill="none" stroke="rgba(59,130,246,0.15)" stroke-width="1" class="orbit orbit-2"/>
-                <circle cx="250" cy="200" r="70" fill="none" stroke="rgba(59,130,246,0.2)" stroke-width="1" class="orbit orbit-3"/>
-                
-                <!-- Center plane icon -->
-                <g transform="translate(225, 175)">
-                    <circle cx="25" cy="25" r="30" fill="url(#center-glow)"/>
-                    <path d="M25 10L15 25L25 22L35 25L25 10Z" fill="#3B82F6"/>
-                    <path d="M25 22L15 25L25 40L35 25L25 22Z" fill="#1D4ED8"/>
-                </g>
-                
-                <!-- Module nodes on orbits -->
-                <g class="module-nodes">
-                    <!-- Identity -->
-                    <g class="node node-1" transform="translate(250, 50)">
-                        <circle r="24" fill="#1E293B" stroke="#3B82F6" stroke-width="2"/>
-                        <text y="5" text-anchor="middle" fill="#E2E8F0" font-size="16">👤</text>
-                    </g>
-                    <!-- Security -->
-                    <g class="node node-2" transform="translate(380, 120)">
-                        <circle r="24" fill="#1E293B" stroke="#F59E0B" stroke-width="2"/>
-                        <text y="5" text-anchor="middle" fill="#E2E8F0" font-size="16">🔐</text>
-                    </g>
-                    <!-- Customer -->
-                    <g class="node node-3" transform="translate(400, 250)">
-                        <circle r="24" fill="#1E293B" stroke="#10B981" stroke-width="2"/>
-                        <text y="5" text-anchor="middle" fill="#E2E8F0" font-size="16">⭐</text>
-                    </g>
-                    <!-- Aircraft -->
-                    <g class="node node-4" transform="translate(320, 340)">
-                        <circle r="24" fill="#1E293B" stroke="#8B5CF6" stroke-width="2"/>
-                        <text y="5" text-anchor="middle" fill="#E2E8F0" font-size="16">✈️</text>
-                    </g>
-                    <!-- Airport -->
-                    <g class="node node-5" transform="translate(180, 340)">
-                        <circle r="24" fill="#1E293B" stroke="#EC4899" stroke-width="2"/>
-                        <text y="5" text-anchor="middle" fill="#E2E8F0" font-size="16">🏢</text>
-                    </g>
-                    <!-- Flight -->
-                    <g class="node node-6" transform="translate(100, 250)">
-                        <circle r="24" fill="#1E293B" stroke="#06B6D4" stroke-width="2"/>
-                        <text y="5" text-anchor="middle" fill="#E2E8F0" font-size="16">🛩️</text>
-                    </g>
-                    <!-- Sales -->
-                    <g class="node node-7" transform="translate(120, 120)">
-                        <circle r="24" fill="#1E293B" stroke="#F97316" stroke-width="2"/>
-                        <text y="5" text-anchor="middle" fill="#E2E8F0" font-size="16">🛒</text>
-                    </g>
-                </g>
-                
-                <!-- Connection lines -->
-                <g class="connections" stroke-width="1" fill="none" opacity="0.3">
-                    <line x1="250" y1="74" x2="250" y2="170" stroke="#3B82F6"/>
-                    <line x1="356" y1="120" x2="280" y2="185" stroke="#F59E0B"/>
-                    <line x1="376" y1="250" x2="280" y2="215" stroke="#10B981"/>
-                    <line x1="296" y1="340" x2="265" y2="230" stroke="#8B5CF6"/>
-                    <line x1="204" y1="340" x2="235" y2="230" stroke="#EC4899"/>
-                    <line x1="124" y1="250" x2="220" y2="215" stroke="#06B6D4"/>
-                    <line x1="144" y1="120" x2="220" y2="185" stroke="#F97316"/>
-                </g>
-                
-                <defs>
-                    <radialGradient id="center-glow">
-                        <stop offset="0%" stop-color="rgba(59,130,246,0.4)"/>
-                        <stop offset="100%" stop-color="rgba(59,130,246,0)"/>
-                    </radialGradient>
-                </defs>
-            </svg>
-        </div>
+        <span class="state-pill">Corte 13-Abr-2026</span>
     </header>
 
-    <!-- Stats Section -->
-    <section class="stats">
-        <div class="stat-card">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                <rect x="4" y="8" width="12" height="24" rx="2" fill="#3B82F6"/>
-                <rect x="20" y="14" width="12" height="18" rx="2" fill="#60A5FA"/>
-                <rect x="12" y="4" width="12" height="28" rx="2" fill="#1D4ED8"/>
-            </svg>
-            <span class="stat-number">12</span>
-            <span class="stat-label">Módulos</span>
-        </div>
-        <div class="stat-card">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                <rect x="4" y="4" width="14" height="14" rx="3" fill="#10B981"/>
-                <rect x="22" y="4" width="14" height="14" rx="3" fill="#34D399"/>
-                <rect x="4" y="22" width="14" height="14" rx="3" fill="#34D399"/>
-                <rect x="22" y="22" width="14" height="14" rx="3" fill="#10B981"/>
-            </svg>
-            <span class="stat-number">76</span>
-            <span class="stat-label">Tablas</span>
-        </div>
-        <div class="stat-card">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                <circle cx="12" cy="12" r="6" fill="#F59E0B"/>
-                <circle cx="28" cy="12" r="6" fill="#F59E0B"/>
-                <circle cx="20" cy="28" r="6" fill="#F59E0B"/>
-                <line x1="12" y1="18" x2="20" y2="22" stroke="#F59E0B" stroke-width="2"/>
-                <line x1="28" y1="18" x2="20" y2="22" stroke="#F59E0B" stroke-width="2"/>
-            </svg>
-            <span class="stat-number">100+</span>
-            <span class="stat-label">Relaciones FK</span>
-        </div>
-        <div class="stat-card">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                <circle cx="20" cy="20" r="16" fill="none" stroke="#8B5CF6" stroke-width="3"/>
-                <path d="M12 20L18 26L28 14" stroke="#8B5CF6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span class="stat-number">3NF</span>
-            <span class="stat-label">Normalizado</span>
-        </div>
-        <div class="stat-card">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                <path d="M20 4L8 12V20C8 29.4 13.2 37.8 20 40C26.8 37.8 32 29.4 32 20V12L20 4Z" fill="#10B981" opacity="0.2" stroke="#10B981" stroke-width="2"/>
-                <path d="M13 20L18 25L27 14" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span class="stat-number">S4.6</span>
-            <span class="stat-label">Estabilización</span>
-        </div>
-    </section>
-
-    <!-- Status Section -->
-    <section id="status" class="project-status">
-        <div class="status-header">
-            <span class="section-tag">Estado del Proyecto</span>
-            <h2>Evolución del paquete al 20-Mar-2026</h2>
-            <p>El baseline técnico ya quedó expandido a una base operable con controles de gobierno, capacidad, seguridad y menor privilegio operativo</p>
-        </div>
-        <div class="status-phases">
-            <div class="phase phase-done">
-                <div class="phase-icon">✓</div>
-                <div class="phase-name">Release Congelado</div>
-                <div class="phase-detail">DDL, seeds, QA cruzado y gate integral en verde</div>
-            </div>
-            <div class="phase-arrow">→</div>
-            <div class="phase phase-done">
-                <div class="phase-icon">✓</div>
-                <div class="phase-name">S2 Gobierno Operativo</div>
-                <div class="phase-detail">Migraciones, rollback, backup/restore y runbook local</div>
-            </div>
-            <div class="phase-arrow">→</div>
-            <div class="phase phase-done">
-                <div class="phase-icon">✓</div>
-                <div class="phase-name">S3.1 Performance</div>
-                <div class="phase-detail">6 consultas medidas · 0 fuera de umbral</div>
-            </div>
-            <div class="phase-arrow">→</div>
-            <div class="phase phase-done">
-                <div class="phase-icon">✓</div>
-                <div class="phase-name">S3.2 Observabilidad</div>
-                <div class="phase-detail">Locks 0 · idle 0 · cache hit 99.88%</div>
-            </div>
-            <div class="phase-arrow">→</div>
-            <div class="phase phase-done">
-                <div class="phase-icon">✓</div>
-                <div class="phase-name">S3.3 Seguridad</div>
-                <div class="phase-detail">Hardening aplicado · auditoría sin fallas bloqueantes</div>
-            </div>
-            <div class="phase-arrow">→</div>
-            <div class="phase phase-done">
-                <div class="phase-icon">✓</div>
-                <div class="phase-name">S4.6 Continuidad</div>
-                <div class="phase-detail">Puerto PostgreSQL confinado a `127.0.0.1` y admin bootstrap aislado como break-glass interno</div>
-            </div>
-        </div>
-        <div class="status-flows">
-            <div class="flow-card">
-                <div class="flow-label">Recovery Validado</div>
-                <div class="flow-route">Backup 420 ms · Restore 2478 ms · 78 tablas comparadas · 0 diferencias</div>
-            </div>
-            <div class="flow-card">
-                <div class="flow-label">Baseline Performance</div>
-                <div class="flow-route">6 consultas · 0 fuera de umbral · boarding_flow_join 2.15 ms</div>
-            </div>
-            <div class="flow-card">
-                <div class="flow-label">Observabilidad + Seguridad + Accesos</div>
-                <div class="flow-route">waiting_locks 0 · idle 0 · journal materializado en rebuild · bind 127.0.0.1 · 3 flujos no-admin OK · residuales expuestos 0</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Evolution Section -->
-    <section id="evolution" class="stabilization">
-        <div class="section-header">
-            <span class="section-tag">Evolutivo Senior</span>
-            <h2>Cómo evolucionó el paquete después del release congelado</h2>
-            <p>La visualización ya no se queda en el corte técnico: ahora expone el avance real de estabilización que sí quedó implementado y validado.</p>
-        </div>
-
-        <div class="stability-grid">
-            <article class="stability-card">
-                <span class="stability-stage">S1 · Estabilización inmediata</span>
-                <h3>Controles base cerrados</h3>
-                <p>Se consolidó la higiene residual, la plantilla de evidencia y la regresión SQL post-seed como contrato de salida.</p>
-                <ul class="stability-list">
-                    <li>Gate arquitectónico reforzado y en verde</li>
-                    <li>Validación de rutas documentales automatizada</li>
-                    <li>Release congelado preservado como baseline</li>
+    <main class="portal">
+        <section class="hero">
+            <div class="hero-main reveal">
+                <span class="tagline">Resumen Ejecutivo Tecnico</span>
+                <h1>Una base de datos lista para que backend y frontend construyan con confianza.</h1>
+                <p>
+                    Esta plataforma ya no es una maqueta de arquitectura. Es un baseline operativo
+                    en PostgreSQL 16 con migraciones, rebuild deterministico, validaciones de
+                    seguridad, controles de promocion y CI remoto ejecutandose en GitHub Actions.
+                </p>
+                <div class="hero-actions">
+                    <a class="btn btn-primary" href="#equipos">Ver ruta por equipo</a>
+                    <a class="btn btn-secondary" href="#journeys">Explorar journeys</a>
+                    <a class="btn btn-secondary" href="../../architecture/canvas/canvas_arquitectura.html">Ver canvas tecnico</a>
+                    <a class="btn btn-ghost" href="../../reports/html/funcionalidades_sistema.html">Ver capacidades</a>
+                </div>
+                <ul class="trust-strip">
+                    <li>76 tablas en baseline validado</li>
+                    <li>0 riesgos residuales expuestos al host</li>
+                    <li>db-gate remoto validado en rama de trabajo y release</li>
                 </ul>
-                <div class="stability-metrics">
-                    <span>BR-003 ✓</span>
-                    <span>BR-004 ✓</span>
-                    <span>BR-005 ✓</span>
-                </div>
-            </article>
+            </div>
 
-            <article class="stability-card">
-                <span class="stability-stage">S2 · Gobierno operativo</span>
-                <h3>Operación repetible y recuperable</h3>
-                <p>La base local dejó de depender de memoria tribal y ahora tiene migraciones versionadas, rollback, recuperación comprobada y rebuild limpio con journal materializado.</p>
-                <ul class="stability-list">
-                    <li>Migraciones `up/down` con journal bootstrap</li>
-                    <li>Prueba de recuperación con 78 tablas y 0 diferencias</li>
-                    <li>Runbook operativo y diagnóstico rápido publicados</li>
+            <aside class="hero-board reveal delay-1">
+                <header>
+                    <h2>Estado verificable</h2>
+                    <p>Lo que esta confirmado con evidencias y scripts reales</p>
+                </header>
+
+                <div class="kpi-grid">
+                    <article class="kpi">
+                        <strong>76</strong>
+                        <span>tablas reales</span>
+                    </article>
+                    <article class="kpi">
+                        <strong>12</strong>
+                        <span>modulos funcionales</span>
+                    </article>
+                    <article class="kpi">
+                        <strong>0</strong>
+                        <span>fallas bloqueantes</span>
+                    </article>
+                    <article class="kpi">
+                        <strong>4</strong>
+                        <span>runs CI en verde</span>
+                    </article>
+                </div>
+
+                <div class="signal-ring">
+                    <div class="ring-core">
+                        <span>Release Health</span>
+                        <strong>Estable</strong>
+                    </div>
+                </div>
+
+                <ul class="board-notes">
+                    <li>Recovery validado con 78 tablas y 0 diferencias.</li>
+                    <li>Performance baseline: 6 consultas, 0 fuera de umbral.</li>
+                    <li>Accesos RW/RO/AUDIT con menor privilegio operativo.</li>
                 </ul>
-                <div class="stability-metrics">
-                    <span>1 migración reversible</span>
-                    <span>0 diferencias</span>
-                    <span>Runbook ✓</span>
-                </div>
-            </article>
+            </aside>
+        </section>
 
-            <article class="stability-card">
-                <span class="stability-stage">S3 · Confiabilidad y capacidad</span>
-                <h3>Performance, observabilidad y seguridad</h3>
-                <p>El baseline local ya mide consultas reales, captura salud operativa y aplica hardening con auditoría integrada al flujo limpio.</p>
-                <ul class="stability-list">
-                    <li>6 consultas críticas medidas con 0 desvíos</li>
-                    <li>`waiting_locks = 0` e `idle_in_transaction = 0`</li>
-                    <li>Auditoría de seguridad sin fallas bloqueantes</li>
-                </ul>
-                <div class="stability-metrics">
-                    <span>cache 99.88%</span>
-                    <span>security 0 fallas</span>
-                    <span>S3.3 ✓</span>
-                </div>
-            </article>
+        <section id="valor" class="section reveal delay-2">
+            <header class="section-head">
+                <span class="section-kicker">Valor Entregado</span>
+                <h2>Resultados que reducen riesgo y aceleran ejecucion</h2>
+                <p>
+                    Esta base ya entrega un contrato funcional y tecnico para avanzar sin
+                    reabrir discusiones estructurales en cada sprint.
+                </p>
+            </header>
 
-            <article class="stability-card current">
-                <span class="stability-stage">S4 · Continuidad operativa</span>
-                <h3>Menor privilegio operativo cerrado</h3>
-                <p>S4 ya cubre secretos locales, accesos operativos y defaults no administrativos: el entorno bloquea placeholders, exige `.env` valido, aísla el admin bootstrap por TCP y ejecuta diagnostico, observabilidad y baseline con AUDIT/RO/RW. El siguiente frente natural ya es F1: industrializacion CI/CD del delivery DB, con workflow de GitHub Actions endurecido y primera corrida remota pendiente de evidencia.</p>
-                <ul class="stability-list">
-                    <li>`infra/docker/.env` local no versionado validado por gate</li>
-                    <li>RW, RO y AUDIT conectables por password con roles heredados</li>
-                    <li>Diagnóstico AUDIT, observabilidad AUDIT y baseline RO/RW validados en Docker real</li>
-                </ul>
-                <div class="stability-metrics">
-                    <span>3 flujos no-admin</span>
-                    <span>0 residuales expuestos</span>
-                    <span>S4.6 ✓</span>
-                </div>
-            </article>
-        </div>
-    </section>
+            <div class="pillar-grid">
+                <article class="pillar-card">
+                    <span class="pillar-tag">Negocio</span>
+                    <h3>Dominio comercial y operativo modelado de punta a punta</h3>
+                    <p>
+                        Identidad, cliente, lealtad, vuelos, reservas, ticketing, pagos e
+                        invoice quedan trazables dentro del mismo modelo.
+                    </p>
+                </article>
+                <article class="pillar-card">
+                    <span class="pillar-tag">Tecnologia</span>
+                    <h3>Rebuild deterministico y gobernanza de cambio</h3>
+                    <p>
+                        DDL, migraciones, seeds y gate pre-release funcionan como cadena de
+                        integridad tecnica, no como scripts sueltos.
+                    </p>
+                </article>
+                <article class="pillar-card">
+                    <span class="pillar-tag">Entrega</span>
+                    <h3>Control de promocion con CI y evidencia documental</h3>
+                    <p>
+                        Workflow remoto, release guard y checklist de promocion ya forman parte
+                        del flujo de entrega de cambios.
+                    </p>
+                </article>
+            </div>
+        </section>
 
-    <!-- Overview Section -->
-    <section id="overview" class="overview">
-        <div class="section-header">
-            <span class="section-tag">Arquitectura</span>
-            <h2>Vista General del Sistema</h2>
-            <p>Diseño modular que separa responsabilidades y garantiza escalabilidad</p>
-        </div>
-        
-        <div class="architecture-diagram">
-            <svg viewBox="0 0 900 500" class="arch-svg">
-                <!-- Background grid -->
-                <defs>
-                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(59,130,246,0.05)" stroke-width="1"/>
-                    </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#grid)"/>
-                
-                <!-- Layer labels -->
-                <text x="50" y="60" fill="#64748B" font-size="12" font-weight="600">CAPA CORE</text>
-                <text x="50" y="200" fill="#64748B" font-size="12" font-weight="600">CAPA OPERATIVA</text>
-                <text x="50" y="340" fill="#64748B" font-size="12" font-weight="600">CAPA COMERCIAL</text>
-                
-                <!-- Core Layer -->
-                <g class="layer-core">
-                    <rect x="150" y="40" width="200" height="80" rx="8" fill="#1E293B" stroke="#3B82F6" stroke-width="2"/>
-                    <text x="250" y="70" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="600">Identity Module</text>
-                    <text x="250" y="95" text-anchor="middle" fill="#94A3B8" font-size="11">person, person_document</text>
-                    
-                    <rect x="380" y="40" width="200" height="80" rx="8" fill="#1E293B" stroke="#F59E0B" stroke-width="2"/>
-                    <text x="480" y="70" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="600">Security Module</text>
-                    <text x="480" y="95" text-anchor="middle" fill="#94A3B8" font-size="11">user_account, role, permission</text>
-                    
-                    <rect x="610" y="40" width="200" height="80" rx="8" fill="#1E293B" stroke="#10B981" stroke-width="2"/>
-                    <text x="710" y="70" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="600">Customer Module</text>
-                    <text x="710" y="95" text-anchor="middle" fill="#94A3B8" font-size="11">customer, loyalty_account</text>
-                </g>
-                
-                <!-- Arrows Core to Operations -->
-                <g class="arrows" stroke="#475569" stroke-width="1.5" fill="none">
-                    <path d="M250 120 L250 160 L300 180" marker-end="url(#arrowhead)"/>
-                    <path d="M480 120 L480 160 L450 180" marker-end="url(#arrowhead)"/>
-                    <path d="M710 120 L710 160 L650 180" marker-end="url(#arrowhead)"/>
-                </g>
-                
-                <!-- Operations Layer -->
-                <g class="layer-ops">
-                    <rect x="150" y="180" width="180" height="80" rx="8" fill="#1E293B" stroke="#8B5CF6" stroke-width="2"/>
-                    <text x="240" y="210" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="600">Aircraft</text>
-                    <text x="240" y="235" text-anchor="middle" fill="#94A3B8" font-size="11">aircraft, seat, maintenance</text>
-                    
-                    <rect x="360" y="180" width="180" height="80" rx="8" fill="#1E293B" stroke="#EC4899" stroke-width="2"/>
-                    <text x="450" y="210" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="600">Airport</text>
-                    <text x="450" y="235" text-anchor="middle" fill="#94A3B8" font-size="11">airport, terminal, gate</text>
-                    
-                    <rect x="570" y="180" width="180" height="80" rx="8" fill="#1E293B" stroke="#06B6D4" stroke-width="2"/>
-                    <text x="660" y="210" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="600">Flight Control</text>
-                    <text x="660" y="235" text-anchor="middle" fill="#94A3B8" font-size="11">flight, flight_segment</text>
-                </g>
-                
-                <!-- Arrows Ops to Commercial -->
-                <g class="arrows" stroke="#475569" stroke-width="1.5" fill="none">
-                    <path d="M240 260 L240 300 L280 320" marker-end="url(#arrowhead)"/>
-                    <path d="M450 260 L450 320" marker-end="url(#arrowhead)"/>
-                    <path d="M660 260 L660 300 L620 320" marker-end="url(#arrowhead)"/>
-                </g>
-                
-                <!-- Commercial Layer -->
-                <g class="layer-commercial">
-                    <rect x="120" y="320" width="160" height="80" rx="8" fill="#1E293B" stroke="#F97316" stroke-width="2"/>
-                    <text x="200" y="350" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="600">Sales</text>
-                    <text x="200" y="375" text-anchor="middle" fill="#94A3B8" font-size="11">sale, ticket, reservation</text>
-                    
-                    <rect x="310" y="320" width="160" height="80" rx="8" fill="#1E293B" stroke="#EF4444" stroke-width="2"/>
-                    <text x="390" y="350" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="600">Boarding</text>
-                    <text x="390" y="375" text-anchor="middle" fill="#94A3B8" font-size="11">check_in, boarding_pass</text>
-                    
-                    <rect x="500" y="320" width="160" height="80" rx="8" fill="#1E293B" stroke="#14B8A6" stroke-width="2"/>
-                    <text x="580" y="350" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="600">Payment</text>
-                    <text x="580" y="375" text-anchor="middle" fill="#94A3B8" font-size="11">payment, refund</text>
-                    
-                    <rect x="690" y="320" width="160" height="80" rx="8" fill="#1E293B" stroke="#A855F7" stroke-width="2"/>
-                    <text x="770" y="350" text-anchor="middle" fill="#E2E8F0" font-size="14" font-weight="600">Billing</text>
-                    <text x="770" y="375" text-anchor="middle" fill="#94A3B8" font-size="11">invoice, currency</text>
-                </g>
-                
-                <!-- Support modules (bottom) -->
-                <g class="layer-support">
-                    <rect x="300" y="440" width="300" height="50" rx="8" fill="#0F172A" stroke="#64748B" stroke-width="1"/>
-                    <text x="450" y="470" text-anchor="middle" fill="#94A3B8" font-size="12">🌍 Geolocation Module (continent → country → state_province → city → address)</text>
-                </g>
-                
-                <!-- Arrow marker -->
-                <defs>
-                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-                        <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
-                    </marker>
-                </defs>
-            </svg>
-        </div>
-    </section>
+        <section id="equipos" class="section section-alt reveal">
+            <header class="section-head">
+                <span class="section-kicker">Adopcion</span>
+                <h2>Ruta de entrada por tipo de equipo</h2>
+                <p>
+                    Cada equipo tiene una puerta de entrada clara, con enlaces directos a los
+                    artefactos que necesita para avanzar.
+                </p>
+            </header>
 
-    <!-- Modules Section -->
-    <section id="modules" class="modules">
-        <div class="section-header">
-            <span class="section-tag">Módulos</span>
-            <h2>Los 12 Módulos del Sistema</h2>
-            <p>Cada módulo encapsula un dominio específico del negocio</p>
-        </div>
-        
-        <div class="modules-grid">
-            <article class="module-card" data-module="identity">
-                <div class="module-header">
-                    <div class="module-number">01</div>
-                    <svg class="module-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
-                        <circle cx="24" cy="16" r="8" fill="#3B82F6"/>
-                        <path d="M8 40C8 31.16 15.16 24 24 24C32.84 24 40 31.16 40 40" stroke="#3B82F6" stroke-width="4" stroke-linecap="round"/>
-                    </svg>
-                </div>
-                <h3>Identity</h3>
-                <p>Gestión de personas, documentos de identidad y contacto.</p>
-                <div class="module-entities">
-                    <span>person</span>
-                    <span>person_document</span>
-                    <span>person_contact</span>
-                    <span>document_type</span>
-                    <span>person_type</span>
-                    <span>contact_type</span>
-                </div>
-                <div class="module-count">6 entidades</div>
-            </article>
-            
-            <article class="module-card" data-module="security">
-                <div class="module-header">
-                    <div class="module-number">02</div>
-                    <svg class="module-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
-                        <path d="M24 4L8 12V22C8 33.1 14.84 43.32 24 46C33.16 43.32 40 33.1 40 22V12L24 4Z" fill="#F59E0B"/>
-                        <path d="M20 24L23 27L28 20" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </div>
-                <h3>Security</h3>
-                <p>Autenticación, roles, permisos y estados de usuario.</p>
-                <div class="module-entities">
-                    <span>user_account</span>
-                    <span>security_role</span>
-                    <span>security_permission</span>
-                    <span>user_role</span>
-                    <span>role_permission</span>
-                    <span>user_status</span>
-                </div>
-                <div class="module-count">6 entidades</div>
-            </article>
-            
-            <article class="module-card" data-module="customer">
-                <div class="module-header">
-                    <div class="module-number">03</div>
-                    <svg class="module-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
-                        <path d="M24 4L28.5 17H42L31 26L35.5 39L24 30L12.5 39L17 26L6 17H19.5L24 4Z" fill="#10B981"/>
-                    </svg>
-                </div>
-                <h3>Customer</h3>
-                <p>Clientes, programas de lealtad, millas y beneficios.</p>
-                <div class="module-entities">
-                    <span>customer</span>
-                    <span>loyalty_program</span>
-                    <span>loyalty_tier</span>
-                    <span>loyalty_account</span>
-                    <span>loyalty_account_tier</span>
-                    <span>miles_transaction</span>
-                    <span>customer_benefit</span>
-                    <span>customer_category</span>
-                    <span>benefit_type</span>
-                </div>
-                <div class="module-count">9 entidades</div>
-            </article>
-            
-            <article class="module-card" data-module="aircraft">
-                <div class="module-header">
-                    <div class="module-number">04</div>
-                    <svg class="module-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
-                        <path d="M24 6L18 18H8L14 24L8 42L24 34L40 42L34 24L40 18H30L24 6Z" fill="#8B5CF6"/>
-                    </svg>
-                </div>
-                <h3>Aircraft Management</h3>
-                <p>Flota, modelos, cabinas, asientos y mantenimiento.</p>
-                <div class="module-entities">
-                    <span>aircraft</span>
-                    <span>aircraft_manufacturer</span>
-                    <span>aircraft_model</span>
-                    <span>aircraft_cabin</span>
-                    <span>aircraft_seat</span>
-                    <span>maintenance_event</span>
-                    <span>maintenance_provider</span>
-                    <span>maintenance_type</span>
-                    <span>cabin_class</span>
-                </div>
-                <div class="module-count">9 entidades</div>
-            </article>
-            
-            <article class="module-card" data-module="airport">
-                <div class="module-header">
-                    <div class="module-number">05</div>
-                    <svg class="module-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
-                        <rect x="8" y="20" width="32" height="22" rx="2" fill="#EC4899"/>
-                        <rect x="14" y="8" width="20" height="12" rx="2" fill="#EC4899"/>
-                        <rect x="12" y="26" width="6" height="8" fill="#1E293B"/>
-                        <rect x="21" y="26" width="6" height="8" fill="#1E293B"/>
-                        <rect x="30" y="26" width="6" height="8" fill="#1E293B"/>
-                    </svg>
-                </div>
-                <h3>Airport Management</h3>
-                <p>Aeropuertos, terminales, puertas y pistas.</p>
-                <div class="module-entities">
-                    <span>airport</span>
-                    <span>terminal</span>
-                    <span>boarding_gate</span>
-                    <span>runway</span>
-                    <span>airport_regulation</span>
-                </div>
-                <div class="module-count">5 entidades</div>
-            </article>
-            
-            <article class="module-card" data-module="flight">
-                <div class="module-header">
-                    <div class="module-number">06</div>
-                    <svg class="module-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
-                        <path d="M42 18L28 24L18 20L6 24L18 28L28 24L42 30L44 24L42 18Z" fill="#06B6D4"/>
-                        <circle cx="14" cy="24" r="4" fill="#06B6D4"/>
-                    </svg>
-                </div>
-                <h3>Flight Control</h3>
-                <p>Vuelos, segmentos, estados y razones de demora.</p>
-                <div class="module-entities">
-                    <span>flight</span>
-                    <span>flight_segment</span>
-                    <span>flight_delay</span>
-                    <span>flight_status</span>
-                    <span>delay_reason_type</span>
-                </div>
-                <div class="module-count">5 entidades</div>
-            </article>
-            
-            <article class="module-card" data-module="boarding">
-                <div class="module-header">
-                    <div class="module-number">07</div>
-                    <svg class="module-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
-                        <rect x="10" y="8" width="28" height="32" rx="4" fill="#EF4444"/>
-                        <rect x="14" y="14" width="12" height="4" fill="white"/>
-                        <rect x="14" y="22" width="20" height="2" fill="white" opacity="0.6"/>
-                        <rect x="14" y="28" width="20" height="2" fill="white" opacity="0.6"/>
-                        <rect x="28" y="32" width="8" height="4" fill="white"/>
-                    </svg>
-                </div>
-                <h3>Boarding</h3>
-                <p>Check-in, pases de abordar y validación.</p>
-                <div class="module-entities">
-                    <span>check_in</span>
-                    <span>check_in_status</span>
-                    <span>boarding_pass</span>
-                    <span>boarding_group</span>
-                    <span>boarding_validation</span>
-                </div>
-                <div class="module-count">5 entidades</div>
-            </article>
-            
-            <article class="module-card" data-module="sales">
-                <div class="module-header">
-                    <div class="module-number">08</div>
-                    <svg class="module-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
-                        <path d="M14 16H40L36 32H18L14 16Z" fill="#F97316"/>
-                        <circle cx="20" cy="38" r="3" fill="#F97316"/>
-                        <circle cx="34" cy="38" r="3" fill="#F97316"/>
-                        <path d="M8 8H12L14 16" stroke="#F97316" stroke-width="3" stroke-linecap="round"/>
-                    </svg>
-                </div>
-                <h3>Sales</h3>
-                <p>Reservas, ventas, tarifas, ticketing, segmentos y asignación de asientos.</p>
-                <div class="module-entities">
-                    <span>reservation</span>
-                    <span>sale</span>
-                    <span>reservation_passenger</span>
-                    <span>ticket</span>
-                    <span>ticket_segment</span>
-                    <span>fare</span>
-                    <span>fare_class</span>
-                    <span>seat_assignment</span>
-                    <span>baggage</span>
-                    <span>reservation_status</span>
-                    <span>sale_channel</span>
-                    <span>ticket_status</span>
-                </div>
-                <div class="module-count">12 entidades</div>
-            </article>
-            
-            <article class="module-card" data-module="payment">
-                <div class="module-header">
-                    <div class="module-number">09</div>
-                    <svg class="module-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
-                        <rect x="6" y="12" width="36" height="24" rx="4" fill="#14B8A6"/>
-                        <rect x="6" y="18" width="36" height="6" fill="#0D9488"/>
-                        <rect x="10" y="28" width="12" height="4" rx="1" fill="white"/>
-                    </svg>
-                </div>
-                <h3>Payment</h3>
-                <p>Pagos, transacciones y reembolsos.</p>
-                <div class="module-entities">
-                    <span>payment</span>
-                    <span>payment_transaction</span>
-                    <span>refund</span>
-                    <span>payment_status</span>
-                    <span>payment_method</span>
-                </div>
-                <div class="module-count">5 entidades</div>
-            </article>
-            
-            <article class="module-card" data-module="billing">
-                <div class="module-header">
-                    <div class="module-number">10</div>
-                    <svg class="module-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
-                        <rect x="10" y="6" width="28" height="36" rx="2" fill="#A855F7"/>
-                        <rect x="14" y="12" width="16" height="3" fill="white"/>
-                        <rect x="14" y="18" width="20" height="2" fill="white" opacity="0.5"/>
-                        <rect x="14" y="23" width="20" height="2" fill="white" opacity="0.5"/>
-                        <rect x="14" y="28" width="20" height="2" fill="white" opacity="0.5"/>
-                        <rect x="24" y="34" width="10" height="4" fill="white"/>
-                    </svg>
-                </div>
-                <h3>Billing</h3>
-                <p>Facturas, impuestos y tasas de cambio.</p>
-                <div class="module-entities">
-                    <span>invoice</span>
-                    <span>invoice_line</span>
-                    <span>tax</span>
-                    <span>exchange_rate</span>
-                    <span>currency</span>
-                    <span>invoice_status</span>
-                </div>
-                <div class="module-count">6 entidades</div>
-            </article>
-            
-            <article class="module-card" data-module="geolocation">
-                <div class="module-header">
-                    <div class="module-number">11</div>
-                    <svg class="module-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
-                        <circle cx="24" cy="24" r="18" fill="none" stroke="#22C55E" stroke-width="3"/>
-                        <ellipse cx="24" cy="24" rx="8" ry="18" fill="none" stroke="#22C55E" stroke-width="2"/>
-                        <line x1="6" y1="24" x2="42" y2="24" stroke="#22C55E" stroke-width="2"/>
-                        <line x1="24" y1="6" x2="24" y2="42" stroke="#22C55E" stroke-width="2"/>
-                    </svg>
-                </div>
-                <h3>Geolocation</h3>
-                <p>Jerarquía geográfica completa y zonas horarias.</p>
-                <div class="module-entities">
-                    <span>continent</span>
-                    <span>country</span>
-                    <span>state_province</span>
-                    <span>city</span>
-                    <span>district</span>
-                    <span>address</span>
-                    <span>time_zone</span>
-                </div>
-                <div class="module-count">7 entidades</div>
-            </article>
-            
-            <article class="module-card" data-module="airline">
-                <div class="module-header">
-                    <div class="module-number">12</div>
-                    <svg class="module-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
-                        <circle cx="24" cy="24" r="18" fill="#6366F1"/>
-                        <path d="M24 12L20 20H14L18 24L14 36L24 30L34 36L30 24L34 20H28L24 12Z" fill="white"/>
-                    </svg>
-                </div>
-                <h3>Airline</h3>
-                <p>Entidad central de la aerolínea.</p>
-                <div class="module-entities">
-                    <span>airline</span>
-                </div>
-                <div class="module-count">1 entidad</div>
-            </article>
-        </div>
-    </section>
-
-    <!-- ER Diagram Section -->
-    <section id="diagram" class="er-diagram">
-        <div class="section-header">
-            <span class="section-tag">Diagrama ER</span>
-            <h2>Relaciones entre Entidades</h2>
-            <p>Flujo principal de datos: Person → Customer → Reservation → Sale → Ticket → Ticket Segment</p>
-        </div>
-        
-        <div class="diagram-container">
-            <svg viewBox="0 0 1100 700" class="er-svg">
-                <!-- Background -->
-                <defs>
-                    <pattern id="er-grid" width="20" height="20" patternUnits="userSpaceOnUse">
-                        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(59,130,246,0.03)" stroke-width="1"/>
-                    </pattern>
-                    <filter id="glow">
-                        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                        <feMerge>
-                            <feMergeNode in="coloredBlur"/>
-                            <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                    </filter>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#er-grid)"/>
-                
-                <!-- Connection lines (behind entities) -->
-                <g class="er-connections" stroke-width="2" fill="none">
-                    <!-- person to user_account -->
-                    <path d="M200 100 Q250 100 280 140" stroke="#3B82F6" opacity="0.6"/>
-                    <!-- person to customer -->
-                    <path d="M200 100 Q250 150 280 200" stroke="#10B981" opacity="0.6"/>
-                    <!-- person to person_document -->
-                    <path d="M120 130 L120 180" stroke="#64748B" opacity="0.4"/>
-                    
-                    <!-- user_account to user_role -->
-                    <path d="M400 160 L450 160" stroke="#F59E0B" opacity="0.6"/>
-                    <!-- role to user_role -->
-                    <path d="M550 120 L550 160 L500 160" stroke="#F59E0B" opacity="0.6"/>
-                    
-                    <!-- customer to sale -->
-                    <path d="M350 230 Q400 280 450 300" stroke="#F97316" opacity="0.6"/>
-                    <!-- customer to loyalty_account -->
-                    <path d="M350 230 L400 280" stroke="#10B981" opacity="0.6"/>
-                    
-                    <!-- sale to ticket -->
-                    <path d="M550 320 L620 320" stroke="#F97316" opacity="0.6"/>
-                    <!-- sale to payment -->
-                    <path d="M500 350 L500 420" stroke="#14B8A6" opacity="0.6"/>
-                    <!-- sale to invoice -->
-                    <path d="M550 350 Q600 400 650 450" stroke="#A855F7" opacity="0.6"/>
-                    
-                    <!-- ticket to flight_segment -->
-                    <path d="M750 320 L820 320" stroke="#06B6D4" opacity="0.6"/>
-                    <!-- ticket to seat_assignment -->
-                    <path d="M700 350 L700 400" stroke="#8B5CF6" opacity="0.6"/>
-                    <!-- ticket to boarding_pass -->
-                    <path d="M750 350 Q800 380 850 400" stroke="#EF4444" opacity="0.6"/>
-                    
-                    <!-- flight_segment to flight -->
-                    <path d="M920 290 L920 220" stroke="#06B6D4" opacity="0.6"/>
-                    <!-- flight to aircraft -->
-                    <path d="M870 180 L800 140" stroke="#8B5CF6" opacity="0.6"/>
-                    <!-- flight to airport (origin) -->
-                    <path d="M870 180 Q820 100 750 80" stroke="#EC4899" opacity="0.6"/>
-                    <!-- flight to airport (destination) -->
-                    <path d="M970 180 Q1020 100 1000 80" stroke="#EC4899" opacity="0.6"/>
-                    
-                    <!-- airport to geolocation -->
-                    <path d="M700 80 L650 120" stroke="#22C55E" opacity="0.4"/>
-                    
-                    <!-- loyalty_account to loyalty_program -->
-                    <path d="M450 300 Q500 320 500 360" stroke="#10B981" opacity="0.4"/>
-                    <!-- loyalty_program to airline -->
-                    <path d="M500 400 L500 450" stroke="#6366F1" opacity="0.4"/>
-                </g>
-                
-                <!-- Entity boxes -->
-                <g class="er-entities">
-                    <!-- IDENTITY MODULE -->
-                    <g class="entity" transform="translate(80, 60)">
-                        <rect width="160" height="70" rx="6" fill="#1E293B" stroke="#3B82F6" stroke-width="2"/>
-                        <text x="80" y="25" text-anchor="middle" fill="#3B82F6" font-size="11" font-weight="600">IDENTITY</text>
-                        <text x="80" y="45" text-anchor="middle" fill="#E2E8F0" font-size="13" font-weight="700">person</text>
-                        <text x="80" y="60" text-anchor="middle" fill="#64748B" font-size="9">id (PK) • person_type_id (FK)</text>
-                    </g>
-                    
-                    <g class="entity" transform="translate(60, 180)">
-                        <rect width="140" height="60" rx="6" fill="#0F172A" stroke="#64748B" stroke-width="1"/>
-                        <text x="70" y="25" text-anchor="middle" fill="#94A3B8" font-size="10">person_document</text>
-                        <text x="70" y="45" text-anchor="middle" fill="#64748B" font-size="9">person_id (FK)</text>
-                    </g>
-                    
-                    <!-- SECURITY MODULE -->
-                    <g class="entity" transform="translate(280, 120)">
-                        <rect width="160" height="70" rx="6" fill="#1E293B" stroke="#F59E0B" stroke-width="2"/>
-                        <text x="80" y="25" text-anchor="middle" fill="#F59E0B" font-size="11" font-weight="600">SECURITY</text>
-                        <text x="80" y="45" text-anchor="middle" fill="#E2E8F0" font-size="13" font-weight="700">user_account</text>
-                        <text x="80" y="60" text-anchor="middle" fill="#64748B" font-size="9">person_id (FK) • user_status_id</text>
-                    </g>
-                    
-                    <g class="entity" transform="translate(460, 130)">
-                        <rect width="100" height="50" rx="6" fill="#0F172A" stroke="#F59E0B" stroke-width="1"/>
-                        <text x="50" y="25" text-anchor="middle" fill="#FBBF24" font-size="10">user_role</text>
-                        <text x="50" y="40" text-anchor="middle" fill="#64748B" font-size="8">user_id • role_id</text>
-                    </g>
-                    
-                    <g class="entity" transform="translate(500, 80)">
-                        <rect width="80" height="40" rx="6" fill="#0F172A" stroke="#F59E0B" stroke-width="1"/>
-                        <text x="40" y="25" text-anchor="middle" fill="#FBBF24" font-size="10">role</text>
-                    </g>
-                    
-                    <!-- CUSTOMER MODULE -->
-                    <g class="entity" transform="translate(260, 200)">
-                        <rect width="140" height="70" rx="6" fill="#1E293B" stroke="#10B981" stroke-width="2"/>
-                        <text x="70" y="25" text-anchor="middle" fill="#10B981" font-size="11" font-weight="600">CUSTOMER</text>
-                        <text x="70" y="45" text-anchor="middle" fill="#E2E8F0" font-size="13" font-weight="700">customer</text>
-                        <text x="70" y="60" text-anchor="middle" fill="#64748B" font-size="9">person_id (FK)</text>
-                    </g>
-                    
-                    <g class="entity" transform="translate(360, 260)">
-                        <rect width="120" height="50" rx="6" fill="#0F172A" stroke="#10B981" stroke-width="1"/>
-                        <text x="60" y="25" text-anchor="middle" fill="#34D399" font-size="10">loyalty_account</text>
-                        <text x="60" y="40" text-anchor="middle" fill="#64748B" font-size="8">customer_id (FK)</text>
-                    </g>
-                    
-                    <g class="entity" transform="translate(440, 360)">
-                        <rect width="120" height="50" rx="6" fill="#0F172A" stroke="#10B981" stroke-width="1"/>
-                        <text x="60" y="25" text-anchor="middle" fill="#34D399" font-size="10">loyalty_program</text>
-                        <text x="60" y="40" text-anchor="middle" fill="#64748B" font-size="8">airline_id (FK)</text>
-                    </g>
-                    
-                    <!-- SALES MODULE -->
-                    <g class="entity" transform="translate(450, 280)">
-                        <rect width="140" height="70" rx="6" fill="#1E293B" stroke="#F97316" stroke-width="2"/>
-                        <text x="70" y="25" text-anchor="middle" fill="#F97316" font-size="11" font-weight="600">SALES</text>
-                        <text x="70" y="45" text-anchor="middle" fill="#E2E8F0" font-size="13" font-weight="700">reservation</text>
-                        <text x="70" y="60" text-anchor="middle" fill="#64748B" font-size="9">customer_id • reservation_status_id</text>
-                    </g>
-                    
-                    <g class="entity" transform="translate(620, 290)">
-                        <rect width="130" height="70" rx="6" fill="#1E293B" stroke="#F97316" stroke-width="2"/>
-                        <text x="65" y="25" text-anchor="middle" fill="#FB923C" font-size="10">ticket</text>
-                        <text x="65" y="42" text-anchor="middle" fill="#64748B" font-size="8">sale_id (FK)</text>
-                        <text x="65" y="54" text-anchor="middle" fill="#64748B" font-size="8">reservation_passenger_id</text>
-                        <text x="65" y="66" text-anchor="middle" fill="#64748B" font-size="8">fare_id</text>
-                    </g>
-                    
-                    <g class="entity" transform="translate(640, 400)">
-                        <rect width="120" height="50" rx="6" fill="#0F172A" stroke="#8B5CF6" stroke-width="1"/>
-                        <text x="60" y="25" text-anchor="middle" fill="#A78BFA" font-size="10">seat_assignment</text>
-                        <text x="60" y="40" text-anchor="middle" fill="#64748B" font-size="8">ticket_segment_id • seat_id</text>
-                    </g>
-                    
-                    <!-- PAYMENT MODULE -->
-                    <g class="entity" transform="translate(420, 420)">
-                        <rect width="130" height="60" rx="6" fill="#1E293B" stroke="#14B8A6" stroke-width="2"/>
-                        <text x="65" y="22" text-anchor="middle" fill="#14B8A6" font-size="11" font-weight="600">PAYMENT</text>
-                        <text x="65" y="42" text-anchor="middle" fill="#E2E8F0" font-size="12" font-weight="700">payment</text>
-                        <text x="65" y="55" text-anchor="middle" fill="#64748B" font-size="8">sale_id (FK)</text>
-                    </g>
-                    
-                    <!-- BILLING MODULE -->
-                    <g class="entity" transform="translate(600, 460)">
-                        <rect width="130" height="60" rx="6" fill="#1E293B" stroke="#A855F7" stroke-width="2"/>
-                        <text x="65" y="22" text-anchor="middle" fill="#A855F7" font-size="11" font-weight="600">BILLING</text>
-                        <text x="65" y="42" text-anchor="middle" fill="#E2E8F0" font-size="12" font-weight="700">invoice</text>
-                        <text x="65" y="55" text-anchor="middle" fill="#64748B" font-size="8">sale_id • currency_id</text>
-                    </g>
-                    
-                    <!-- BOARDING MODULE -->
-                    <g class="entity" transform="translate(800, 400)">
-                        <rect width="130" height="60" rx="6" fill="#1E293B" stroke="#EF4444" stroke-width="2"/>
-                        <text x="65" y="22" text-anchor="middle" fill="#EF4444" font-size="11" font-weight="600">BOARDING</text>
-                        <text x="65" y="42" text-anchor="middle" fill="#E2E8F0" font-size="12" font-weight="700">boarding_pass</text>
-                        <text x="65" y="55" text-anchor="middle" fill="#64748B" font-size="8">check_in_id (FK)</text>
-                    </g>
-                    
-                    <!-- FLIGHT MODULE -->
-                    <g class="entity" transform="translate(850, 280)">
-                        <rect width="140" height="60" rx="6" fill="#1E293B" stroke="#06B6D4" stroke-width="2"/>
-                        <text x="70" y="22" text-anchor="middle" fill="#06B6D4" font-size="10">flight_segment</text>
-                        <text x="70" y="40" text-anchor="middle" fill="#64748B" font-size="8">flight_id (FK)</text>
-                        <text x="70" y="52" text-anchor="middle" fill="#64748B" font-size="8">origin • destination</text>
-                    </g>
-                    
-                    <g class="entity" transform="translate(850, 160)">
-                        <rect width="140" height="70" rx="6" fill="#1E293B" stroke="#06B6D4" stroke-width="2"/>
-                        <text x="70" y="25" text-anchor="middle" fill="#06B6D4" font-size="11" font-weight="600">FLIGHT</text>
-                        <text x="70" y="45" text-anchor="middle" fill="#E2E8F0" font-size="13" font-weight="700">flight</text>
-                        <text x="70" y="60" text-anchor="middle" fill="#64748B" font-size="9">aircraft_id • airports</text>
-                    </g>
-                    
-                    <!-- AIRCRAFT MODULE -->
-                    <g class="entity" transform="translate(700, 100)">
-                        <rect width="130" height="60" rx="6" fill="#1E293B" stroke="#8B5CF6" stroke-width="2"/>
-                        <text x="65" y="22" text-anchor="middle" fill="#8B5CF6" font-size="11" font-weight="600">AIRCRAFT</text>
-                        <text x="65" y="42" text-anchor="middle" fill="#E2E8F0" font-size="12" font-weight="700">aircraft</text>
-                        <text x="65" y="55" text-anchor="middle" fill="#64748B" font-size="8">aircraft_model_id</text>
-                    </g>
-                    
-                    <!-- AIRPORT MODULE -->
-                    <g class="entity" transform="translate(650, 40)">
-                        <rect width="120" height="50" rx="6" fill="#1E293B" stroke="#EC4899" stroke-width="2"/>
-                        <text x="60" y="22" text-anchor="middle" fill="#EC4899" font-size="11" font-weight="600">AIRPORT</text>
-                        <text x="60" y="40" text-anchor="middle" fill="#E2E8F0" font-size="11" font-weight="700">airport</text>
-                    </g>
-                    
-                    <g class="entity" transform="translate(950, 40)">
-                        <rect width="120" height="50" rx="6" fill="#0F172A" stroke="#EC4899" stroke-width="1"/>
-                        <text x="60" y="22" text-anchor="middle" fill="#F472B6" font-size="10">terminal</text>
-                        <text x="60" y="38" text-anchor="middle" fill="#64748B" font-size="8">airport_id (FK)</text>
-                    </g>
-                    
-                    <!-- GEOLOCATION MODULE -->
-                    <g class="entity" transform="translate(560, 100)">
-                        <rect width="110" height="50" rx="6" fill="#0F172A" stroke="#22C55E" stroke-width="1"/>
-                        <text x="55" y="22" text-anchor="middle" fill="#22C55E" font-size="10">address</text>
-                        <text x="55" y="38" text-anchor="middle" fill="#64748B" font-size="8">district • city • ...</text>
-                    </g>
-                    
-                    <!-- AIRLINE MODULE -->
-                    <g class="entity" transform="translate(460, 450)">
-                        <rect width="100" height="50" rx="6" fill="#1E293B" stroke="#6366F1" stroke-width="2"/>
-                        <text x="50" y="22" text-anchor="middle" fill="#6366F1" font-size="11" font-weight="600">AIRLINE</text>
-                        <text x="50" y="40" text-anchor="middle" fill="#E2E8F0" font-size="11" font-weight="700">airline</text>
-                    </g>
-                </g>
-                
-                <!-- Legend -->
-                <g class="legend" transform="translate(50, 550)">
-                    <text x="0" y="0" fill="#94A3B8" font-size="11" font-weight="600">LEYENDA:</text>
-                    <circle cx="20" cy="25" r="6" fill="#3B82F6"/>
-                    <text x="35" y="30" fill="#94A3B8" font-size="10">Identity</text>
-                    <circle cx="100" cy="25" r="6" fill="#F59E0B"/>
-                    <text x="115" y="30" fill="#94A3B8" font-size="10">Security</text>
-                    <circle cx="180" cy="25" r="6" fill="#10B981"/>
-                    <text x="195" y="30" fill="#94A3B8" font-size="10">Customer</text>
-                    <circle cx="270" cy="25" r="6" fill="#F97316"/>
-                    <text x="285" y="30" fill="#94A3B8" font-size="10">Sales</text>
-                    <circle cx="340" cy="25" r="6" fill="#06B6D4"/>
-                    <text x="355" y="30" fill="#94A3B8" font-size="10">Flight</text>
-                    <circle cx="410" cy="25" r="6" fill="#8B5CF6"/>
-                    <text x="425" y="30" fill="#94A3B8" font-size="10">Aircraft</text>
-                    <circle cx="495" cy="25" r="6" fill="#EC4899"/>
-                    <text x="510" y="30" fill="#94A3B8" font-size="10">Airport</text>
-                    <circle cx="575" cy="25" r="6" fill="#EF4444"/>
-                    <text x="590" y="30" fill="#94A3B8" font-size="10">Boarding</text>
-                </g>
-                
-                <!-- Flow annotation -->
-                <g class="flow-annotation" transform="translate(50, 620)">
-                    <text fill="#64748B" font-size="10">
-                        <tspan x="0" y="0">→ Flujo principal: person → customer → reservation → sale → ticket → ticket_segment → flight_segment</tspan>
-                        <tspan x="0" y="18">→ Líneas sólidas = FK directa | Líneas punteadas = relación indirecta</tspan>
-                    </text>
-                </g>
-            </svg>
-        </div>
-    </section>
-
-    <!-- Downloads Section -->
-    <section id="downloads" class="downloads">
-        <div class="section-header">
-            <span class="section-tag">Descargas</span>
-            <h2>Archivos del Modelo</h2>
-            <p>Paquete documental y operativo para explicacion, validacion y seguimiento arquitectonico</p>
-        </div>
-        
-        <div class="downloads-grid">
-            <div class="download-card">
-                <div class="download-icon">
-                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-                        <rect x="12" y="4" width="40" height="56" rx="4" fill="#10B981"/>
-                        <text x="32" y="38" text-anchor="middle" fill="white" font-size="14" font-weight="700">SQL</text>
-                    </svg>
-                </div>
-                <div class="download-badge done">Validado</div>
-                <h3>DDL PostgreSQL</h3>
-                <p>DDL maestro ejecutado en PostgreSQL 16. 76 tablas, PKs, FKs, restricciones UNIQUE y CHECK.</p>
-                <span class="download-format">SQL (.sql)</span>
-                <a href="../../db/ddl/modelo_postgresql.sql" class="btn btn-primary" download>Descargar DDL</a>
+            <div class="audience-switcher" role="tablist" aria-label="Perfiles de adopcion">
+                <button class="audience-tab active" type="button" data-audience="arquitectura" aria-selected="true">Arquitectura / Data</button>
+                <button class="audience-tab" type="button" data-audience="backend" aria-selected="false">Backend</button>
+                <button class="audience-tab" type="button" data-audience="frontend" aria-selected="false">Frontend / Producto</button>
+                <button class="audience-tab" type="button" data-audience="operacion" aria-selected="false">QA / Operacion</button>
             </div>
 
-            <div class="download-card">
-                <div class="download-icon">
-                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-                        <rect x="12" y="4" width="40" height="56" rx="4" fill="#3B82F6"/>
-                        <text x="32" y="38" text-anchor="middle" fill="white" font-size="11" font-weight="700">SEED</text>
-                    </svg>
-                </div>
-                <div class="download-badge done">Implementado</div>
-                <h3>Seed Canónico</h3>
-                <p>3 flujos E2E completos: person → customer → reservation → sale → ticket → payment → invoice → boarding.</p>
-                <span class="download-format">SQL (.sql)</span>
-                <a href="../../db/seeds/00_seed_canonico.sql" class="btn btn-primary" download>Descargar Seed</a>
+            <div class="route-grid">
+                <article class="route-card active" data-audience="arquitectura" tabindex="0" role="button" aria-pressed="true">
+                    <h3>Arquitectura / Data</h3>
+                    <p>Revisar decisiones, estado del modelo y gobierno del baseline.</p>
+                    <div class="route-links">
+                        <a href="../../architecture/canvas/canvas_arquitectura.html">Canvas</a>
+                        <a href="../../docs/planes/ROADMAP_ESTABILIZACION_DB_SENIOR.md">Roadmap</a>
+                        <a href="../../db/ddl/modelo_postgresql.sql">DDL maestro</a>
+                    </div>
+                </article>
+
+                <article class="route-card" data-audience="backend" tabindex="0" role="button" aria-pressed="false">
+                    <h3>Backend</h3>
+                    <p>Implementar servicios sobre tablas, flujos y validaciones estables.</p>
+                    <div class="route-links">
+                        <a href="../../reports/html/funcionalidades_sistema.html">Capacidades</a>
+                        <a href="../../infra/docker/recrear_instalacion_limpia.ps1">Rebuild limpio</a>
+                        <a href="../../infra/tools/ejecutar_gate_pre_release.ps1">Gate local</a>
+                    </div>
+                </article>
+
+                <article class="route-card" data-audience="frontend" tabindex="0" role="button" aria-pressed="false">
+                    <h3>Frontend / Producto</h3>
+                    <p>Mapear journeys, estados y dependencias funcionales del dominio.</p>
+                    <div class="route-links">
+                        <a href="../../reports/html/funcionalidades_sistema.html">Informe funcional</a>
+                        <a href="../../reports/cronograma/cronograma_realizacion.html">Cronograma</a>
+                        <a href="../../docs/planes/PLAN_CONTINUIDAD_FASES_2026-03-19.md">Continuidad</a>
+                    </div>
+                </article>
+
+                <article class="route-card" data-audience="operacion" tabindex="0" role="button" aria-pressed="false">
+                    <h3>Operacion / QA</h3>
+                    <p>Auditar salud, riesgos y promocion de cambios con evidencia trazable.</p>
+                    <div class="route-links">
+                        <a href="../../docs/validacion/EVIDENCIA_PIPELINE_CI_REMOTO_2026-03-20.md">Evidencia CI</a>
+                        <a href="../../docs/validacion/POLITICA_PROMOCION_DB_RELEASE_GUARD.md">Release guard</a>
+                        <a href="../../docs/validacion/EVIDENCIA_ADMIN_BOOTSTRAP_LOCAL_2026-03-20.md">Admin bootstrap</a>
+                    </div>
+                </article>
             </div>
 
-            <div class="download-card">
-                <div class="download-icon">
-                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-                        <rect x="12" y="4" width="40" height="56" rx="4" fill="#1D4ED8"/>
-                        <rect x="18" y="14" width="20" height="4" fill="white"/>
-                        <rect x="18" y="24" width="28" height="2" fill="white" opacity="0.6"/>
-                        <rect x="18" y="30" width="28" height="2" fill="white" opacity="0.6"/>
-                        <rect x="18" y="36" width="28" height="2" fill="white" opacity="0.6"/>
-                        <rect x="18" y="42" width="20" height="2" fill="white" opacity="0.6"/>
-                    </svg>
+            <aside class="audience-brief" id="audience-brief" aria-live="polite">
+                <div class="brief-head">
+                    <span class="brief-kicker">Recorrido activo</span>
+                    <h3>Arquitectura / Data</h3>
+                    <p>Empieza aqui para validar baseline, modelo vigente y siguiente frente sin reabrir decisiones ya cerradas.</p>
                 </div>
-                <div class="download-badge done">Documentado</div>
-                <h3>Modelo Documentado</h3>
-                <p>Modelo 3FN con módulos, decisiones de diseño, jerarquías y trazabilidad arquitectónica.</p>
-                <span class="download-format">Markdown (.md)</span>
-                <a href="../../docs/datos/modelo_documentado.md" class="btn btn-primary" download>Descargar Doc</a>
+
+                <div class="brief-grid">
+                    <section class="brief-block">
+                        <h4>Que revisar primero</h4>
+                        <ul class="brief-list">
+                            <li>Canvas para ubicar capas, riesgos y continuidad.</li>
+                            <li>Roadmap senior para entender que ya se estabilizo.</li>
+                            <li>DDL maestro para confirmar el contrato fisico real.</li>
+                        </ul>
+                    </section>
+
+                    <section class="brief-block">
+                        <h4>Resultado esperado</h4>
+                        <ul class="brief-list">
+                            <li>Diagnostico claro del baseline vigente.</li>
+                            <li>Decision de frente siguiente con una sola fuente de verdad.</li>
+                            <li>Handoff tecnico consistente para backend y frontend.</li>
+                        </ul>
+                    </section>
+                </div>
+
+                <div class="brief-command">
+                    <span class="command-caption">Primer comando recomendado</span>
+                    <pre class="code-block"><code>.\infra\tools\ejecutar_gate_pre_release.ps1 -SkipDocker</code></pre>
+                    <div class="command-actions">
+                        <button class="copy-btn" type="button" data-copy=".\infra\tools\ejecutar_gate_pre_release.ps1 -SkipDocker">Copiar comando</button>
+                        <span class="command-note">Valida rapido el estado repo-local antes de abrir un nuevo frente de trabajo.</span>
+                    </div>
+                </div>
+            </aside>
+        </section>
+
+        <section id="journeys" class="section section-immersive reveal delay-1">
+            <header class="section-head journey-head">
+                <span class="section-kicker">Diseno + Funcionalidad</span>
+                <h2>Journeys priorizados para materializar una experiencia real</h2>
+                <p>
+                    Elige un flujo y aterriza al mismo tiempo pantallas, estados, contrato backend,
+                    foco QA y los artefactos que el equipo necesita para construir sin ambiguedad.
+                </p>
+            </header>
+
+            <div class="journey-layout">
+                <div class="journey-selector" role="tablist" aria-label="Journeys priorizados">
+                    <button class="journey-tab active" type="button" data-journey="reserva" aria-selected="true">
+                        <span class="journey-tab-index">01</span>
+                        <span class="journey-tab-copy">
+                            <strong>Reserva y venta</strong>
+                            <small>Busqueda, seleccion, cobro y emision</small>
+                        </span>
+                        <span class="journey-signal signal-core">Core</span>
+                    </button>
+
+                    <button class="journey-tab" type="button" data-journey="checkin" aria-selected="false">
+                        <span class="journey-tab-index">02</span>
+                        <span class="journey-tab-copy">
+                            <strong>Check-in y embarque</strong>
+                            <small>Confirmacion, asiento y pase de abordar</small>
+                        </span>
+                        <span class="journey-signal signal-live">Operacion</span>
+                    </button>
+
+                    <button class="journey-tab" type="button" data-journey="postventa" aria-selected="false">
+                        <span class="journey-tab-index">03</span>
+                        <span class="journey-tab-copy">
+                            <strong>Postventa y recaudo</strong>
+                            <small>Cambios, ajustes, devoluciones y trazabilidad</small>
+                        </span>
+                        <span class="journey-signal signal-risk">Riesgo</span>
+                    </button>
+
+                    <button class="journey-tab" type="button" data-journey="lealtad" aria-selected="false">
+                        <span class="journey-tab-index">04</span>
+                        <span class="journey-tab-copy">
+                            <strong>Lealtad y cliente</strong>
+                            <small>Perfil, beneficios y retencion</small>
+                        </span>
+                        <span class="journey-signal signal-growth">Growth</span>
+                    </button>
+                </div>
+
+                <aside class="journey-panel" id="journey-panel" aria-live="polite">
+                    <div class="journey-panel-head">
+                        <span class="journey-kicker">Journey activo</span>
+                        <h3>Reserva y venta</h3>
+                        <p>
+                            Es el flujo que convierte exploracion en ingreso y debe sentirse
+                            confiable, rapido y verificable desde busqueda hasta emision.
+                        </p>
+                    </div>
+
+                    <div class="journey-metrics">
+                        <article class="journey-stat">
+                            <span>Momento critico</span>
+                            <strong>Cotizacion a cobro</strong>
+                        </article>
+                        <article class="journey-stat">
+                            <span>Persona principal</span>
+                            <strong>Cliente comprador</strong>
+                        </article>
+                        <article class="journey-stat">
+                            <span>Tablas eje</span>
+                            <strong>reservation, sale, payment</strong>
+                        </article>
+                    </div>
+
+                    <div class="journey-grid">
+                        <section class="journey-block">
+                            <h4>Estados de experiencia</h4>
+                            <div class="journey-state-grid">
+                                <article class="state-card">
+                                    <strong>Busqueda</strong>
+                                    <p>Explorar origen, destino, fecha, tarifa y disponibilidad.</p>
+                                </article>
+                                <article class="state-card">
+                                    <strong>Seleccion</strong>
+                                    <p>Elegir vuelo, tarifa, asientos base y datos del pasajero.</p>
+                                </article>
+                                <article class="state-card">
+                                    <strong>Pago</strong>
+                                    <p>Confirmar monto, metodo y resultado transaccional sin friccion.</p>
+                                </article>
+                                <article class="state-card">
+                                    <strong>Emision</strong>
+                                    <p>Mostrar ticket, localizador, recibo e invoice trazable.</p>
+                                </article>
+                            </div>
+                        </section>
+
+                        <section class="journey-block">
+                            <h4>Que debe salir de diseno y producto</h4>
+                            <ul class="journey-list">
+                                <li>Flujo completo de compra con estados claros y recuperables.</li>
+                                <li>Mensajes consistentes para validaciones, rechazo y exito.</li>
+                                <li>Resumen final que conecte reserva, ticket e invoice.</li>
+                            </ul>
+                        </section>
+
+                        <section class="journey-block">
+                            <h4>Contrato backend y datos</h4>
+                            <ul class="journey-list">
+                                <li>Persistencia ordenada entre reservation, sale, payment y ticket.</li>
+                                <li>Trazabilidad de transaccion y relacion con invoice.</li>
+                                <li>Estados idempotentes para reintento y confirmacion.</li>
+                            </ul>
+                        </section>
+
+                        <section class="journey-block">
+                            <h4>QA y liberacion</h4>
+                            <ul class="journey-list">
+                                <li>Caso feliz de compra completo con evidencia final.</li>
+                                <li>Fallas de cobro sin doble emision ni registros huerfanos.</li>
+                                <li>Chequeo de consistencia previo a promover cambios.</li>
+                            </ul>
+                        </section>
+                    </div>
+
+                    <div class="journey-footer">
+                        <div class="journey-links">
+                            <a href="../../reports/html/funcionalidades_sistema.html">Abrir informe funcional</a>
+                            <a href="../../db/ddl/modelo_postgresql.sql">Abrir DDL maestro</a>
+                            <a href="../../infra/tools/ejecutar_gate_pre_release.ps1">Abrir gate local</a>
+                        </div>
+
+                        <div class="journey-command">
+                            <span class="command-caption">Siguiente paso recomendado</span>
+                            <pre class="code-block"><code>.\infra\tools\ejecutar_gate_pre_release.ps1 -SkipDocker</code></pre>
+                            <div class="command-actions">
+                                <button class="copy-btn" type="button" data-copy=".\infra\tools\ejecutar_gate_pre_release.ps1 -SkipDocker">Copiar comando</button>
+                                <span class="command-note">Usa este corte rapido antes de traducir el journey a backlog visual y tareas tecnicas.</span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <section id="operar" class="section reveal delay-1">
+            <header class="section-head">
+                <span class="section-kicker">Operar y Construir</span>
+                <h2>Acciones concretas para mover el proyecto hoy</h2>
+                <p>
+                    Esta base ya tiene comandos y controles suficientes para que un equipo avance
+                    sin improvisar el siguiente paso.
+                </p>
+            </header>
+
+            <div class="command-grid">
+                <article class="command-card">
+                    <span class="command-tag">Chequeo rapido</span>
+                    <h3>Gate repo-local sin Docker</h3>
+                    <p>Valida consistencia documental y control de promocion sin correr rebuild completo.</p>
+                    <pre class="code-block"><code>.\infra\tools\ejecutar_gate_pre_release.ps1 -SkipDocker</code></pre>
+                    <div class="command-actions">
+                        <button class="copy-btn" type="button" data-copy=".\infra\tools\ejecutar_gate_pre_release.ps1 -SkipDocker">Copiar</button>
+                        <a class="command-link" href="../../infra/tools/ejecutar_gate_pre_release.ps1">Ver script</a>
+                    </div>
+                </article>
+
+                <article class="command-card">
+                    <span class="command-tag">Chequeo integral</span>
+                    <h3>Gate completo con rebuild</h3>
+                    <p>Ejecuta el baseline de punta a punta cuando necesites un corte tecnico fuerte.</p>
+                    <pre class="code-block"><code>.\infra\tools\ejecutar_gate_pre_release.ps1</code></pre>
+                    <div class="command-actions">
+                        <button class="copy-btn" type="button" data-copy=".\infra\tools\ejecutar_gate_pre_release.ps1">Copiar</button>
+                        <a class="command-link" href="../../infra/docker/recrear_instalacion_limpia.ps1">Ver rebuild limpio</a>
+                    </div>
+                </article>
+
+                <article class="command-card">
+                    <span class="command-tag">Promocion</span>
+                    <h3>Release guard repo-local</h3>
+                    <p>Confirma que CI, checklist y politica siguen alineados antes de considerar promocion.</p>
+                    <pre class="code-block"><code>.\infra\tools\validar_control_promocion_ci.ps1</code></pre>
+                    <div class="command-actions">
+                        <button class="copy-btn" type="button" data-copy=".\infra\tools\validar_control_promocion_ci.ps1">Copiar</button>
+                        <a class="command-link" href="../../docs/validacion/CHECKLIST_PROMOCION_CI_DB.md">Ver checklist</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="arquitectura" class="section reveal delay-1">
+            <header class="section-head">
+                <span class="section-kicker">Arquitectura</span>
+                <h2>Visualizacion funcional del dominio y su flujo critico</h2>
+                <p>
+                    Una vista sintetica para entender estructura y dependencias sin perderse en
+                    diagramas saturados.
+                </p>
+            </header>
+
+            <div class="architecture-layout">
+                <div class="domain-matrix">
+                    <article><h3>Identidad</h3><p>person, documents, contacts, user_account.</p></article>
+                    <article><h3>Cliente</h3><p>customer, category, benefits, loyalty.</p></article>
+                    <article><h3>Red aeroportuaria</h3><p>country, city, airport, terminal, gate.</p></article>
+                    <article><h3>Operacion aerea</h3><p>airline, aircraft, flight, segment.</p></article>
+                    <article><h3>Comercial</h3><p>reservation, sale, ticket, seat assignment.</p></article>
+                    <article><h3>Recaudo</h3><p>payment, transaction, invoice, refund.</p></article>
+                </div>
+
+                <div class="flow-board">
+                    <span class="flow-label">Flujo de referencia</span>
+                    <h3>Cadena de datos de punta a punta</h3>
+                    <ol class="flow-steps">
+                        <li>person</li>
+                        <li>customer</li>
+                        <li>reservation</li>
+                        <li>sale</li>
+                        <li>ticket</li>
+                        <li>ticket_segment</li>
+                        <li>check_in</li>
+                        <li>boarding_pass</li>
+                        <li>invoice</li>
+                    </ol>
+                    <p>
+                        Este flujo sirve como contrato de integracion entre API, UI y QA funcional.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="evolucion" class="section section-alt reveal delay-2">
+            <header class="section-head">
+                <span class="section-kicker">Evolucion del baseline</span>
+                <h2>Hitos tecnicos cerrados y estado actual</h2>
+                <p>Progreso documentado desde el release congelado hasta el inicio de CI industrializado.</p>
+            </header>
+
+            <div class="timeline">
+                <article class="timeline-item">
+                    <span class="dot"></span>
+                    <h3>Release congelado</h3>
+                    <p>DDL, seeds, QA cruzado y narrativa base alineados.</p>
+                </article>
+                <article class="timeline-item">
+                    <span class="dot"></span>
+                    <h3>S2 Gobierno operativo</h3>
+                    <p>Migraciones, rollback, backup/restore y runbook.</p>
+                </article>
+                <article class="timeline-item">
+                    <span class="dot"></span>
+                    <h3>S3 Performance y seguridad</h3>
+                    <p>Baseline de consultas, observabilidad y hardening local.</p>
+                </article>
+                <article class="timeline-item">
+                    <span class="dot"></span>
+                    <h3>S4 Continuidad</h3>
+                    <p>Secretos, menor privilegio, loopback y break-glass.</p>
+                </article>
+                <article class="timeline-item active">
+                    <span class="dot"></span>
+                    <h3>F1 CI/CD inicial</h3>
+                    <p>db-gate remoto operativo y control de promocion formalizado.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="evidencias" class="section reveal">
+            <header class="section-head">
+                <span class="section-kicker">Evidencias</span>
+                <h2>Artefactos clave para trazabilidad y decision</h2>
+                <p>
+                    Accesos directos al material que respalda el estado actual del proyecto.
+                </p>
+            </header>
+
+            <div class="filter-row">
+                <button class="filter-chip active" type="button" data-filter="all">Todo</button>
+                <button class="filter-chip" type="button" data-filter="producto">Producto</button>
+                <button class="filter-chip" type="button" data-filter="build">Build</button>
+                <button class="filter-chip" type="button" data-filter="operacion">Operacion</button>
+                <button class="filter-chip" type="button" data-filter="ci">CI</button>
+                <span class="filter-status" data-filter-status>Mostrando 4 grupos de artefactos</span>
             </div>
 
-            <div class="download-card">
-                <div class="download-icon">
-                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-                        <rect x="8" y="8" width="48" height="48" rx="8" fill="#16324f"/>
-                        <rect x="14" y="20" width="36" height="6" rx="2" fill="#1f6feb" opacity="0.8"/>
-                        <rect x="14" y="30" width="24" height="4" rx="2" fill="#1f6feb" opacity="0.5"/>
-                        <rect x="14" y="38" width="30" height="4" rx="2" fill="#1f6feb" opacity="0.5"/>
-                    </svg>
-                </div>
-                <div class="download-badge done">Actualizado</div>
-                <h3>Canvas Arquitectónico</h3>
-                <p>Vista técnica de decisiones, métricas, flujo canónico, riesgos activos y siguiente fase.</p>
-                <span class="download-format">HTML (.html)</span>
-                <a href="../../architecture/canvas/canvas_arquitectura.html" class="btn btn-primary">Abrir Canvas</a>
-            </div>
+            <div class="evidence-grid">
+                <article class="evidence-card" data-tags="producto build">
+                    <h3>Portal y contexto</h3>
+                    <ul>
+                        <li><a href="../../architecture/canvas/canvas_arquitectura.html">Canvas de arquitectura</a></li>
+                        <li><a href="../../reports/html/funcionalidades_sistema.html">Informe funcional</a></li>
+                        <li><a href="../../reports/cronograma/cronograma_realizacion.html">Cronograma</a></li>
+                    </ul>
+                </article>
 
-            <div class="download-card">
-                <div class="download-icon">
-                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-                        <rect x="12" y="4" width="40" height="56" rx="4" fill="#c3562c"/>
-                        <rect x="18" y="16" width="28" height="4" fill="white"/>
-                        <rect x="18" y="26" width="24" height="4" fill="white" opacity="0.75"/>
-                        <rect x="18" y="36" width="28" height="4" fill="white" opacity="0.6"/>
-                        <rect x="18" y="46" width="18" height="4" fill="white" opacity="0.45"/>
-                    </svg>
-                </div>
-                <div class="download-badge done">Actualizado</div>
-                <h3>Informe de Funcionalidades</h3>
-                <p>Estado del sistema, capacidades por módulo, flujo operativo visible y artefactos disponibles.</p>
-                <span class="download-format">HTML (.html)</span>
-                <a href="../../reports/html/funcionalidades_sistema.html" class="btn btn-primary">Abrir Informe</a>
-            </div>
+                <article class="evidence-card" data-tags="build producto">
+                    <h3>Modelo y delivery</h3>
+                    <ul>
+                        <li><a href="../../db/ddl/modelo_postgresql.sql">DDL maestro</a></li>
+                        <li><a href="../../db/migrations/README.md">Migraciones versionadas</a></li>
+                        <li><a href="../../db/seeds/00_seed_canonico.sql">Seed canonico</a></li>
+                        <li><a href="../../db/seeds/01_seed_volumetrico.sql">Seed volumetrico</a></li>
+                    </ul>
+                </article>
 
-            <div class="download-card">
-                <div class="download-icon">
-                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-                        <rect x="10" y="10" width="44" height="44" rx="10" fill="#214d3b"/>
-                        <rect x="18" y="18" width="6" height="28" fill="#4e9b78"/>
-                        <rect x="28" y="24" width="6" height="22" fill="#4e9b78" opacity="0.8"/>
-                        <rect x="38" y="14" width="6" height="32" fill="#4e9b78" opacity="0.6"/>
-                    </svg>
-                </div>
-                <div class="download-badge done">Actualizado</div>
-                <h3>Cronograma de Realización</h3>
-                <p>Vista evolutiva del release congelado hacia S2, S3 y S4.6, con continuidad operativa validada, baseline limpio unificado, red local confinada y admin bootstrap encapsulado.</p>
-                <span class="download-format">HTML (.html)</span>
-                <a href="../../reports/cronograma/cronograma_realizacion.html" class="btn btn-primary">Abrir Cronograma</a>
-            </div>
-        </div>
-    </section>
+                <article class="evidence-card" data-tags="operacion build">
+                    <h3>Operacion y control</h3>
+                    <ul>
+                        <li><a href="../../infra/docker/recrear_instalacion_limpia.ps1">Recrear instalacion limpia</a></li>
+                        <li><a href="../../infra/tools/ejecutar_gate_pre_release.ps1">Gate pre-release</a></li>
+                        <li><a href="../../docs/validacion/EVIDENCIA_RECUPERACION_LOCAL_2026-03-19.md">Evidencia recovery</a></li>
+                        <li><a href="../../docs/validacion/EVIDENCIA_MENOR_PRIVILEGIO_OPERATIVO_LOCAL_2026-03-20.md">Menor privilegio</a></li>
+                    </ul>
+                </article>
 
-    <!-- Footer -->
+                <article class="evidence-card" data-tags="ci operacion">
+                    <h3>Continuidad y CI</h3>
+                    <ul>
+                        <li><a href="../../docs/planes/ROADMAP_ESTABILIZACION_DB_SENIOR.md">Roadmap senior</a></li>
+                        <li><a href="../../docs/planes/PLAN_CONTINUIDAD_FASES_2026-03-19.md">Plan continuidad</a></li>
+                        <li><a href="../../docs/validacion/EVIDENCIA_PIPELINE_CI_REMOTO_2026-03-20.md">Evidencia pipeline CI</a></li>
+                        <li><a href="../../.github/workflows/db-gate.yml">Workflow db-gate</a></li>
+                        <li><a href="../../docs/validacion/RUNBOOK_BRANCH_PROTECTION_GITHUB.md">Runbook branch protection</a></li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+    </main>
+
     <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-logo">
-                <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
-                    <path d="M16 2L4 14L16 10L28 14L16 2Z" fill="#3B82F6"/>
-                    <path d="M16 10L4 14L16 30L28 14L16 10Z" fill="#1D4ED8"/>
-                </svg>
-                <span>FLY</span>
-            </div>
-            <p>Modelo Relacional 3FN para Sistema de Aerolínea</p>
-            <p class="footer-meta">PostgreSQL 16 · 12 Módulos · 76 Tablas · 100+ FKs · Seed Canónico ✓ · Seed Volumétrico ✓ · Pre-release arquitectónico en curso</p>
+        <div>
+            <strong>FLY Data Platform</strong>
+            <p>Portal de estado, arquitectura y evidencias para ejecucion tecnica y decision.</p>
+        </div>
+        <div class="footer-links">
+            <a href="../../architecture/canvas/canvas_arquitectura.html">Canvas</a>
+            <a href="../../reports/html/funcionalidades_sistema.html">Capacidades</a>
+            <a href="../../reports/cronograma/cronograma_realizacion.html">Cronograma</a>
+            <a href="../../docs/planes/MATRIZ_IA_PORTAL_VISUAL_FLY_2026-03-20.md">Matriz IA</a>
         </div>
     </footer>
-
-    <script src="script.js"></script>
 </body>
 </html>

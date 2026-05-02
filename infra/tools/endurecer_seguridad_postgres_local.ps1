@@ -4,7 +4,9 @@ param(
     [string]$DbName,
     [string]$RuntimeRole = "fly_app_rw",
     [string]$ReadOnlyRole = "fly_app_ro",
-    [string]$AuditRole = "fly_app_audit"
+    [string]$AuditRole = "fly_app_audit",
+    [string]$DdlRole = "fly_app_ddl",
+    [string]$DmlRole = "fly_app_dml"
 )
 
 Set-StrictMode -Version Latest
@@ -67,15 +69,24 @@ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = '{2}') THEN
     CREATE ROLE {2} NOLOGIN;
   END IF;
+
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = '{3}') THEN
+    CREATE ROLE {3} NOLOGIN;
+  END IF;
+
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = '{4}') THEN
+    CREATE ROLE {4} NOLOGIN;
+  END IF;
 END
 $hardening$;
 
-REVOKE CONNECT, TEMP ON DATABASE {3} FROM PUBLIC;
-GRANT CONNECT ON DATABASE {3} TO {0}, {1}, {2};
-GRANT TEMP ON DATABASE {3} TO {0};
+REVOKE CONNECT, TEMP ON DATABASE {5} FROM PUBLIC;
+GRANT CONNECT ON DATABASE {5} TO {0}, {1}, {2}, {3}, {4};
+GRANT TEMP ON DATABASE {5} TO {0}, {4};
 
 REVOKE ALL ON SCHEMA public FROM PUBLIC;
-GRANT USAGE ON SCHEMA public TO {0}, {1}, {2};
+GRANT USAGE ON SCHEMA public TO {0}, {1}, {2}, {3}, {4};
+GRANT CREATE ON SCHEMA public TO {3};
 
 REVOKE ALL ON ALL TABLES IN SCHEMA public FROM PUBLIC;
 REVOKE ALL ON ALL SEQUENCES IN SCHEMA public FROM PUBLIC;
@@ -83,23 +94,34 @@ REVOKE ALL ON ALL SEQUENCES IN SCHEMA public FROM PUBLIC;
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO {0};
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO {0};
 
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO {1}, {2};
-GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO {1}, {2};
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO {1}, {2}, {3};
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO {1}, {2}, {3};
 
-ALTER DEFAULT PRIVILEGES FOR ROLE {4} IN SCHEMA public REVOKE ALL ON TABLES FROM PUBLIC;
-ALTER DEFAULT PRIVILEGES FOR ROLE {4} IN SCHEMA public REVOKE ALL ON SEQUENCES FROM PUBLIC;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO {4};
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO {4};
 
-ALTER DEFAULT PRIVILEGES FOR ROLE {4} IN SCHEMA public
+ALTER DEFAULT PRIVILEGES FOR ROLE {6} IN SCHEMA public REVOKE ALL ON TABLES FROM PUBLIC;
+ALTER DEFAULT PRIVILEGES FOR ROLE {6} IN SCHEMA public REVOKE ALL ON SEQUENCES FROM PUBLIC;
+
+ALTER DEFAULT PRIVILEGES FOR ROLE {6} IN SCHEMA public
   GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO {0};
-ALTER DEFAULT PRIVILEGES FOR ROLE {4} IN SCHEMA public
+ALTER DEFAULT PRIVILEGES FOR ROLE {6} IN SCHEMA public
   GRANT USAGE, SELECT ON SEQUENCES TO {0};
 
-ALTER DEFAULT PRIVILEGES FOR ROLE {4} IN SCHEMA public
-  GRANT SELECT ON TABLES TO {1}, {2};
-ALTER DEFAULT PRIVILEGES FOR ROLE {4} IN SCHEMA public
-  GRANT USAGE, SELECT ON SEQUENCES TO {1}, {2};
+ALTER DEFAULT PRIVILEGES FOR ROLE {6} IN SCHEMA public
+  GRANT SELECT ON TABLES TO {1}, {2}, {3};
+ALTER DEFAULT PRIVILEGES FOR ROLE {6} IN SCHEMA public
+  GRANT USAGE, SELECT ON SEQUENCES TO {1}, {2}, {3};
+
+ALTER DEFAULT PRIVILEGES FOR ROLE {6} IN SCHEMA public
+  GRANT ALL PRIVILEGES ON TABLES TO {4};
+ALTER DEFAULT PRIVILEGES FOR ROLE {6} IN SCHEMA public
+  GRANT ALL PRIVILEGES ON SEQUENCES TO {4};
 
 GRANT pg_read_all_stats TO {2};
+
+COMMENT ON ROLE {3} IS 'Rol DDL delegado: CREATE en schema public y lectura para definir vistas/funciones, sin CREATEROLE.';
+COMMENT ON ROLE {4} IS 'Rol DML delegado: privilegios amplios de manipulacion de datos sin CREATEROLE.';
 '@
 
     $sql = [string]::Format(
@@ -107,6 +129,8 @@ GRANT pg_read_all_stats TO {2};
         $RuntimeRole,
         $ReadOnlyRole,
         $AuditRole,
+        $DdlRole,
+        $DmlRole,
         $DbName,
         $DbUser
     )
@@ -123,7 +147,7 @@ GRANT pg_read_all_stats TO {2};
     }
 
     Write-Host "[OK] Hardening aplicado."
-    Write-Host ("[OK] Roles preparados: {0}, {1}, {2}" -f $RuntimeRole, $ReadOnlyRole, $AuditRole)
+    Write-Host ("[OK] Roles preparados: {0}, {1}, {2}, {3}, {4}" -f $RuntimeRole, $ReadOnlyRole, $AuditRole, $DdlRole, $DmlRole)
 }
 catch {
     Write-Host ""

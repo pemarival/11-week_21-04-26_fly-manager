@@ -36,6 +36,11 @@ higiene de secretos y auditoria verificable de accesos.
    (`127.0.0.1`) por defecto, no a todas las interfaces del host.
 8. El bootstrap admin debe permanecer como superuser solo por restriccion del
    motor y quedar aislado por `pg_hba.conf` para uso break-glass interno.
+9. Los roles delegados adicionales deben ser `NOLOGIN` y consumirse a traves de
+   logins nominativos sin `CREATEROLE` ni `CREATEDB`.
+10. El DDL delegado sin superuser debe asumirse como creacion de objetos nuevos;
+    el control completo sobre `ALTER/DROP` de objetos existentes depende del
+    ownership y no debe ampliarse sin decision explicita.
 
 ## 5. Flujo recomendado
 
