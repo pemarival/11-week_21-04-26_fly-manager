@@ -166,6 +166,36 @@ function Get-RollbackModeFromHeader {
     return $rollbackMatch.Groups["mode"].Value.ToLowerInvariant()
 }
 
+function Get-RelativePathCompat {
+    param(
+        [string]$BasePath,
+        [string]$TargetPath
+    )
+
+    $baseFullPath = [System.IO.Path]::GetFullPath($BasePath)
+    $targetFullPath = [System.IO.Path]::GetFullPath($TargetPath)
+
+    if (-not $baseFullPath.EndsWith([System.IO.Path]::DirectorySeparatorChar) -and -not $baseFullPath.EndsWith([System.IO.Path]::AltDirectorySeparatorChar)) {
+        $baseFullPath += [System.IO.Path]::DirectorySeparatorChar
+    }
+
+    $baseUri = New-Object System.Uri($baseFullPath)
+    $targetUri = New-Object System.Uri($targetFullPath)
+
+    if ($baseUri.Scheme -ne $targetUri.Scheme -or $baseUri.Host -ne $targetUri.Host) {
+        return $targetFullPath
+    }
+
+    $relativeUri = $baseUri.MakeRelativeUri($targetUri)
+    $relativePath = [System.Uri]::UnescapeDataString($relativeUri.ToString())
+
+    if ([string]::IsNullOrWhiteSpace($relativePath)) {
+        return "."
+    }
+
+    return $relativePath.Replace("/", [System.IO.Path]::DirectorySeparatorChar)
+}
+
 $lockTaken = $false
 
 try {
@@ -301,7 +331,7 @@ try {
             throw "La migracion $($migration.FileName) no dejo disponible $JournalTable. Aplica primero el bootstrap del journal."
         }
 
-        $relativePath = [System.IO.Path]::GetRelativePath($RepoRoot, $migration.Path).Replace("\", "/")
+        $relativePath = (Get-RelativePathCompat -BasePath $RepoRoot -TargetPath $migration.Path).Replace("\", "/")
         $safeName = $migration.Name.Replace("'", "''")
         $safePath = $relativePath.Replace("'", "''")
         $safeRollback = $migration.RollbackMode.Replace("'", "''")

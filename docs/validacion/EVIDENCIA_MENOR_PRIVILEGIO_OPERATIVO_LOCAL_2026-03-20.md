@@ -8,7 +8,7 @@ AUDIT, RO y RW con privilegio minimo verificable.
 
 ## Contexto de ejecucion
 
-- Fecha de ejecucion: 2026-04-21 07:32:18 -05:00
+- Fecha de ejecucion: 2026-04-28 13:48:57 -05:00
 - Contenedor: fly-bd-pg-5435
 - Base validada: flydb
 - Login AUDIT: fly_local_audit

@@ -1,0 +1,17 @@
+{
+  "created_at": "2026-03-19 21:05:03 -05:00",
+  "container_name": "fly-bd-pg-5435",
+  "source_database": "flydb",
+  "source_user": "fly_admin",
+  "backup_path": "C:\\www\\code-dev-projects\\fly-manager\\infra\\runtime\\backups\\flydb_recovery_test_20260319_210502.dump",
+  "metadata_path": "C:\\www\\code-dev-projects\\fly-manager\\infra\\runtime\\backups\\flydb_recovery_test_20260319_210502.metadata.json",
+  "file_name": "flydb_recovery_test_20260319_210502.dump",
+  "file_size_bytes": 530144,
+  "checksum_sha256": "fd315bc7ed555d824c5b7aec8bfdef9146e9323a405cbf8b34601d526071031d",
+  "duration_ms": 420,
+  "source_db_size_bytes": 20962327,
+  "source_db_size_pretty": "20 MB",
+  "public_table_count": 78,
+  "schema_migration_journal_rows": 1,
+  "tag": "recovery_test"
+}
