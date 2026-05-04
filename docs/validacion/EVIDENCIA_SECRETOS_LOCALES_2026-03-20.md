@@ -1,4 +1,4 @@
-# Evidencia de Secretos Locales (2026-03-20)
+﻿# Evidencia de Secretos Locales (2026-03-20)
 
 ## Objetivo
 
@@ -8,9 +8,9 @@ logins operativos locales.
 
 ## Contexto de ejecucion
 
-- Fecha de ejecucion: 2026-04-28 13:48:57 -05:00
-- Env local: C:\www\code-dev-projects\fly-manager\infra\docker\.env
-- Template: C:\www\code-dev-projects\fly-manager\infra\docker\.env.example
+- Fecha de ejecucion: 2026-05-02 18:10:51 -05:00
+- Env local: C:\Users\mvale\Desktop\11-week_21-04-26_fly-manager\infra\docker\.env
+- Template: C:\Users\mvale\Desktop\11-week_21-04-26_fly-manager\infra\docker\.env.example
 - Longitud minima requerida: 24
 
 ## Resumen observado

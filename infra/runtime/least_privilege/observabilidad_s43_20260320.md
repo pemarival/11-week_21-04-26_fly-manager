@@ -1,4 +1,4 @@
-# Evidencia de Observabilidad Local (2026-03-19)
+﻿# Evidencia de Observabilidad Local (2026-03-19)
 
 ## Objetivo
 
@@ -7,7 +7,7 @@ seguimiento de capacidad, locks, actividad y crecimiento.
 
 ## Contexto de ejecucion
 
-- Fecha de ejecucion: 2026-04-28 13:48:49 -05:00
+- Fecha de ejecucion: 2026-05-02 18:11:09 -05:00
 - Contenedor: fly-bd-pg-5435
 - Base primaria: flydb
 - Base secundaria: flydb_restore_validation
@@ -25,7 +25,7 @@ seguimiento de capacidad, locks, actividad y crecimiento.
 | idle_in_transaction | 0 |
 | waiting_locks | 0 |
 | long_running_queries_gt_60s | 0 |
-| cache_hit_ratio_pct | 99.9 |
+| cache_hit_ratio_pct | 99.87 |
 | schema_migration_journal_rows | 1 |
 
 ## Controles minimos
@@ -35,22 +35,22 @@ seguimiento de capacidad, locks, actividad y crecimiento.
 | waiting_locks | 0 | <= 0 | OK |
 | idle_in_transaction | 0 | <= 0 | OK |
 | long_running_queries_gt_60s | 0 | <= 0 | OK |
-| cache_hit_ratio_pct | 99.9 | >= 95 | OK |
+| cache_hit_ratio_pct | 99.87 | >= 95 | OK |
 
 ## Top 10 tablas por tamano
 
 | table_name | total_size_bytes | total_size_pretty |
 | --- | --- | --- |
-| invoice_line | 1015808 | 992 kB |
-| payment_transaction | 573440 | 560 kB |
+| invoice_line | 1024000 | 1000 kB |
+| payment_transaction | 581632 | 568 kB |
 | payment | 548864 | 536 kB |
-| ticket_segment | 540672 | 528 kB |
-| invoice | 483328 | 472 kB |
-| boarding_pass | 450560 | 440 kB |
-| ticket | 442368 | 432 kB |
-| reservation | 442368 | 432 kB |
-| miles_transaction | 434176 | 424 kB |
-| reservation_passenger | 409600 | 400 kB |
+| ticket_segment | 548864 | 536 kB |
+| invoice | 491520 | 480 kB |
+| boarding_pass | 458752 | 448 kB |
+| ticket | 450560 | 440 kB |
+| reservation | 450560 | 440 kB |
+| miles_transaction | 442368 | 432 kB |
+| reservation_passenger | 417792 | 408 kB |
 
 ## Resultado
 

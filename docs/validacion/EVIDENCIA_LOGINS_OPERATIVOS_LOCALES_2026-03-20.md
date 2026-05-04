@@ -1,4 +1,4 @@
-# Evidencia de Logins Operativos Locales (2026-03-20)
+﻿# Evidencia de Logins Operativos Locales (2026-03-20)
 
 ## Objetivo
 
@@ -8,7 +8,7 @@ los roles `fly_app_rw`, `fly_app_ro` y `fly_app_audit`.
 
 ## Contexto de ejecucion
 
-- Fecha de ejecucion: 2026-04-28 13:48:46 -05:00
+- Fecha de ejecucion: 2026-05-02 18:10:57 -05:00
 - Contenedor: fly-bd-pg-5435
 - Base auditada: flydb
 - Admin actual de bootstrap: fly_admin
